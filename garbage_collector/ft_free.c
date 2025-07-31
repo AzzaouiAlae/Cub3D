@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "garbage_collector.h"
+#include "../cub3d.h"
 
 void	ft_free_all(void)
 {
@@ -71,4 +72,25 @@ void	ft_free(void *mem)
 		return ;
 	}
 	find_to_free(mem);
+}
+
+void	ft_destroy_all(void)
+{
+	t_mem_list	**list;
+	t_mem_list	*tmp;
+	void		*mem;
+
+	list = ft_img_list();
+	if (!list || !(*list))
+		return ;
+	while (*list)
+	{
+		tmp = *list;
+		*list = (*list)->next;
+		mlx_destroy_image(g_mlx, tmp->mem);
+		free(tmp);
+	}
+	mem = current_working_mem(NULL, 0);
+	free(mem);
+	current_working_mem(NULL, 1);
 }

@@ -15,6 +15,7 @@
 int	ft_open(char *file_name, int flag, int perm)
 {
 	int	fd;
+	t_str *str;
 
 	if (!file_name)
 		return (-1);

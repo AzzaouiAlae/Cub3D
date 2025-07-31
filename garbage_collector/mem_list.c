@@ -18,3 +18,10 @@ t_mem_list	**ft_mem_list(void)
 
 	return (&list);
 }
+
+t_mem_list	**ft_img_list(void)
+{
+	static t_mem_list	*list;
+
+	return (&list);
+}
