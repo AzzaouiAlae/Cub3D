@@ -1,10 +1,10 @@
 #include "cub3d.h"
 #include "game_map/game_map.h"
 
-void hanle_parsing_error(t_game_map_status status)
+void	hanle_parsing_error(t_game_map_status status)
 {
 	if (status == ok)
-		return;
+		return ;
 	if (status == err_file_extension)
 		ft_putstr_fd(2, "Error\nInvalid extension\n", 24);
 	if (status == err_open_file)
@@ -16,53 +16,220 @@ void hanle_parsing_error(t_game_map_status status)
 	ft_exit(255);
 }
 
-void ft_init()
+void	ft_init(void)
 {
 	g_mlx = mlx_init();
 	mlx_get_screen_size(g_mlx, &g_width, &g_height);
 	g_win = mlx_new_window(g_mlx, g_width, g_height, "Game");
 	ft_bzero(&g_win_img, sizeof(t_data));
 	g_win_img.img = mlx_new_image(g_mlx, g_width, g_height);
-	g_win_img.addr = mlx_get_data_addr(g_win_img.img, &(g_win_img.bits_per_pixel), 
-		&(g_win_img.line_length), &(g_win_img.endian));
+	g_win_img.addr = mlx_get_data_addr(g_win_img.img,
+			&(g_win_img.bits_per_pixel), &(g_win_img.line_length),
+			&(g_win_img.endian));
 	ft_bzero(&g_info, sizeof(t_info));
 	g_map = list_new(sizeof(t_str *));
 	ft_bzero(&g_player, sizeof(t_player));
+	ft_bzero(&g_keys, sizeof(t_keys));
 }
 
-void render_mini_map_border()
+void	render_mini_map_border(void)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
-	while (i < MIN_MAP_H)
+	while (i < M_M_H)
 	{
 		j = 0;
-		while (j < MIN_MAP_W)
+		while (j < M_M_W)
 		{
-			if ((i >= 0 && i < MIN_MAP_BORDER_SIZE) || i >= MIN_MAP_H - MIN_MAP_BORDER_SIZE 
-				|| (j >= 0 && j < MIN_MAP_BORDER_SIZE) || j >= MIN_MAP_W - MIN_MAP_BORDER_SIZE)
-				my_mlx_put_pixel(&g_win_img, MIN_MAP_MARGIN_X + j,
-					MIN_MAP_MARGIN_Y + i, 0xffffff);
+			if ((i >= 0 && i < M_M_BORDER_SIZE) || i >= M_M_H - M_M_BORDER_SIZE
+				|| (j >= 0 && j < M_M_BORDER_SIZE) || j >= M_M_W
+				- M_M_BORDER_SIZE)
+				my_mlx_put_pixel(&g_win_img, M_M_MARGIN_X + j, M_M_MARGIN_Y + i,
+					0xffffff);
 			j++;
 		}
 		i++;
 	}
 }
 
-void render_mini_map()
+void	render_player(t_line line, float x, float y, int x_ranges[])
 {
+	int	i;
+	int	y_max;
+	int	x_start;
+	int	color;
 
+	i = 0;
+	y_max = y + 2;
+	color = 0xff0000;
+	while (y_max >= y - 2 + i)
+	{
+		x_start = x - x_ranges[i];
+		while (x_start <= x + x_ranges[i])
+		{
+			my_mlx_put_pixel(&g_win_img, x_start - line.start.x + M_M_MARGIN_X,
+				(int)(y - 2 + i) - line.start.y + M_M_MARGIN_Y, color);
+			x_start++;
+		}
+		i++;
+	}
 }
 
-int render_game(void *pram)
+void	render_pos(t_line line, float x, float y)
+{
+	int		row;
+	int		col;
+	int		color;
+	t_str	**grid;
+	t_point rend;
+
+	col = y / M_M_TIAL_SIZE;
+	row = x / M_M_TIAL_SIZE;
+	grid = g_map->content;
+	if (g_map->count <= col || col < 0 || grid[col]->count <= row || row < 0)
+		return ;
+	if (grid[col]->content[row] == '1')
+	{
+		color = 0x5555ff;
+		if ((int)x % M_M_TIAL_SIZE == 0 || (int)y % M_M_TIAL_SIZE == 0)
+			color = 0xffffff;
+		rend.x = x + M_M_MARGIN_X + M_M_BORDER_SIZE - line.start.x;
+		rend.y = y + M_M_MARGIN_Y + M_M_BORDER_SIZE - line.start.y;
+		my_mlx_put_pixel(&g_win_img, rend.x, rend.y, color);
+	}
+}
+
+void	render_mini_map(void)
+{
+	t_line	line;
+	float	x;
+	float	y;
+
+	line.start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
+	line.start.y = g_player.pos.y - (((float)M_M_H - M_M_BORDER_SIZE * 2) / 2);
+	line.end.x = line.start.x + M_M_W;
+	line.end.y = line.start.y + M_M_H;
+	y = line.start.y;
+	render_player(line, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
+	while (y <= line.end.y)
+	{
+		x = line.start.x;
+		while (x <= line.end.x)
+		{
+			render_pos(line, x, y);
+			x++;
+		}
+		y++;
+	}
+}
+
+bool	is_posible_move(int x, int y)
+{
+	int		row;
+	int		col;
+	t_str	**grid;
+
+	col = y / M_M_TIAL_SIZE;
+	row = x / M_M_TIAL_SIZE;
+	grid = g_map->content;
+	if (g_map->count <= col || col < 0 || grid[col]->count <= row || row < 0)
+		return (false);
+	if (grid[col]->content[row] == '1')
+		return (false);
+	return (true);
+}
+
+void	move_player(void)
+{
+	if (g_keys.w && is_posible_move(g_player.pos.x, g_player.pos.y
+			- PLAYER_SPEED))
+		g_player.pos.y -= PLAYER_SPEED;
+	if (g_keys.a && is_posible_move(g_player.pos.x - PLAYER_SPEED,
+			g_player.pos.y))
+		g_player.pos.x -= PLAYER_SPEED;
+	if (g_keys.d && is_posible_move(g_player.pos.x + PLAYER_SPEED,
+			g_player.pos.y))
+		g_player.pos.x += PLAYER_SPEED;
+	if (g_keys.s && is_posible_move(g_player.pos.x, g_player.pos.y
+			+ PLAYER_SPEED))
+		g_player.pos.y += PLAYER_SPEED;
+}
+
+void	clear_img(t_line area)
+{
+	int	x;
+	int	color;
+
+	color = 0;
+	while (area.start.y <= area.end.y)
+	{
+		x = area.start.x;
+		while (x <= area.end.x)
+		{
+			my_mlx_put_pixel(&g_win_img, x, area.start.y, color);
+			x++;
+		}
+		area.start.y++;
+	}
+}
+
+int	render_game(void *pram)
 {
 	(void)pram;
-	render_mini_map_border();
+	clear_img((t_line){(t_point){M_M_MARGIN_X, M_M_MARGIN_Y},
+		(t_point){M_M_MARGIN_X + M_M_W, M_M_MARGIN_Y + M_M_H}});
+	move_player();
 	render_mini_map();
+	render_mini_map_border();
 	mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
-	return 0;
+	return (0);
+}
+
+int	close_window(void *param)
+{
+	(void)param;
+	ft_exit(0);
+	return (0);
+}
+
+int	keydown_hook(int keycode, void *var)
+{
+	char	ch;
+
+	ch = (char)keycode;
+	(void)var;
+	if (keycode == 65307)
+		ft_exit(255);
+	if (ch == 'w')
+		g_keys.w = 1;
+	if (ch == 'a')
+		g_keys.a = 1;
+	if (ch == 'd')
+		g_keys.d = 1;
+	if (ch == 's')
+		g_keys.s = 1;
+	return (0);
+}
+
+int	keyup_hook(int keycode, void *var)
+{
+	char	ch;
+
+	ch = (char)keycode;
+	(void)var;
+	if (keycode == 65307)
+		ft_exit(255);
+	if (ch == 'w')
+		g_keys.w = 0;
+	if (ch == 'a')
+		g_keys.a = 0;
+	if (ch == 'd')
+		g_keys.d = 0;
+	if (ch == 's')
+		g_keys.s = 0;
+	return (0);
 }
 
 int	main(int arg_c, char *arg_v[])
@@ -70,10 +237,13 @@ int	main(int arg_c, char *arg_v[])
 	if (arg_c != 2)
 	{
 		ft_putstr_fd(2, "Error\nInvalid args\n", 19);
-		ft_exit(255);
+		exit(255);
 	}
 	ft_init();
 	hanle_parsing_error(game_map(arg_v[1], &g_info));
+	mlx_hook(g_win, on_destroy, 0, close_window, NULL);
+	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
+	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);
 	mlx_loop_hook(g_mlx, render_game, NULL);
 	mlx_loop(g_mlx);
 	ft_free_all();

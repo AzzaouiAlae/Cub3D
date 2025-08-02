@@ -10,15 +10,25 @@
 #include "global.h"
 # include "/home/aazzaoui/Downloads/minilibx-linux/mlx.h"
 
-#define MIN_MAP_H 150
-#define MIN_MAP_W 200
-#define MIN_MAP_MARGIN_X 100
-#define MIN_MAP_MARGIN_Y 60
-#define MIN_MAP_BORDER_SIZE 1
-#define MIN_MAP_TIAL_SIZE 10
+#define M_M_H 150
+#define M_M_W 200
+#define M_M_MARGIN_X 100
+#define M_M_MARGIN_Y 60
+#define M_M_BORDER_SIZE 1
+#define M_M_TIAL_SIZE 15
+#define PLAYER_SPEED 1
 
 
-
+typedef enum s_events
+{
+	on_keydown = 2,
+	on_keyup = 3,
+	on_mousedown = 4,
+	on_mouseup = 5,
+	on_mousemove = 6,
+	on_expose = 12,
+	on_destroy = 17
+}					t_events;
 
 typedef struct s_line
 {

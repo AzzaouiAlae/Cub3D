@@ -35,6 +35,15 @@ typedef struct s_player
 	float angle;
 } t_player;
 
+typedef struct  s_pressed_keys
+{
+	char w;
+	char s;
+	char a;
+	char d;
+} t_keys;
+
+
 extern t_list	*g_map;
 extern void		*g_mlx;
 extern void		*g_win;
@@ -43,5 +52,6 @@ extern t_data	g_win_img;
 extern int		g_width;
 extern int		g_height;
 extern t_player g_player;
+extern t_keys g_keys;
 
 #endif

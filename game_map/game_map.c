@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/02 13:44:47 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 18:04:20 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,8 +230,8 @@ void init_player(t_player *player, char ch)
 		player->angle = 0;
 	else if (ch == 'W')
 		player->angle = 180;
-	player->pos.x = player->map_pos.x * MIN_MAP_TIAL_SIZE;
-	player->pos.y = player->map_pos.y * MIN_MAP_TIAL_SIZE;
+	player->pos.x = player->map_pos.x * M_M_TIAL_SIZE + ((float)M_M_TIAL_SIZE / 2);
+	player->pos.y = player->map_pos.y * M_M_TIAL_SIZE + ((float)M_M_TIAL_SIZE / 2);
 }
 bool	check_map(t_list *map, t_player *player)
 {
@@ -243,6 +243,7 @@ bool	check_map(t_list *map, t_player *player)
 	lines = map->content;
 	while (lines[i])
 	{
+		//check invalid char
 		j = 0;
 		while (lines[i]->count > j)
 		{
@@ -261,8 +262,6 @@ bool	check_map(t_list *map, t_player *player)
 	}
 	return true;
 }
-
-
 
 t_game_map_status	game_map(char *filename, t_info *info)
 {
