@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 05:52:58 by oel-bann          #+#    #+#             */
-/*   Updated: 2025/05/11 17:54:50 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:50:46 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	ft_open(char *file_name, int flag, int perm)
 {
 	int	fd;
-	t_str *str;
 
 	if (!file_name)
 		return (-1);
