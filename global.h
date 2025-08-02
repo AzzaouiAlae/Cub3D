@@ -1,5 +1,6 @@
 #ifndef GLOBAL_H
 # define GLOBAL_H
+#include <sys/time.h>
 
 typedef struct s_data
 {
@@ -53,5 +54,6 @@ extern int		g_width;
 extern int		g_height;
 extern t_player g_player;
 extern t_keys g_keys;
+extern struct timeval g_start_time;
 
 #endif

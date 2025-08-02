@@ -5,8 +5,8 @@
             "label": "C/C++: gcc build active file",
             "command": "/usr/bin/gcc",
             "args": [
-                // "-fdiagnostics-color=always",
-                // "-g",
+                "-fdiagnostics-color=always",
+                "-g",
                 "-Ofast",
                 "${workspaceFolder}/*.c",
                 "${workspaceFolder}/*/*.c",

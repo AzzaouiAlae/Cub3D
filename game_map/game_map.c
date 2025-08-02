@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/02 18:04:20 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:23:15 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	set_color(char *clr, char *str)
 	int	error;
 	int	num;
 
+	error = 0;
 	num = ft_atoi(str, &error);
 	if (error || num > 255)
 		return (false);

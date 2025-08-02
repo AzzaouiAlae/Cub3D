@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:29:29 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/02 16:56:28 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:46:06 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int				g_width;
 int				g_height;
 t_player		g_player;
 t_keys			g_keys;
+struct timeval g_start_time;
 
 void	my_mlx_put_pixel(t_data *data, int x, int y, int color)
 {

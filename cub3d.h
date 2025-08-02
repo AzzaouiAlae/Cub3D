@@ -9,15 +9,16 @@
 #include <stdbool.h>
 #include "global.h"
 # include "/home/aazzaoui/Downloads/minilibx-linux/mlx.h"
+#include <unistd.h>
 
 #define M_M_H 200
 #define M_M_W 250
-#define M_M_MARGIN_X 100
-#define M_M_MARGIN_Y 60
+#define M_M_MARGIN_X 50
+#define M_M_MARGIN_Y 40
 #define M_M_BORDER_SIZE 1
 #define M_M_TIAL_SIZE 20
-#define PLAYER_SPEED 1
-
+#define PLAYER_SPEED 0.5
+#define FRAME_PER_SEC 120
 
 typedef enum s_events
 {

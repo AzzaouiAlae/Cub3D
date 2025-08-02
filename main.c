@@ -30,6 +30,7 @@ void	ft_init(void)
 	g_map = list_new(sizeof(t_str *));
 	ft_bzero(&g_player, sizeof(t_player));
 	ft_bzero(&g_keys, sizeof(t_keys));
+	gettimeofday(&g_start_time, NULL);
 }
 
 void	render_mini_map_border(void)
@@ -111,8 +112,8 @@ void	render_mini_map(void)
 
 	line.start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
 	line.start.y = g_player.pos.y - ((float)(M_M_H - M_M_BORDER_SIZE * 2) / 2);
-	line.end.x = line.start.x + M_M_W;
-	line.end.y = line.start.y + M_M_H;
+	line.end.x = line.start.x + M_M_W - M_M_BORDER_SIZE * 2;
+	line.end.y = line.start.y + M_M_H - M_M_BORDER_SIZE * 2;
 	y = line.start.y;
 	render_player(line, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
 	while (y <= line.end.y)
@@ -177,6 +178,54 @@ void	clear_img(t_line area)
 	}
 }
 
+long get_time()
+{
+	struct timeval curr_time;
+
+	gettimeofday(&curr_time, NULL);
+	return ((curr_time.tv_sec - g_start_time.tv_sec) * 1000000) 
+		+ (curr_time.tv_usec - g_start_time.tv_usec);
+}
+
+void count_frame_per_sec()
+{
+	static struct timeval start_time;
+	static int count; 
+	struct timeval curr_time;
+	long res;
+	
+	if (count == 0)
+		gettimeofday(&start_time, NULL);
+	count++;
+	gettimeofday(&curr_time, NULL);
+	res = ((curr_time.tv_sec - start_time.tv_sec) * 1000000) 
+		+ (curr_time.tv_usec - start_time.tv_usec);
+	if (res >= 1000000)
+	{
+		printf("%d\n", count);
+		count = 0;
+	}
+}
+
+void render_speed()
+{
+	static int render;
+	long sleep;
+	long time;
+
+	time = get_time();
+	sleep = 1000000 / FRAME_PER_SEC;
+	sleep = (sleep * render) - time;
+	if (sleep > 0 && sleep < 1000000 / FRAME_PER_SEC)
+		usleep(sleep);
+	if (render == FRAME_PER_SEC)
+	{
+		render = 0;
+		gettimeofday(&g_start_time, NULL);
+	}
+	render++;
+}
+
 int	render_game(void *pram)
 {
 	(void)pram;
@@ -186,6 +235,8 @@ int	render_game(void *pram)
 	render_mini_map();
 	render_mini_map_border();
 	mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
+	render_speed();
+	count_frame_per_sec();
 	return (0);
 }
 
