@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "ft_func.h": "c",
+        "list.h": "c",
+        "game_map.h": "c",
+        "cub3d.h": "c",
+        "stdbool.h": "c",
+        "string.h": "c",
+        "garbage_collector.h": "c"
+    }
+}
