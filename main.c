@@ -60,6 +60,7 @@ void	render_player(t_line line, float x, float y, int x_ranges[])
 	int	y_max;
 	int	x_start;
 	int	color;
+	t_point rend;
 
 	i = 0;
 	y_max = y + 2;
@@ -69,8 +70,9 @@ void	render_player(t_line line, float x, float y, int x_ranges[])
 		x_start = x - x_ranges[i];
 		while (x_start <= x + x_ranges[i])
 		{
-			my_mlx_put_pixel(&g_win_img, x_start - line.start.x + M_M_MARGIN_X,
-				(int)(y - 2 + i) - line.start.y + M_M_MARGIN_Y, color);
+			rend.x = x_start - line.start.x + M_M_MARGIN_X;
+			rend.y = y - 2 + i - line.start.y + M_M_MARGIN_Y;
+			my_mlx_put_pixel(&g_win_img, rend.x, rend.y, color);
 			x_start++;
 		}
 		i++;
@@ -108,7 +110,7 @@ void	render_mini_map(void)
 	float	y;
 
 	line.start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
-	line.start.y = g_player.pos.y - (((float)M_M_H - M_M_BORDER_SIZE * 2) / 2);
+	line.start.y = g_player.pos.y - ((float)(M_M_H - M_M_BORDER_SIZE * 2) / 2);
 	line.end.x = line.start.x + M_M_W;
 	line.end.y = line.start.y + M_M_H;
 	y = line.start.y;
@@ -144,16 +146,16 @@ bool	is_posible_move(int x, int y)
 void	move_player(void)
 {
 	if (g_keys.w && is_posible_move(g_player.pos.x, g_player.pos.y
-			- PLAYER_SPEED))
+			- PLAYER_SPEED - 5))
 		g_player.pos.y -= PLAYER_SPEED;
-	if (g_keys.a && is_posible_move(g_player.pos.x - PLAYER_SPEED,
+	if (g_keys.a && is_posible_move(g_player.pos.x - PLAYER_SPEED - 5,
 			g_player.pos.y))
 		g_player.pos.x -= PLAYER_SPEED;
-	if (g_keys.d && is_posible_move(g_player.pos.x + PLAYER_SPEED,
+	if (g_keys.d && is_posible_move(g_player.pos.x + PLAYER_SPEED + 2,
 			g_player.pos.y))
 		g_player.pos.x += PLAYER_SPEED;
 	if (g_keys.s && is_posible_move(g_player.pos.x, g_player.pos.y
-			+ PLAYER_SPEED))
+			+ PLAYER_SPEED + 2))
 		g_player.pos.y += PLAYER_SPEED;
 }
 
@@ -202,13 +204,13 @@ int	keydown_hook(int keycode, void *var)
 	(void)var;
 	if (keycode == 65307)
 		ft_exit(255);
-	if (ch == 'w')
+	else if (!g_keys.w && ch == 'w')
 		g_keys.w = 1;
-	if (ch == 'a')
+	else if (!g_keys.a && ch == 'a')
 		g_keys.a = 1;
-	if (ch == 'd')
+	else if (!g_keys.d && ch == 'd')
 		g_keys.d = 1;
-	if (ch == 's')
+	else if (!g_keys.s && ch == 's')
 		g_keys.s = 1;
 	return (0);
 }
@@ -221,16 +223,17 @@ int	keyup_hook(int keycode, void *var)
 	(void)var;
 	if (keycode == 65307)
 		ft_exit(255);
-	if (ch == 'w')
+	else if (ch == 'w')
 		g_keys.w = 0;
-	if (ch == 'a')
+	else if (ch == 'a')
 		g_keys.a = 0;
-	if (ch == 'd')
+	else if (ch == 'd')
 		g_keys.d = 0;
-	if (ch == 's')
+	else if (ch == 's')
 		g_keys.s = 0;
 	return (0);
 }
+
 
 int	main(int arg_c, char *arg_v[])
 {
@@ -242,8 +245,8 @@ int	main(int arg_c, char *arg_v[])
 	ft_init();
 	hanle_parsing_error(game_map(arg_v[1], &g_info));
 	mlx_hook(g_win, on_destroy, 0, close_window, NULL);
+	mlx_hook(g_win, on_keyup, 1L<<1, keyup_hook, NULL);
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
-	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);
 	mlx_loop_hook(g_mlx, render_game, NULL);
 	mlx_loop(g_mlx);
 	ft_free_all();

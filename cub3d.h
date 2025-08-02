@@ -10,12 +10,12 @@
 #include "global.h"
 # include "/home/aazzaoui/Downloads/minilibx-linux/mlx.h"
 
-#define M_M_H 150
-#define M_M_W 200
+#define M_M_H 200
+#define M_M_W 250
 #define M_M_MARGIN_X 100
 #define M_M_MARGIN_Y 60
 #define M_M_BORDER_SIZE 1
-#define M_M_TIAL_SIZE 15
+#define M_M_TIAL_SIZE 20
 #define PLAYER_SPEED 1
 
 
