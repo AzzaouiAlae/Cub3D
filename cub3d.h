@@ -10,6 +10,7 @@
 #include "global.h"
 # include "/home/aazzaoui/Downloads/minilibx-linux/mlx.h"
 #include <unistd.h>
+#include <math.h>
 
 #define M_M_H 200
 #define M_M_W 250
@@ -17,8 +18,18 @@
 #define M_M_MARGIN_Y 40
 #define M_M_BORDER_SIZE 1
 #define M_M_TIAL_SIZE 20
-#define PLAYER_SPEED 0.5
-#define FRAME_PER_SEC 120
+#define PLAYER_SPEED 1
+#define FRAME_PER_SEC 60
+#define M_PI 3.14159265358979323846
+#define ANGLE_SPEED 1
+
+typedef enum e_side
+{
+	north,
+	south,
+	west,
+	east,
+} t_side;
 
 typedef enum s_events
 {
@@ -40,9 +51,9 @@ typedef struct s_line
 typedef struct s_end_point
 {
     t_point point;
+    t_side side;
     float distance;
-    int color;
-} s_end_point;
+} t_end_point;
 
 void	my_mlx_put_pixel(t_data *data, int x, int y, int color);
 unsigned int	my_mlx_get_pixel(t_data *data, int x, int y);

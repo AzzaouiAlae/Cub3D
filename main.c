@@ -104,27 +104,110 @@ void	render_pos(t_line line, float x, float y)
 	}
 }
 
-void	render_mini_map(void)
+float tangent(float angle)
 {
-	t_line	line;
-	float	x;
-	float	y;
+	float tan_val;
 
-	line.start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
-	line.start.y = g_player.pos.y - ((float)(M_M_H - M_M_BORDER_SIZE * 2) / 2);
-	line.end.x = line.start.x + M_M_W - M_M_BORDER_SIZE * 2;
-	line.end.y = line.start.y + M_M_H - M_M_BORDER_SIZE * 2;
-	y = line.start.y;
-	render_player(line, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
-	while (y <= line.end.y)
+	if (angle == 0)
+		angle = 0.0000001;
+	if (!(angle > 0 && 180 > angle))
+		angle = 360 - angle - 180;
+	tan_val = tan(angle * (M_PI / 180));
+	if (tan_val == 0)
+		tan_val = 0.0000001;
+	return tan_val;
+}
+
+
+float tangent2(float angle)
+{
+	float tan_val;
+
+	if (angle == 0)
+		angle = 0.0000001;
+	if ((angle < 90 || 270 < angle))
+		angle = 360 - angle - 180;
+	tan_val = tan(angle * (M_PI / 180));
+	if (tan_val == 0)
+		tan_val = 0.0000001;
+	return tan_val;
+}
+
+t_end_point ray_cast_y(t_point start, t_point *offset, float angle, float dist)
+{
+	t_end_point a;
+    
+	while (angle > 360)
+		angle -= 360;
+	while (angle < 0)
+		angle += 360;
+	if (angle > 0 && 180 > angle)
+		a.point.y = floor(start.y / dist) * dist - 0.01;
+	else
+		a.point.y = floor(start.y / dist) * dist + dist;
+	a.point.x = start.x + (start.y - a.point.y) / tangent(angle);
+	if (angle > 0 && 180 > angle)
+		offset->y = -dist;
+	else
+		offset->y = dist;
+	offset->x = dist / tangent(angle);
+    
+    return a;
+}
+
+t_end_point ray_cast_x(t_point start, t_point *offset, float angle, float dist)
+{
+	t_end_point b;
+    
+	while (angle > 360)
+		angle -= 360;
+	while (angle < 0)
+		angle += 360;
+	if (angle < 90 || 270 < angle)
+		b.point.x = floor(start.x / dist) * dist + dist;
+	else
+		b.point.x = floor(start.x / dist) * dist - 0.01;
+	b.point.y = start.y + (start.x - b.point.x) * tangent2(angle);
+	if (angle < 90 || 270 < angle)
+		offset->x = dist;
+	else
+		offset->x = -dist;
+	offset->y = dist * tangent2(angle);
+    
+    return b;
+}
+
+float distance(t_point p1, t_point p2)
+{
+    float dx = p2.x - p1.x;
+    float dy = p2.y - p1.y;
+    return sqrtf(dx * dx + dy * dy);
+}
+
+t_end_point ray_cast(t_point start, t_point *offset, float angle, float dist)
+{
+	t_end_point p_x;
+	t_end_point p_y;
+	t_point offset_x;
+	t_point offset_y;
+
+	p_x = ray_cast_x(start, &offset_x, angle, M_M_TIAL_SIZE);
+	p_y = ray_cast_y(start, &offset_y, angle, M_M_TIAL_SIZE);
+	p_x.distance = distance(start, p_x.point);
+	p_y.distance = distance(start, p_y.point);
+	if (p_x.distance < p_y.distance)
 	{
-		x = line.start.x;
-		while (x <= line.end.x)
-		{
-			render_pos(line, x, y);
-			x++;
-		}
-		y++;
+		p_x = ray_cast_x(start, &offset_x, angle, dist);
+		offset->x = offset_x.x;
+		offset->y = offset_x.y;
+		return p_x;
+	}
+	else
+	{
+		p_y = ray_cast_y(start, &offset_y, angle, dist);
+		offset->x = offset_y.x;
+		offset->y = offset_y.y;
+		return p_y;
 	}
 }
 
@@ -144,6 +227,57 @@ bool	is_posible_move(int x, int y)
 	return (true);
 }
 
+void render_player_angle(t_line line)
+{
+	int i;
+	t_point offset;
+	t_end_point p;
+	t_point rend;
+	int		color;
+
+	i = 0;
+	p = ray_cast(g_player.pos, &offset, g_player.angle, 1.0);
+	color = 0xff5555;
+	rend.x = p.point.x - line.start.x + M_M_MARGIN_X;
+	rend.y = p.point.y - line.start.y + M_M_MARGIN_Y;
+	while(is_posible_move(rend.x + line.start.x - M_M_MARGIN_X, rend.y + line.start.y - M_M_MARGIN_Y))
+	{
+		if (rend.x < M_M_MARGIN_X + M_M_W 
+			&& rend.y < M_M_MARGIN_Y + M_M_H 
+			&& rend.x >= M_M_MARGIN_X 
+			&& rend.y >= M_M_MARGIN_Y)
+			my_mlx_put_pixel(&g_win_img, round(rend.x), round(rend.y), color);
+		rend.x += offset.x;
+		rend.y += offset.y;
+		i++;
+	}
+}
+
+void	render_mini_map(void)
+{
+	t_line	line;
+	float	x;
+	float	y;
+
+	line.start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
+	line.start.y = g_player.pos.y - ((float)(M_M_H - M_M_BORDER_SIZE * 2) / 2);
+	line.end.x = line.start.x + M_M_W - M_M_BORDER_SIZE * 2;
+	line.end.y = line.start.y + M_M_H - M_M_BORDER_SIZE * 2;
+	y = line.start.y;
+	render_player(line, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
+	render_player_angle(line);
+	while (y <= line.end.y)
+	{
+		x = line.start.x;
+		while (x <= line.end.x)
+		{
+			render_pos(line, x, y);
+			x++;
+		}
+		y++;
+	}
+}
+
 void	move_player(void)
 {
 	if (g_keys.w && is_posible_move(g_player.pos.x, g_player.pos.y
@@ -158,6 +292,10 @@ void	move_player(void)
 	if (g_keys.s && is_posible_move(g_player.pos.x, g_player.pos.y
 			+ PLAYER_SPEED + 2))
 		g_player.pos.y += PLAYER_SPEED;
+	if (g_keys.angle_min)
+		g_player.angle -= ANGLE_SPEED;
+	if (g_keys.angle_plus)
+		g_player.angle += ANGLE_SPEED;
 }
 
 void	clear_img(t_line area)
@@ -263,6 +401,10 @@ int	keydown_hook(int keycode, void *var)
 		g_keys.d = 1;
 	else if (!g_keys.s && ch == 's')
 		g_keys.s = 1;
+	else if (!g_keys.angle_min && ch == 83)
+		g_keys.angle_min = 1;
+	else if (!g_keys.angle_plus && ch == 81)
+		g_keys.angle_plus = 1;
 	return (0);
 }
 
@@ -282,8 +424,13 @@ int	keyup_hook(int keycode, void *var)
 		g_keys.d = 0;
 	else if (ch == 's')
 		g_keys.s = 0;
+	else if (ch == 83)
+		g_keys.angle_min = 0;
+	else if (ch == 81)
+		g_keys.angle_plus = 0;
 	return (0);
 }
+
 
 
 int	main(int arg_c, char *arg_v[])

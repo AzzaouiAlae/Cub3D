@@ -7,7 +7,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "-Ofast",
+                // "-Ofast",
                 "${workspaceFolder}/*.c",
                 "${workspaceFolder}/*/*.c",
                 "-I/usr/include",
