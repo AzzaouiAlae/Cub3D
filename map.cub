@@ -1,7 +1,7 @@
-NO /home/aazzaoui/Desktop/cub3d_test/wall.xpm
-SO /home/aazzaoui/Desktop/cub3d_test/wall.xpm
-WE /home/aazzaoui/Desktop/cub3d_test/wall.xpm
-EA /home/aazzaoui/Desktop/cub3d_test/wall.xpm
+NO textures/wall.xpm
+SO textures/wall.xpm
+WE textures/wall.xpm
+EA textures/wall.xpm
 F 220,100,0
 C 225,30,0
 
