@@ -257,6 +257,9 @@ void render_player_angle(t_line line, float angle)
 	{
 		if (is_in_mini_map(rend.x, rend.y))
 			my_mlx_put_pixel(&g_win_img, round(rend.x), round(rend.y), color);
+		if (!is_posible_move(p.point.x + offset.x, p.point.y) 
+			&& !is_posible_move(p.point.x, p.point.y + offset.y))
+			return;
 		rend.x += offset.x;
 		rend.y += offset.y;
 		p.point.x += offset.x;
@@ -390,7 +393,7 @@ void player_render()
 	while (view_start < g_player.angle + FOV / 2) 
 	{
 		render_player_angle(line, view_start);
-		view_start += (float)FOV / (float)M_M_W;
+		view_start += (float)FOV / (float)g_width;
 	}
 }
 
