@@ -133,6 +133,13 @@ float tangent2(float angle)
 	return tan_val;
 }
 
+float distance(t_point p1, t_point p2)
+{
+    float dx = p2.x - p1.x;
+    float dy = p2.y - p1.y;
+    return sqrtf(dx * dx + dy * dy);
+}
+
 t_end_point ray_cast_y(t_point start, t_point *offset, float angle, float dist)
 {
 	t_end_point a;
@@ -151,7 +158,7 @@ t_end_point ray_cast_y(t_point start, t_point *offset, float angle, float dist)
 	else
 		offset->y = dist;
 	offset->x = dist / tangent(angle);
-    
+	a.distance = distance((t_point){0,0}, *offset);
     return a;
 }
 
@@ -173,15 +180,8 @@ t_end_point ray_cast_x(t_point start, t_point *offset, float angle, float dist)
 	else
 		offset->x = -dist;
 	offset->y = dist * tangent2(angle);
-    
+    b.distance = distance((t_point){0,0}, *offset);
     return b;
-}
-
-float distance(t_point p1, t_point p2)
-{
-    float dx = p2.x - p1.x;
-    float dy = p2.y - p1.y;
-    return sqrtf(dx * dx + dy * dy);
 }
 
 t_end_point ray_cast_dist(t_point start, t_point *offset, float angle, float dist)
@@ -193,8 +193,6 @@ t_end_point ray_cast_dist(t_point start, t_point *offset, float angle, float dis
 
 	p_x = ray_cast_x(start, &offset_x, angle, M_M_TIAL_SIZE);
 	p_y = ray_cast_y(start, &offset_y, angle, M_M_TIAL_SIZE);
-	p_x.distance = distance(start, p_x.point);
-	p_y.distance = distance(start, p_y.point);
 	if (p_x.distance < p_y.distance)
 	{
 		p_x = ray_cast_x(start, &offset_x, angle, dist);
@@ -226,33 +224,52 @@ bool	is_posible_move(int x, int y)
 		return (false);
 	if (grid[col]->content[row] == '1')
 		return (false);
+	g_player.map_pos.y = g_player.pos.y / M_M_TIAL_SIZE;
+	g_player.map_pos.x = g_player.pos.x / M_M_TIAL_SIZE;
 	return (true);
+}
+
+bool is_in_mini_map(int x, int y)
+{
+	if (!(x < M_M_MARGIN_X + M_M_W))
+		return false;
+	if (!(y < M_M_MARGIN_Y + M_M_H ))
+		return false;
+	if (!(x >= M_M_MARGIN_X))
+		return false;
+	if (!(y >= M_M_MARGIN_Y))
+		return false;
+	return true;
 }
 
 void render_player_angle(t_line line, float angle)
 {
-	int i;
 	t_point offset;
 	t_end_point p;
 	t_point rend;
 	int		color;
 
-	i = 0;
 	p = ray_cast_dist(g_player.pos, &offset, angle, 1);
 	color = 0xff5555;
 	rend.x = p.point.x - line.start.x + M_M_MARGIN_X;
 	rend.y = p.point.y - line.start.y + M_M_MARGIN_Y;
-	while(is_posible_move(rend.x + line.start.x - M_M_MARGIN_X, rend.y + line.start.y - M_M_MARGIN_Y))
+	while(is_posible_move(p.point.x, p.point.y))
 	{
-		if (rend.x < M_M_MARGIN_X + M_M_W 
-			&& rend.y < M_M_MARGIN_Y + M_M_H 
-			&& rend.x >= M_M_MARGIN_X 
-			&& rend.y >= M_M_MARGIN_Y)
-		my_mlx_put_pixel(&g_win_img, round(rend.x), round(rend.y), color);
+		if (is_in_mini_map(rend.x, rend.y))
+			my_mlx_put_pixel(&g_win_img, round(rend.x), round(rend.y), color);
 		rend.x += offset.x;
 		rend.y += offset.y;
-		i++;
+		p.point.x += offset.x;
+		p.point.y += offset.y;
 	}
+}
+
+void init_mini_map_line(t_line	*line)
+{
+	line->start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
+	line->start.y = g_player.pos.y - ((float)(M_M_H - M_M_BORDER_SIZE * 2) / 2);
+	line->end.x = line->start.x + M_M_W - M_M_BORDER_SIZE * 2;
+	line->end.y = line->start.y + M_M_H - M_M_BORDER_SIZE * 2;
 }
 
 void	render_mini_map(void)
@@ -260,14 +277,9 @@ void	render_mini_map(void)
 	t_line	line;
 	float	x;
 	float	y;
-	float view_start;
-
-	line.start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
-	line.start.y = g_player.pos.y - ((float)(M_M_H - M_M_BORDER_SIZE * 2) / 2);
-	line.end.x = line.start.x + M_M_W - M_M_BORDER_SIZE * 2;
-	line.end.y = line.start.y + M_M_H - M_M_BORDER_SIZE * 2;
+	
+	init_mini_map_line(&line);
 	y = line.start.y;
-	render_player(line, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
 	while (y <= line.end.y)
 	{
 		x = line.start.x;
@@ -277,12 +289,6 @@ void	render_mini_map(void)
 			x++;
 		}
 		y++;
-	}
-	view_start = g_player.angle - FOV / 2;
-	while (view_start < g_player.angle + FOV / 2) 
-	{
-		render_player_angle(line, view_start);
-		view_start += (float)1 / ((float)M_M_W / (float)FOV);
 	}
 }
 
@@ -372,12 +378,28 @@ void render_speed()
 	render++;
 }
 
+void player_render()
+{
+	t_line	line;
+	float view_start;
+
+	move_player();
+	init_mini_map_line(&line);
+	render_player(line, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
+	view_start = g_player.angle - FOV / 2;
+	while (view_start < g_player.angle + FOV / 2) 
+	{
+		render_player_angle(line, view_start);
+		view_start += (float)FOV / (float)M_M_W;
+	}
+}
+
 int	render_game(void *pram)
 {
 	(void)pram;
 	clear_img((t_line){(t_point){M_M_MARGIN_X, M_M_MARGIN_Y},
 		(t_point){M_M_MARGIN_X + M_M_W, M_M_MARGIN_Y + M_M_H}});
-	move_player();
+	player_render();
 	render_mini_map();
 	render_mini_map_border();
 	mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
@@ -438,8 +460,6 @@ int	keyup_hook(int keycode, void *var)
 		g_keys.angle_plus = 0;
 	return (0);
 }
-
-
 
 int	main(int arg_c, char *arg_v[])
 {
