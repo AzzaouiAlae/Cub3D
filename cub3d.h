@@ -12,16 +12,17 @@
 #include <unistd.h>
 #include <math.h>
 
-#define M_M_H 200
-#define M_M_W 250
+#define M_M_H 800
+#define M_M_W 1500
 #define M_M_MARGIN_X 50
 #define M_M_MARGIN_Y 40
 #define M_M_BORDER_SIZE 1
-#define M_M_TIAL_SIZE 20
+#define M_M_TIAL_SIZE 64
 #define PLAYER_SPEED 1
 #define FRAME_PER_SEC 60
 #define M_PI 3.14159265358979323846
 #define ANGLE_SPEED 1
+#define FOV 60
 
 typedef enum e_side
 {

@@ -184,7 +184,7 @@ float distance(t_point p1, t_point p2)
     return sqrtf(dx * dx + dy * dy);
 }
 
-t_end_point ray_cast(t_point start, t_point *offset, float angle, float dist)
+t_end_point ray_cast_dist(t_point start, t_point *offset, float angle, float dist)
 {
 	t_end_point p_x;
 	t_end_point p_y;
@@ -198,6 +198,7 @@ t_end_point ray_cast(t_point start, t_point *offset, float angle, float dist)
 	if (p_x.distance < p_y.distance)
 	{
 		p_x = ray_cast_x(start, &offset_x, angle, dist);
+		p_x.distance = distance(start, p_x.point);
 		offset->x = offset_x.x;
 		offset->y = offset_x.y;
 		return p_x;
@@ -205,6 +206,7 @@ t_end_point ray_cast(t_point start, t_point *offset, float angle, float dist)
 	else
 	{
 		p_y = ray_cast_y(start, &offset_y, angle, dist);
+		p_y.distance = distance(start, p_y.point);
 		offset->x = offset_y.x;
 		offset->y = offset_y.y;
 		return p_y;
@@ -227,7 +229,7 @@ bool	is_posible_move(int x, int y)
 	return (true);
 }
 
-void render_player_angle(t_line line)
+void render_player_angle(t_line line, float angle)
 {
 	int i;
 	t_point offset;
@@ -236,7 +238,7 @@ void render_player_angle(t_line line)
 	int		color;
 
 	i = 0;
-	p = ray_cast(g_player.pos, &offset, g_player.angle, 1.0);
+	p = ray_cast_dist(g_player.pos, &offset, angle, 1);
 	color = 0xff5555;
 	rend.x = p.point.x - line.start.x + M_M_MARGIN_X;
 	rend.y = p.point.y - line.start.y + M_M_MARGIN_Y;
@@ -246,7 +248,7 @@ void render_player_angle(t_line line)
 			&& rend.y < M_M_MARGIN_Y + M_M_H 
 			&& rend.x >= M_M_MARGIN_X 
 			&& rend.y >= M_M_MARGIN_Y)
-			my_mlx_put_pixel(&g_win_img, round(rend.x), round(rend.y), color);
+		my_mlx_put_pixel(&g_win_img, round(rend.x), round(rend.y), color);
 		rend.x += offset.x;
 		rend.y += offset.y;
 		i++;
@@ -258,6 +260,7 @@ void	render_mini_map(void)
 	t_line	line;
 	float	x;
 	float	y;
+	float view_start;
 
 	line.start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
 	line.start.y = g_player.pos.y - ((float)(M_M_H - M_M_BORDER_SIZE * 2) / 2);
@@ -265,7 +268,6 @@ void	render_mini_map(void)
 	line.end.y = line.start.y + M_M_H - M_M_BORDER_SIZE * 2;
 	y = line.start.y;
 	render_player(line, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
-	render_player_angle(line);
 	while (y <= line.end.y)
 	{
 		x = line.start.x;
@@ -275,6 +277,12 @@ void	render_mini_map(void)
 			x++;
 		}
 		y++;
+	}
+	view_start = g_player.angle - FOV / 2;
+	while (view_start < g_player.angle + FOV / 2) 
+	{
+		render_player_angle(line, view_start);
+		view_start += (float)1 / ((float)M_M_W / (float)FOV);
 	}
 }
 
