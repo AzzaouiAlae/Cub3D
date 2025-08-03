@@ -8,7 +8,7 @@
 #include "string/string.h"
 #include <stdbool.h>
 #include "global.h"
-# include "/home/aazzaoui/Downloads/minilibx-linux/mlx.h"
+# include <mlx.h>
 #include <unistd.h>
 #include <math.h>
 
