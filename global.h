@@ -42,8 +42,8 @@ typedef struct  s_pressed_keys
 	char s;
 	char a;
 	char d;
-	char angle_plus;
-	char angle_min;
+	char left;
+	char right;
 } t_keys;
 
 

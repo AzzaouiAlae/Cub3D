@@ -87,7 +87,7 @@ void	ft_destroy_all(void)
 	{
 		tmp = *list;
 		*list = (*list)->next;
-		//mlx_destroy_image(g_mlx, tmp->mem);
+		mlx_destroy_image(g_mlx, tmp->mem);
 		free(tmp);
 	}
 	mem = current_working_mem(NULL, 0);

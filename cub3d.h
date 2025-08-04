@@ -12,12 +12,12 @@
 #include <unistd.h>
 #include <math.h>
 
-#define M_M_H 800
-#define M_M_W 1500
+#define M_M_H 200
+#define M_M_W 300
 #define M_M_MARGIN_X 50
 #define M_M_MARGIN_Y 40
 #define M_M_BORDER_SIZE 1
-#define M_M_TIAL_SIZE 64
+#define M_M_TIAL_SIZE 30
 #define PLAYER_SPEED 1
 #define FRAME_PER_SEC 60
 #define M_PI 3.14159265358979323846
@@ -59,5 +59,17 @@ typedef struct s_end_point
 void	my_mlx_put_pixel(t_data *data, int x, int y, int color);
 unsigned int	my_mlx_get_pixel(t_data *data, int x, int y);
 t_data	*create_image(char *relative_path);
+float distance(t_point p1, t_point p2);
+float tangent(float angle);
+float tangent2(float angle);
+bool	is_posible_move(int x, int y);
+bool is_intersection(t_point point, float angle);
+void count_frame_per_sec();
+void limit_frame_speed();
+int	keyup_hook(int keycode, void *var);
+int	keydown_hook(int keycode, void *var);
+int	close_window(void *param);
+int	render_game(void *pram);
+bool in_range(float start, float end, float num);
 
 #endif
