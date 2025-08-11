@@ -33,6 +33,11 @@ void render_walls(t_end_point p, int i)
     draw_line(i, (g_height - length) / 2, length, p.side);
 }
 
+double my_cos(float alpha)
+{
+    return (cos(alpha * (float)(M_PI / 180)));
+}
+
 void player_render()
 {
 	t_line	border;
@@ -45,18 +50,22 @@ void player_render()
 	init_mini_map_border(&border);
 	draw_player_cercl(border, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
 	view_start = g_player.angle + FOV / 2;
-	while (i < g_width) 
+	while (i < g_width)
 	{
 		if (view_start < 0)
 			view_start += 360;
 		if (view_start > 360)
 			view_start -= 360;
 		p = render_player_angle(view_start);
+		p.distance *= my_cos((FOV / 2 - ((FOV / g_width) * i)));
 		render_walls(p, i);
 		put_pixel_min_map(p.point.x, p.point.y, 0xff00ff);
 		view_start -= FOV / g_width;
 		i++;
 	}
+	/*
+	 60 / 2  - ((60 / 1920) * i)
+	*/
 	render_line_angle(g_player.angle - FOV / 2, 20, 0x7777ff);
 	render_line_angle(g_player.angle + FOV / 2, 20, 0x7777ff);
 	// render_line_angle(g_player.angle , 20, 0x7777ff);
@@ -69,11 +78,11 @@ void render_line_angle(float angle, float dist, int	color)
 	t_end_point p;
 
 	p = ray_cast_dist(g_player.pos, &offset, angle, 1);
-	while(is_posible_move(p.point.x, p.point.y) 
+	while(is_posible_move(p.point.x, p.point.y)
 		&& distance(p.point, g_player.pos) < dist)
 	{
 		put_pixel_min_map(p.point.x, p.point.y, color);
-		if (!is_posible_move(p.point.x + offset.x, p.point.y) 
+		if (!is_posible_move(p.point.x + offset.x, p.point.y)
 			&& !is_posible_move(p.point.x, p.point.y + offset.y))
 			return;
 		p.point.x += offset.x;
@@ -84,7 +93,7 @@ void render_line_angle(float angle, float dist, int	color)
 t_end_point render_player_angle(float angle)
 {
 	t_end_point p;
-	
+
 	p = ray_cast(angle);
 	p.distance = distance(p.point, g_player.pos);
 	return p;
