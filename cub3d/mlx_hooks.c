@@ -2,12 +2,32 @@
 #include "player/player.h"
 #include "min_map/min_map.h"
 
+void clear_win_img()
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (y < g_height)
+	{
+		x = 0;
+		while(x < g_width)
+		{
+			my_mlx_put_pixel(&g_win_img, x, y, 0x0);
+			x++;
+		}
+		y++;
+	}
+}
+
 int	render_game(void *pram)
 {
 	(void)pram;
+	clear_win_img();
 	render_mini_map();
 	player_render();
 	mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
+	mlx_put_image_to_window(g_mlx, g_win, g_min_map_img.img, M_M_MARGIN_X, M_M_MARGIN_Y);
 	limit_frame_speed();
 	count_frame_per_sec();
 	return (0);

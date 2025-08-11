@@ -4,12 +4,12 @@ t_end_point ray_cast_y(t_point start, t_point *offset, float angle, float dist)
 {
 	t_end_point a;
     
-	while (angle > 360)
+	if (angle > 360)
 		angle -= 360;
-	while (angle < 0)
+	if (angle < 0)
 		angle += 360;
 	if (angle > 0 && 180 > angle)
-		a.point.y = floor(start.y / dist) * dist - 0.0001;
+		a.point.y = floor(start.y / dist) * dist - 0.000001;
 	else
 		a.point.y = floor(start.y / dist) * dist + dist;
 	a.point.x = start.x + fabs(start.y - a.point.y) / tangent(angle);
@@ -30,14 +30,14 @@ t_end_point ray_cast_x(t_point start, t_point *offset, float angle, float dist)
 {
 	t_end_point b;
     
-	while (angle > 360)
+	if (angle > 360)
 		angle -= 360;
-	while (angle < 0)
+	if (angle < 0)
 		angle += 360;
 	if (angle < 90 || 270 < angle)
 		b.point.x = floor(start.x / dist) * dist + dist;
 	else
-		b.point.x = floor(start.x / dist) * dist - 0.0001;
+		b.point.x = floor(start.x / dist) * dist - 0.000001;
 	offset->y = dist * tangent2(angle);
 	b.point.y = start.y + fabs(start.x - b.point.x) * tangent2(angle); 
 	if (angle < 90 || 270 < angle)
@@ -78,4 +78,3 @@ t_end_point ray_cast_dist(t_point start, t_point *offset, float angle, float dis
 		return p_y;
 	}
 }
-

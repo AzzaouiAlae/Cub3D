@@ -1,18 +1,50 @@
 #include "player.h"
 #include "../ray_casting/ray_casting.h"
 
+bool is_valid_player_move(t_point p)
+{
+	int x;
+	int y;
+
+	x = p.x;
+	y = p.y;
+	if (!is_posible_move(x, y))
+		return false;
+	if (!is_posible_move(x + 1, y))
+		return false;
+	if (!is_posible_move(x, y + 1))
+		return false;
+	if (!is_posible_move(x - 2, y))
+		return false;
+	if (!is_posible_move(x, y - 2))
+		return false;
+	if (!is_posible_move(x + 1, y + 1))
+		return false;
+	if (!is_posible_move(x - 2, y - 2))
+		return false;
+	return true;
+}
+
 void move_player_by_angle(float angle)
 {
 	t_end_point p;
-	t_point ofst;
+	t_point end;
+	t_point old_player_pos;
 
-	p = ray_cast_dist(g_player.pos, &ofst, angle, PLAYER_SPEED);
-	if(is_posible_move(p.point.x + ofst.x * 2, p.point.y + ofst.y * 2))
+	old_player_pos.x = g_player.pos.x;
+	old_player_pos.y = g_player.pos.y;
+	p = ray_cast(angle);
+	if (p.distance < 0.5)
+		return;
+	end = calc_align(g_player.pos, p.point, 0.5);
+	while (distance(old_player_pos, g_player.pos) < PLAYER_SPEED 
+			&& is_valid_player_move(end))
 	{
-		if (is_intersection(p.point, angle))
+		g_player.pos.x = end.x;
+		g_player.pos.y = end.y;
+		if (distance(g_player.pos, p.point) < 0.5 )
 			return;
-		g_player.pos.x = p.point.x;
-		g_player.pos.y = p.point.y;
+		end = calc_align(g_player.pos, p.point, 0.5);
 	}
 }
 
@@ -30,5 +62,6 @@ void	move_player(void)
 		g_player.angle -= ANGLE_SPEED;
 	if (g_keys.left)
 		g_player.angle += ANGLE_SPEED;
+	g_player.angle += 360;
+	g_player.angle = (int)g_player.angle % 360;
 }
-

@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:29:29 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/03 02:19:57 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:57:06 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ void			*g_win;
 t_list			*g_map;
 t_info			g_info;
 t_data			g_win_img;
-int				g_width;
-int				g_height;
+double			g_width;
+double			g_height;
 t_player		g_player;
 t_keys			g_keys;
-struct timeval g_start_time;
+struct timeval	g_start_time;
+t_data			g_min_map_img;
 
 void	my_mlx_put_pixel(t_data *data, int x, int y, int color)
 {

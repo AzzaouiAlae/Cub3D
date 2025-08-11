@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-float distance(t_point p1, t_point p2)
+double distance(t_point p1, t_point p2)
 {
     float dx = p2.x - p1.x;
     float dy = p2.y - p1.y;
@@ -25,17 +25,13 @@ float tangent2(float angle)
 {
 	float tan_val;
 
-	if (angle == 0)
-		angle = 0.0000001;
 	if ((angle <= 90 || 270 < angle))
 		angle = 360 - angle - 180;
 	tan_val = tan(angle * (M_PI / 180));
-	if (tan_val == 0)
-		tan_val = 0.0000001;
 	return tan_val;
 }
 
-t_point calc_align(t_point p1, t_point p2, int d)
+t_point calc_align(t_point p1, t_point p2, double d)
 {
 	t_point point;
 

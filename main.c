@@ -18,21 +18,34 @@ void	hanle_parsing_error(t_game_map_status status)
 
 void	ft_init(void)
 {
+	int w;
+	int h;
+
 	g_mlx = mlx_init();
-	mlx_get_screen_size(g_mlx, &g_width, &g_height);
+	mlx_get_screen_size(g_mlx, &w, &h);
+	g_width = w;
+	g_height = h;
 	g_win = mlx_new_window(g_mlx, g_width, g_height, "Game");
 	ft_bzero(&g_win_img, sizeof(t_data));
 	g_win_img.img = mlx_new_image(g_mlx, g_width, g_height);
 	g_win_img.addr = mlx_get_data_addr(g_win_img.img,
 			&(g_win_img.bits_per_pixel), &(g_win_img.line_length),
 			&(g_win_img.endian));
+	g_min_map_img.img = mlx_new_image(g_mlx, M_M_W, M_M_H);
+	g_min_map_img.addr = mlx_get_data_addr(g_min_map_img.img,
+			&(g_min_map_img.bits_per_pixel), &(g_min_map_img.line_length),
+			&(g_min_map_img.endian));
 	ft_bzero(&g_info, sizeof(t_info));
 	g_map = list_new(sizeof(t_str *));
 	ft_bzero(&g_player, sizeof(t_player));
 	ft_bzero(&g_keys, sizeof(t_keys));
 	gettimeofday(&g_start_time, NULL);
 }
-
+/*
+g_player.pos.x = 128.35578926797791
+g_player.pos.y = 119.53397348372121
+g_player.angle = 35.799999999999923
+*/
 int	main(int arg_c, char *arg_v[])
 {
 	if (arg_c != 2)

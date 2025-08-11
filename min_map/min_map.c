@@ -2,8 +2,8 @@
 
 void init_mini_map_border(t_line	*border)
 {
-	border->start.x = g_player.pos.x - ((float)(M_M_W - M_M_BORDER_SIZE * 2) / 2);
-	border->start.y = g_player.pos.y - ((float)(M_M_H - M_M_BORDER_SIZE * 2) / 2);
+	border->start.x = g_player.pos.x - ((M_M_W - M_M_BORDER_SIZE * 2) / 2);
+	border->start.y = g_player.pos.y - ((M_M_H - M_M_BORDER_SIZE * 2) / 2);
 	border->end.x = border->start.x + M_M_W - M_M_BORDER_SIZE * 2;
 	border->end.y = border->start.y + M_M_H - M_M_BORDER_SIZE * 2;
 }
@@ -14,39 +14,41 @@ void put_pixel_min_map(float x, float y, int color)
 	t_point rend;
 
 	init_mini_map_border(&border);
-	rend.x = x - border.start.x + M_M_MARGIN_X;
-	rend.y = y - border.start.y + M_M_MARGIN_Y;
+	rend.x = x - border.start.x + M_M_BORDER_SIZE;
+	rend.y = y - border.start.y + M_M_BORDER_SIZE;
 	if (is_in_mini_map(rend.x, rend.y))
-		my_mlx_put_pixel(&g_win_img, round(rend.x), round(rend.y), color);
+		my_mlx_put_pixel(&g_min_map_img, round(rend.x), round(rend.y), color);
 }
 
-void	clear_img(t_line area)
+void	clear_img()
 {
 	int	x;
+	int y;
 	int	color;
 
 	color = 0;
-	while (area.start.y <= area.end.y)
+	y = 0;
+	while (y < M_M_H)
 	{
-		x = area.start.x;
-		while (x <= area.end.x)
+		x = 0;
+		while (x < M_M_W)
 		{
-			my_mlx_put_pixel(&g_win_img, x, area.start.y, color);
+			my_mlx_put_pixel(&g_min_map_img, x, y, color);
 			x++;
 		}
-		area.start.y++;
+		y++;
 	}
 }
 
 bool is_in_mini_map(int x, int y)
 {
-	if (!(x < M_M_MARGIN_X + M_M_W))
+	if (!(x < M_M_W))
 		return false;
-	if (!(y < M_M_MARGIN_Y + M_M_H ))
+	if (!(y < M_M_H))
 		return false;
-	if (!(x >= M_M_MARGIN_X))
+	if (!(x >= 0))
 		return false;
-	if (!(y >= M_M_MARGIN_Y))
+	if (!(y >= 0))
 		return false;
 	return true;
 }

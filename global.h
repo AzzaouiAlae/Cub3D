@@ -25,15 +25,15 @@ typedef struct s_info
 
 typedef struct s_point
 {
-    float x;
-    float y;
+    double x;
+    double y;
 } t_point;
 
 typedef struct s_player
 {
 	t_point pos;
 	t_point map_pos;
-	float angle;
+	double angle;
 } t_player;
 
 typedef struct  s_pressed_keys
@@ -52,10 +52,11 @@ extern void		*g_mlx;
 extern void		*g_win;
 extern t_info	g_info;
 extern t_data	g_win_img;
-extern int		g_width;
-extern int		g_height;
+extern double		g_width;
+extern double		g_height;
 extern t_player g_player;
 extern t_keys g_keys;
 extern struct timeval g_start_time;
+extern t_data g_min_map_img;
 
 #endif

@@ -2,28 +2,30 @@
 
 void	render_mini_map_border()
 {
-    t_point s;
-    t_point e;
     int brd;
     int y;
 	int	x;
 
-    s = (t_point){M_M_MARGIN_X, M_M_MARGIN_Y};
-    e = (t_point){M_M_MARGIN_X + M_M_W, M_M_MARGIN_Y + M_M_H};
+	y = 0;
     brd = M_M_BORDER_SIZE;
-    y = s.y;
-	while (y <= e.y)
+	while (y < M_M_H)
 	{
-		x = s.x;
-		while (x <= e.x)
+		x = 0;
+		while (x < M_M_W)
 		{
-			if (in_range(s.x, s.x + brd - 1, x) || in_range(e.x - brd + 1, e.x, x) 
-                || in_range(s.y, s.y + brd - 1, y) || in_range(e.y - brd + 1, e.y, y) )
-				my_mlx_put_pixel(&g_win_img, x, y, 0xffffff);
+			if (in_range(0, 0 + brd - 1, x) || in_range(M_M_W - brd, M_M_W, x) 
+                || in_range(0, 0 + brd - 1, y) || in_range(M_M_H - brd, M_M_H, y) )
+				my_mlx_put_pixel(&g_min_map_img, x, y, 0xffffff);
 			x++;
 		}
-		y++;
+		y++;	
 	}
+}
+
+void	init_out_border(t_line *out_border)
+{
+	out_border->start = (t_point){M_M_MARGIN_X, M_M_MARGIN_Y};
+	out_border->end = (t_point){M_M_MARGIN_X + M_M_W, M_M_MARGIN_Y + M_M_H};
 }
 
 void	render_pos(t_line line, float x, float y)
@@ -46,20 +48,21 @@ void	render_pos(t_line line, float x, float y)
 		color = 0x5555ff;
 		if ((int)x % M_M_TIAL_SIZE == 0 || (int)y % M_M_TIAL_SIZE == 0)
 			color = 0xffffff;
-		rend.x = x + M_M_MARGIN_X + M_M_BORDER_SIZE - line.start.x;
-		rend.y = y + M_M_MARGIN_Y + M_M_BORDER_SIZE - line.start.y;
-		my_mlx_put_pixel(&g_win_img, rend.x, rend.y, color);
+		rend.x = x + M_M_BORDER_SIZE - line.start.x;
+		rend.y = y + M_M_BORDER_SIZE - line.start.y;
+		my_mlx_put_pixel(&g_min_map_img, round(rend.x), round(rend.y), color);
 	}
 }
 
 void	render_mini_map(void)
 {
 	t_line	border;
+	t_line out_border;
 	float	x;
 	float	y;
 	
-    clear_img((t_line){(t_point){M_M_MARGIN_X, M_M_MARGIN_Y},
-		(t_point){M_M_MARGIN_X + M_M_W, M_M_MARGIN_Y + M_M_H}});
+	init_out_border(&out_border);
+    clear_img();
     init_mini_map_border(&border);
     render_mini_map_border();
 	y = border.start.y;
