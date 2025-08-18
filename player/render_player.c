@@ -13,24 +13,39 @@ int get_color(t_side side)
 	return 0xffffff;
 }
 
-void draw_line(int x, int y, int l, t_side side)
+void draw_line(int x, int y, int l, t_point img_start, double orginal_l)
 {
 	int i;
+	int color;
+	double ofst;
 
 	i = 0;
-	while(i < l)
+	ofst = (g_info.east->img_height / orginal_l);
+	while(i < l && y + i < g_height)
 	{
-		my_mlx_put_pixel(&g_win_img, x, y + i, get_color(side));
+		color = my_mlx_get_pixel(g_info.east, img_start.x, img_start.y);
+		my_mlx_put_pixel(&g_win_img, x, y + i, color);
+		img_start.y += ofst;
 		i++;
 	}
 }
 
 void render_walls(t_end_point p, int i)
 {
+    t_point img_start;
+
     int length = (g_height * M_M_TIAL_SIZE) / p.distance;
+	img_start.x = (g_info.east->img_width / M_M_TIAL_SIZE) * p.point.y; // or p.point.y
+	if (p.side == north || p.side == south)
+		img_start.x = (g_info.east->img_width / M_M_TIAL_SIZE) * p.point.x; // or p.point.y
+	img_start.y = (g_height - length) / 2;
+	if (img_start.y > 0)
+		img_start.y = 0;
+	else 
+		img_start.y = fabs(img_start.y) * ((double)g_info.east->img_height / (double)length);
     if (length > g_height)
         length = g_height;
-    draw_line(i, (g_height - length) / 2, length, p.side);
+    draw_line(i, (g_height - length) / 2, length, img_start, (g_height * M_M_TIAL_SIZE) / p.distance);
 }
 
 double my_cos(float alpha)
