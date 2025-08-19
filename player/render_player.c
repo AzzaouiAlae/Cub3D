@@ -13,6 +13,16 @@ int get_color(t_side side)
 	return 0xffffff;
 }
 
+// int	get_xtextured_color(t_end_point p)
+// {
+
+// }
+
+// int	get_ytextured_color(t_end_point p)
+// {
+
+// }
+
 void draw_line(int x, int y, int l, t_side side)
 {
 	int i;
@@ -20,6 +30,7 @@ void draw_line(int x, int y, int l, t_side side)
 	i = 0;
 	while(i < l)
 	{
+		// my_mlx_put_pixel(&g_win_img, x, y + i, get_color(side));
 		my_mlx_put_pixel(&g_win_img, x, y + i, get_color(side));
 		i++;
 	}
@@ -27,10 +38,10 @@ void draw_line(int x, int y, int l, t_side side)
 
 void render_walls(t_end_point p, int i)
 {
-    int length = (g_height * M_M_TIAL_SIZE) / p.distance;
-    if (length > g_height)
-        length = g_height;
-    draw_line(i, (g_height - length) / 2, length, p.side);
+	int length = (g_height * M_M_TIAL_SIZE) / p.distance;
+	if (length > g_height)
+		length = g_height;
+	draw_line(i, (g_height - length) / 2, length, p.side);
 }
 
 double my_cos(float alpha)

@@ -58,6 +58,9 @@ int	main(int arg_c, char *arg_v[])
 	mlx_hook(g_win, on_destroy, 0, close_window, NULL);
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
 	mlx_hook(g_win, on_keyup, 1L<<1, keyup_hook, NULL);
+	// g_wall_N = mlx_new_image(g_mlx, 128, 128);
+	g_wall_N = mlx_xpm_file_to_image(g_mlx, "./textures/wall.xpm", &arg_c, &arg_c);
+	// mlx_
 	mlx_loop_hook(g_mlx, render_game, NULL);
 	mlx_loop(g_mlx);
 	ft_free_all();

@@ -30,6 +30,7 @@ int	render_game(void *pram)
 	mlx_put_image_to_window(g_mlx, g_win, g_min_map_img.img, M_M_MARGIN_X, M_M_MARGIN_Y);
 	limit_frame_speed();
 	count_frame_per_sec();
+	// mlx_put_image_to_window(g_mlx, g_win, g_wall_N, 0, 0);
 	return (0);
 }
 

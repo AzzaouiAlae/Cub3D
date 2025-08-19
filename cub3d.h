@@ -17,7 +17,7 @@
 # define M_M_MARGIN_X 50.0
 # define M_M_MARGIN_Y 40.0
 # define M_M_BORDER_SIZE 1.0
-# define M_M_TIAL_SIZE 40
+# define M_M_TIAL_SIZE 32
 # define PLAYER_SPEED 2.0
 # define FRAME_PER_SEC 60
 # define M_PI 3.14159265358979323846
@@ -55,6 +55,14 @@ typedef struct s_end_point
 	t_side		side;
 	double		distance;
 }				t_end_point;
+
+typedef struct s_textured_wall
+{
+	float	x_offset;
+	float	y_offset;
+	int		start;
+	int		end;
+}	t_textured_wall;
 
 void			my_mlx_put_pixel(t_data *data, int x, int y, int color);
 unsigned int	my_mlx_get_pixel(t_data *data, int x, int y);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   imgs.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:29:29 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/11 17:57:06 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:18:36 by aabouriz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_player		g_player;
 t_keys			g_keys;
 struct timeval	g_start_time;
 t_data			g_min_map_img;
+void			*g_wall_N;
 
 void	my_mlx_put_pixel(t_data *data, int x, int y, int color)
 {

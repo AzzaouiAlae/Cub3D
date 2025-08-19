@@ -58,5 +58,6 @@ extern t_player g_player;
 extern t_keys g_keys;
 extern struct timeval g_start_time;
 extern t_data g_min_map_img;
+extern void		*g_wall_N;
 
 #endif
