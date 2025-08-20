@@ -13,7 +13,7 @@ void clear_win_img()
 		x = 0;
 		while(x < g_width)
 		{
-			my_mlx_put_pixel(&g_win_img, x, y, 0x0);
+			my_mlx_put_pixel(&g_win_img, x, y, 0xffffff);
 			x++;
 		}
 		y++;

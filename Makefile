@@ -6,7 +6,7 @@ CC = cc
 NAME=cub3D.out
 f = -fsanitize=address
 # -Ivlc_mlx/
-CFLAGS=-Wall -Wextra -Werror -I/usr/include -I. -Imlx_linux  -g #-O3
+CFLAGS=-Wall -Wextra -Werror -I/usr/include -I. -Imlx_linux  -g3 #-O3
 mlx = -Lmlx_linux -lmlx_Linux -L/usr/lib -L. -Imlx_linux -lXext -lX11 -lm -lz
 # mlx_vlc
 all :  $(NAME)

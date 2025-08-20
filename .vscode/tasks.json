@@ -3,7 +3,8 @@
         {
             "type": "cppbuild",
             "label": "C/C++: gcc build active file",
-            "command": "echo 'make; exit' | host-spawn",
+            //"command": "echo 'make; exit' | host-spawn",
+            "command": "make; make clean",
             "args": [
             ],
             "options": {

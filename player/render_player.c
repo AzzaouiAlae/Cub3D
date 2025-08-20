@@ -2,28 +2,30 @@
 #include "../ray_casting/ray_casting.h"
 #include "../min_map/min_map.h"
 
-int get_color(t_side side)
+t_data *get_image(t_side side)
 {
 	if (side == east)
-		return 0xff0000;
+		return g_info.east;
 	if (side == west)
-		return 0x00ff00;
+		return g_info.west;
 	if (side == north)
-		return 0x0000ff;
-	return 0xffffff;
+		return g_info.south;
+	return g_info.south;
 }
 
-void draw_line(int x, int y, int l, t_point img_start, double orginal_l)
+void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_point p)
 {
 	int i;
 	int color;
 	double ofst;
+	t_data *img;
 
 	i = 0;
 	ofst = (g_info.east->img_height / orginal_l);
+	img = get_image(p.side);
 	while(i < l && y + i < g_height)
 	{
-		color = my_mlx_get_pixel(g_info.east, img_start.x, img_start.y);
+		color = my_mlx_get_pixel(img, round(img_start.x), round(img_start.y));
 		my_mlx_put_pixel(&g_win_img, x, y + i, color);
 		img_start.y += ofst;
 		i++;
@@ -45,7 +47,7 @@ void render_walls(t_end_point p, int i)
 		img_start.y = fabs(img_start.y) * ((double)g_info.east->img_height / (double)length);
     if (length > g_height)
         length = g_height;
-    draw_line(i, (g_height - length) / 2, length, img_start, (g_height * M_M_TIAL_SIZE) / p.distance);
+    draw_line(i, (g_height - length) / 2, length, img_start, (g_height * M_M_TIAL_SIZE) / p.distance, p);
 }
 
 double my_cos(float alpha)
@@ -78,13 +80,8 @@ void player_render()
 		view_start -= FOV / g_width;
 		i++;
 	}
-	/*
-	 60 / 2  - ((60 / 1920) * i)
-	*/
 	render_line_angle(g_player.angle - FOV / 2, 20, 0x7777ff);
 	render_line_angle(g_player.angle + FOV / 2, 20, 0x7777ff);
-	// render_line_angle(g_player.angle , 20, 0x7777ff);
-	// render_player_angle(g_player.angle);
 }
 
 void render_line_angle(float angle, float dist, int	color)

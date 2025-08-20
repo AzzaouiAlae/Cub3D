@@ -19,9 +19,9 @@
 # define M_M_BORDER_SIZE 1.0
 # define M_M_TIAL_SIZE 40
 # define PLAYER_SPEED 2.0
-# define FRAME_PER_SEC 60
+# define FRAME_PER_SEC 60.0
 # define M_PI 3.14159265358979323846
-# define ANGLE_SPEED 2.0
+# define ANGLE_SPEED 3
 # define FOV 60.0
 
 typedef enum e_side
