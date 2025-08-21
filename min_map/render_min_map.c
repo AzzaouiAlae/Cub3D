@@ -46,7 +46,7 @@ void	render_pos(t_line line, float x, float y)
 	if (grid[col]->content[row] == '1')
 	{
 		color = 0x5555ff;
-		if ((int)x % M_M_TIAL_SIZE == 0 || (int)y % M_M_TIAL_SIZE == 0)
+		if ((int)x % (int)M_M_TIAL_SIZE == 0 || (int)y % (int)M_M_TIAL_SIZE == 0)
 			color = 0xffffff;
 		rend.x = x + M_M_BORDER_SIZE - line.start.x;
 		rend.y = y + M_M_BORDER_SIZE - line.start.y;

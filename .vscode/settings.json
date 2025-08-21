@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        ".fantomasignore": "ignore",
         "ft_func.h": "c",
         "list.h": "c",
         "game_map.h": "c",
@@ -8,6 +9,8 @@
         "string.h": "c",
         "garbage_collector.h": "c",
         "cmath": "c",
-        "ray_casting.h": "c"
+        "ray_casting.h": "c",
+        "global.h": "c",
+        "initializer_list": "c"
     }
 }

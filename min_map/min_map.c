@@ -16,7 +16,7 @@ void put_pixel_min_map(float x, float y, int color)
 	init_mini_map_border(&border);
 	rend.x = x - border.start.x + M_M_BORDER_SIZE;
 	rend.y = y - border.start.y + M_M_BORDER_SIZE;
-	if (is_in_mini_map(rend.x, rend.y))
+	if (is_in_mini_map(round(rend.x), round(rend.y)))
 		my_mlx_put_pixel(&g_min_map_img, round(rend.x), round(rend.y), color);
 }
 
