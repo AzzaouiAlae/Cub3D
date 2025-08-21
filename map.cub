@@ -11,8 +11,9 @@ DO textures/door2.xpm
 DC textures/door.xpm 
 
 
-F 220,100,0
-C 225,30,0
+C 70,70,255
+
+F 225,225,225
 
 
 

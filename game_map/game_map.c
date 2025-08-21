@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/21 17:26:09 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/21 21:26:35 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,11 @@ bool	set_colors(char *str, int *color)
 	len = ft_strslen(strs);
 	if (len != 3)
 		return (false);
-	if (set_color(&(clr[2]), strs[2]) == false)
+	if (set_color(&(clr[2]), strs[0]) == false)
 		return false;
 	if (set_color(&(clr[1]), strs[1]) == false)
 		return false;
-	if (set_color(&(clr[0]), strs[0]) == false)
+	if (set_color(&(clr[0]), strs[2]) == false)
 		return false;
 	return true;
 }

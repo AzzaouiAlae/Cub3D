@@ -29,16 +29,24 @@ void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_p
 	i = 0;
 	img = get_image(p.side);
 	ofst = (img->img_height / orginal_l);
-	// while ()
-	// {
-
-	// }
+	while (i < y)
+	{
+		my_mlx_put_pixel(&g_win_img, x, i, g_info.ceil_color);
+		i++;
+	}
+	i = 0;
 	while(i < l && y + i < g_height)
 	{
 		color = my_mlx_get_pixel(img, round(img_start.x), round(img_start.y));
 		my_mlx_put_pixel(&g_win_img, x, y + i, color);
 		img_start.y += ofst;
 		i++;
+	}
+	y += i;
+	while (y < g_height)
+	{
+		my_mlx_put_pixel(&g_win_img, x, y, g_info.floor_color);
+		y++;
 	}
 }
 
