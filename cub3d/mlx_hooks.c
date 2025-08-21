@@ -48,18 +48,20 @@ int	keydown_hook(int keycode, void *var)
 	(void)var;
 	if (keycode == 65307)
 		ft_exit(0);
-	else if (!g_keys.w && ch == 'w')
+	else if (ch == 'w')
 		g_keys.w = 1;
-	else if (!g_keys.a && ch == 'a')
+	else if (ch == 'a')
 		g_keys.a = 1;
-	else if (!g_keys.d && ch == 'd')
+	else if (ch == 'd')
 		g_keys.d = 1;
-	else if (!g_keys.s && ch == 's')
+	else if (ch == 's')
 		g_keys.s = 1;
-	else if (!g_keys.right && ch == 83)
+	else if (ch == 83)
 		g_keys.right = 1;
-	else if (!g_keys.left && ch == 81)
+	else if (ch == 81)
 		g_keys.left = 1;
+	else if (!g_keys.door && ch == 'o')
+		g_keys.door = 1;
 	return (0);
 }
 
@@ -81,5 +83,7 @@ int	keyup_hook(int keycode, void *var)
 		g_keys.right = 0;
 	else if (ch == 81)
 		g_keys.left = 0;
+	else if (ch == 'o')
+		g_keys.door = 0;
 	return (0);
 }

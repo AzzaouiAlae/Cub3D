@@ -19,6 +19,8 @@ typedef struct s_info
 	t_data				*south;
 	t_data				*west;
 	t_data				*east;
+	t_data 				*close_door;
+	t_data 				*open_door;
 	int					floor_color;
 	int					ceil_color;
 }						t_info;
@@ -44,7 +46,15 @@ typedef struct s_pressed_keys
 	char				d;
 	char				left;
 	char				right;
+	char				door;
 }						t_keys;
+
+
+typedef struct s_door {
+	int row;
+	int col;
+	double dist;
+ } t_door;
 
 extern t_list			*g_map;
 extern void				*g_mlx;
@@ -57,5 +67,6 @@ extern t_player			g_player;
 extern t_keys			g_keys;
 extern struct timeval	g_start_time;
 extern t_data			g_min_map_img;
+extern t_door g_door_info;
 
 #endif

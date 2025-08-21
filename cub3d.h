@@ -30,7 +30,10 @@ typedef enum e_side
 	south,
 	west,
 	east,
+	close_door,
+	open_door,
 }				t_side;
+
 
 typedef enum s_events
 {

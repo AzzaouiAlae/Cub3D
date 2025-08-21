@@ -7,5 +7,6 @@ t_end_point render_player_angle(float angle);
 void	move_player(void);
 void	draw_player_cercl(t_line border, float x, float y, int x_ranges[]);
 void render_line_angle(float angle, float dist, int	color);
+t_side is_door(int x, int y, double dist);
 
 #endif

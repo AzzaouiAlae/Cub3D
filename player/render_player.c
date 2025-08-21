@@ -2,6 +2,8 @@
 #include "../ray_casting/ray_casting.h"
 #include "../min_map/min_map.h"
 
+t_door g_door_info;
+
 t_data *get_image(t_side side)
 {
 	if (side == east)
@@ -10,6 +12,10 @@ t_data *get_image(t_side side)
 		return g_info.west;
 	if (side == north)
 		return g_info.south;
+	if (side == open_door)
+		return g_info.open_door;
+	if (side == close_door)
+		return g_info.close_door;
 	return g_info.south;
 }
 
@@ -21,8 +27,8 @@ void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_p
 	t_data *img;
 
 	i = 0;
-	ofst = (g_info.east->img_height / orginal_l);
 	img = get_image(p.side);
+	ofst = (img->img_height / orginal_l);
 	while(i < l && y + i < g_height)
 	{
 		color = my_mlx_get_pixel(img, round(img_start.x), round(img_start.y));
@@ -35,16 +41,18 @@ void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_p
 void render_walls(t_end_point p, int i)
 {
     t_point img_start;
+	t_data *img;
 
+	img = get_image(p.side);
     int length = (g_height * M_M_TIAL_SIZE) / p.distance;
-	img_start.x = (g_info.east->img_width / M_M_TIAL_SIZE) * p.point.y; // or p.point.y
+	img_start.x = (img->img_width / M_M_TIAL_SIZE) * p.point.y; // or p.point.y
 	if (p.side == north || p.side == south)
-		img_start.x = (g_info.east->img_width / M_M_TIAL_SIZE) * p.point.x; // or p.point.y
+		img_start.x = (img->img_width / M_M_TIAL_SIZE) * p.point.x; // or p.point.y
 	img_start.y = (g_height - length) / 2;
 	if (img_start.y > 0)
 		img_start.y = 0;
 	else 
-		img_start.y = fabs(img_start.y) * ((double)g_info.east->img_height / (double)length);
+		img_start.y = fabs(img_start.y) * ((double)img->img_height / (double)length);
     if (length > g_height)
         length = g_height;
     draw_line(i, (g_height - length) / 2, length, img_start, (g_height * M_M_TIAL_SIZE) / p.distance, p);
@@ -55,18 +63,79 @@ double my_cos(float alpha)
     return (cos(alpha * (float)(M_PI / 180)));
 }
 
+void reset_door_info()
+{
+	g_door_info.col = 0;
+	g_door_info.row = 0;
+	g_door_info.dist = 0;
+}
+
+void save_door_info(int row, int col, double dist)
+{
+	if (g_door_info.dist > dist || g_door_info.dist == 0)
+	{
+		g_door_info.col = col;
+		g_door_info.row = row;
+		g_door_info.dist = dist;
+	}
+}
+
+t_side is_door(int x, int y, double dist)
+{
+	int		row;
+	int		col;
+	t_str	**grid;
+
+	col = y / M_M_TIAL_SIZE;
+	row = x / M_M_TIAL_SIZE;
+	grid = g_map->content;
+	g_player.map_pos.y = g_player.pos.y / M_M_TIAL_SIZE;
+	g_player.map_pos.x = g_player.pos.x / M_M_TIAL_SIZE;
+	if (g_map->count <= col || col < 0 || grid[col]->count <= row || row < 0)
+		return (0);
+	if (ft_strchr("Dd", grid[col]->content[row]))
+		save_door_info(row, col, dist);
+	if (grid[col]->content[row] == 'D')
+		return (close_door);
+	if (grid[col]->content[row] == 'd')
+		return (open_door);
+	return (0);
+}
+
+void open_close_door()
+{
+	double dist;
+	t_str	**grid;
+
+	grid = g_map->content;
+	if (g_keys.door == 1)
+	{
+		g_keys.door = 2;
+		dist = distance((t_point){0,0}, (t_point){M_M_TIAL_SIZE, M_M_TIAL_SIZE});
+		if (dist < g_door_info.dist || !g_door_info.dist)
+			return;
+		if (grid[g_door_info.col]->content[g_door_info.row] == 'D')
+			grid[g_door_info.col]->content[g_door_info.row] = 'd';
+		else if (grid[g_door_info.col]->content[g_door_info.row] == 'd')
+			grid[g_door_info.col]->content[g_door_info.row] = 'D';
+	}
+}
+
 void player_render()
 {
 	t_line	border;
 	float view_start;
 	int i;
 	t_end_point p;
+	t_side s;
 
 	i = 0;
 	move_player();
+	open_close_door();
 	init_mini_map_border(&border);
 	draw_player_cercl(border, g_player.pos.x, g_player.pos.y, (int[]){0, 1, 2, 1, 0});
 	view_start = g_player.angle + FOV / 2;
+	reset_door_info();
 	while (i < g_width)
 	{
 		if (view_start < 0)
@@ -74,6 +143,9 @@ void player_render()
 		if (view_start > 360)
 			view_start -= 360;
 		p = render_player_angle(view_start);
+		s = is_door(p.point.x, p.point.y, p.distance);
+		if (s)
+			p.side = s;
 		p.distance *= my_cos((FOV / 2 - ((FOV / g_width) * i)));
 		render_walls(p, i);
 		put_pixel_min_map(p.point.x, p.point.y, 0xff00ff);

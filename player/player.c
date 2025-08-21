@@ -47,12 +47,31 @@ void move_player_by_angle(float angle)
 	t_point end;
 	t_point old_player_pos;
 	bool should_break = false;
+	t_point ofset;
+	t_end_point point;
+	t_str	**grid;
 
+	grid = g_map->content;
 	should_break = false;
 	old_player_pos.x = g_player.pos.x;
 	old_player_pos.y = g_player.pos.y;
 	p = ray_cast(angle);
-	if (p.distance < 0.5)
+	if (is_door(p.point.x, p.point.y, INFINITY) && grid[g_door_info.col]->content[g_door_info.row] != 'D')
+	{
+		if (p.distance < 3)
+		{
+			point = ray_cast_dist(g_player.pos, &ofset, angle, M_M_TIAL_SIZE);
+			point.point.x += ofset.x * 1.05;
+			point.point.y += ofset.y * 1.05;
+			if (point.side == east || point.side == south)
+				point.point.y = floor(point.point.y / M_M_TIAL_SIZE) * M_M_TIAL_SIZE  + (M_M_TIAL_SIZE / 2);
+			else
+				point.point.x = floor(point.point.x / M_M_TIAL_SIZE) * M_M_TIAL_SIZE + (M_M_TIAL_SIZE / 2);
+			g_player.pos.x = point.point.x;
+			g_player.pos.y = point.point.y;
+		}
+	}
+	else if (p.distance < 0.5)
 		return;
 	end = calc_align(g_player.pos, p.point, 0.5);
 	while (distance(old_player_pos, g_player.pos) < PLAYER_SPEED && !should_break)

@@ -43,9 +43,14 @@ void	render_pos(t_line line, float x, float y)
 	grid = g_map->content;
 	if (g_map->count <= col || grid[col]->count <= row )
 		return ;
-	if (grid[col]->content[row] == '1')
+	if (grid[col]->content[row] == '1' || 
+		grid[col]->content[row] == 'D' || 
+		grid[col]->content[row] == 'd')
 	{
-		color = 0x5555ff;
+		if (grid[col]->content[row] == '1')
+			color = 0x5555ff;
+		else
+			color = 0xeeeeee;
 		if ((int)x % (int)M_M_TIAL_SIZE == 0 || (int)y % (int)M_M_TIAL_SIZE == 0)
 			color = 0xffffff;
 		rend.x = x + M_M_BORDER_SIZE - line.start.x;

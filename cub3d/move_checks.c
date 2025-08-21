@@ -14,7 +14,7 @@ bool	is_posible_move(int x, int y)
 	g_player.map_pos.x = g_player.pos.x / M_M_TIAL_SIZE;
 	if (g_map->count <= col || col < 0 || grid[col]->count <= row || row < 0)
 		return (false);
-	if (grid[col]->content[row] == '1')
+	if (grid[col]->content[row] == '1' || grid[col]->content[row] == 'D' || grid[col]->content[row] == 'd')
 		return (false);
 	return (true);
 }
