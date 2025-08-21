@@ -23,7 +23,7 @@ void clear_win_img()
 int	render_game(void *pram)
 {
 	(void)pram;
-	clear_win_img();
+	// clear_win_img();
 	render_mini_map();
 	player_render();
 	mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);

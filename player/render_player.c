@@ -29,6 +29,10 @@ void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_p
 	i = 0;
 	img = get_image(p.side);
 	ofst = (img->img_height / orginal_l);
+	// while ()
+	// {
+
+	// }
 	while(i < l && y + i < g_height)
 	{
 		color = my_mlx_get_pixel(img, round(img_start.x), round(img_start.y));
@@ -45,9 +49,10 @@ void render_walls(t_end_point p, int i)
 
 	img = get_image(p.side);
     int length = (g_height * M_M_TIAL_SIZE) / p.distance;
-	img_start.x = (img->img_width / M_M_TIAL_SIZE) * p.point.y; // or p.point.y
+	double real_x = p.point.y - floor(p.point.y / M_M_TIAL_SIZE) * M_M_TIAL_SIZE; 
 	if (p.side == north || p.side == south)
-		img_start.x = (img->img_width / M_M_TIAL_SIZE) * p.point.x; // or p.point.y
+		real_x = p.point.x - floor(p.point.x / M_M_TIAL_SIZE) * M_M_TIAL_SIZE; 
+	img_start.x = (img->img_width / M_M_TIAL_SIZE) * real_x;
 	img_start.y = (g_height - length) / 2;
 	if (img_start.y > 0)
 		img_start.y = 0;
