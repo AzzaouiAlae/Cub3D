@@ -11,6 +11,7 @@
 # include <mlx.h>
 # include <stdbool.h>
 # include <unistd.h>
+#include "map_game/map_game.h"
 
 # define MAP_HEIGHT 600.0
 # define MAP_W 800.0
@@ -22,6 +23,7 @@
 # define M_PI 3.14159265358979323846
 # define ANGLE_SPEED 3
 # define FOV 60.0
+# define SAFETY 6
 
 typedef enum e_side
 {
@@ -31,8 +33,7 @@ typedef enum e_side
 	east,
 	close_door,
 	open_door,
-}				t_side;
-
+}					t_side;
 
 typedef enum s_events
 {
@@ -43,46 +44,38 @@ typedef enum s_events
 	on_mousemove = 6,
 	on_expose = 12,
 	on_destroy = 17
-}				t_events;
+}					t_events;
 
 typedef struct s_line
 {
-	t_point		start;
-	t_point		end;
-}				t_line;
+	t_point			start;
+	t_point			end;
+}					t_line;
 
 typedef struct s_end_point
 {
-	t_point		point;
-	t_side		side;
-	double		distance;
-}				t_end_point;
+	t_point			point;
+	t_side			side;
+	double			distance;
+}					t_end_point;
 
-typedef struct  s_color
+typedef struct s_color
 {
-	unsigned char b;
-	unsigned char g;
-	unsigned char r;
-	unsigned char t;
-} t_color;
+	unsigned char	b;
+	unsigned char	g;
+	unsigned char	r;
+	unsigned char	t;
+}					t_color;
 
+void				my_mlx_put_pixel(t_data *data, int x, int y, int color);
+unsigned int		my_mlx_get_pixel(t_data *data, int x, int y);
+t_data				*create_image(char *relative_path);
+double				distance(t_point p1, t_point p2);
+int					keyup_hook(int keycode, void *var);
+int					keydown_hook(int keycode, void *var);
+int					close_window(void *param);
+int					render_game(void *pram);
+size_t				get_curr_time(void);
 
-void			my_mlx_put_pixel(t_data *data, int x, int y, int color);
-unsigned int	my_mlx_get_pixel(t_data *data, int x, int y);
-t_data			*create_image(char *relative_path);
-double			distance(t_point p1, t_point p2);
-float			tangent(float angle);
-float			tangent2(float angle);
-bool			is_posible_move(int x, int y);
-bool			is_intersection(t_point point, float angle);
-void			count_frame_per_sec(void);
-void			limit_frame_speed(void);
-int				keyup_hook(int keycode, void *var);
-int				keydown_hook(int keycode, void *var);
-int				close_window(void *param);
-int				render_game(void *pram);
-bool			in_range(float start, float end, float num);
-t_point			calc_align(t_point p1, t_point p2, double d);
-size_t get_curr_time();
 
 #endif

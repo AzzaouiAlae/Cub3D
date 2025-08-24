@@ -45,10 +45,26 @@ int	get_pos_color(t_pos_type pos_type)
 	else if (pos_type == e_invalid || pos_type == e_space)
 		color = (t_color){20, 20, 20, 0};
 	else if (pos_type == e_closed_gate)
-		color = (t_color){120, 120, 120,0};
+		color = (t_color){120, 120, 120, 0};
 	else if (pos_type == e_opened_gate)
-		color = (t_color){255, 0, 0,0};
+		color = (t_color){255, 0, 0, 0};
 	return (*((int *)&(color)));
+}
+
+int	get_color(int x, int y, t_line map_pos, t_pos_type pos_type)
+{
+	int	color;
+
+	if (y == 0 || x == 0 || x == MAP_W - 1 || y == MAP_HEIGHT - 1)
+		color = 0xFFFFFF;
+	else
+	{
+		color = get_pos_color(pos_type);
+		if ((!((int)map_pos.start.y % TIALSIZE) || !((int)map_pos.start.x
+					% TIALSIZE)) && pos_type == e_wall)
+			color = 0x000000;
+	}
+	return (color);
 }
 
 void	map_game(void)
@@ -58,22 +74,23 @@ void	map_game(void)
 	t_pos_type	pos_type;
 	int			y;
 	int			x;
+	int			color;
 
 	init_map_pos(&map_pos, &start);
 	while (map_pos.start.y < map_pos.end.y)
 	{
 		map_pos.start.x = start.x;
-		y = map_pos.start.y - start.y;
+		y = round(map_pos.start.y - start.y);
 		while (map_pos.start.x < map_pos.end.x)
 		{
-			x = map_pos.start.x - start.x;
+			x = round(map_pos.start.x - start.x);
 			pos_type = check_pos(map_pos.start.x, map_pos.start.y);
-			my_mlx_put_pixel(&g_map_img, x, y, get_pos_color(pos_type));
+			color = get_color(x, y, map_pos, pos_type);
+			my_mlx_put_pixel(&g_map_img, x, y, color);
 			map_pos.start.x++;
 		}
 		map_pos.start.y++;
 	}
-	draw_circle(&g_map_img, 
-		(t_point){g_player.pixl_pos.x - start.x, g_player.pixl_pos.y - start.y},
-		5, 0xff5555);
+	draw_circle(&g_map_img, (t_point){g_player.pixl_pos.x - start.x,
+		g_player.pixl_pos.y - start.y}, 5, 0xff5555);
 }

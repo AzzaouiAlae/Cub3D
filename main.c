@@ -85,6 +85,12 @@ int	keydown_hook(int keycode, void *var)
 		ft_exit(0);
 	if (ch == 'w')
 		g_keys.w = 1;
+	if (ch == 'd')
+		g_keys.d = 1;
+	if (ch == 'a')
+		g_keys.a = 1;
+	if (ch == 's')
+		g_keys.s = 1;
 	return (0);
 }
 
@@ -96,6 +102,12 @@ int	keyup_hook(int keycode, void *var)
 	ch = (char)keycode;
 	if (ch == 'w')
 		g_keys.w = 0;
+	if (ch == 'd')
+		g_keys.d = 0;
+	if (ch == 'a')
+		g_keys.a = 0;
+	if (ch == 's')
+		g_keys.s = 0;
 	return (0);
 }
 

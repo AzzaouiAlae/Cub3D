@@ -37,14 +37,31 @@ void calculate_player_speed()
 		g_player.turn_speed = ANGLE_SPEED;
 }
 
+bool is_valid_move(int x, int y)
+{
+	return check_pos(g_player.pixl_pos.x + x, g_player.pixl_pos.y + y) == e_empty;
+}
+
 void move_player()
 {
 	g_old_time = g_time;
 	g_time = get_curr_time();
 	calculate_player_speed();
-	if (g_keys.w)
+	if (g_keys.w && is_valid_move(0, -(g_player.move_speed + SAFETY)))
 	{
-		g_player.pixl_pos.y -= g_player.move_speed;
+			g_player.pixl_pos.y -= g_player.move_speed;
+	}
+	if (g_keys.d && is_valid_move(g_player.move_speed + SAFETY, 0))
+	{
+		g_player.pixl_pos.x += g_player.move_speed;
+	}
+	if (g_keys.a && is_valid_move(-(g_player.move_speed + SAFETY), 0))
+	{
+		g_player.pixl_pos.x -= g_player.move_speed;
+	}
+	if (g_keys.s && is_valid_move(0, g_player.move_speed + SAFETY))
+	{
+		g_player.pixl_pos.y += g_player.move_speed;
 	}
 }
 
