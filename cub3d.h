@@ -12,14 +12,13 @@
 # include <stdbool.h>
 # include <unistd.h>
 
-# define M_M_H 200.0
-# define M_M_W 300.0
-# define M_M_MARGIN_X 50.0
-# define M_M_MARGIN_Y 40.0
-# define M_M_BORDER_SIZE 1.0
-# define M_M_TIAL_SIZE 40
-# define PLAYER_SPEED 2.0
-# define FRAME_PER_SEC 60.0
+# define MAP_HEIGHT 600.0
+# define MAP_W 800.0
+# define MAP_MARGIN_X 50.0
+# define MAP_MARGIN_Y 40.0
+# define MAP_BORDER_SIZE 1.0
+# define TIALSIZE 40
+# define PLAYER_SPEED 160.0
 # define M_PI 3.14159265358979323846
 # define ANGLE_SPEED 3
 # define FOV 60.0
@@ -59,6 +58,15 @@ typedef struct s_end_point
 	double		distance;
 }				t_end_point;
 
+typedef struct  s_color
+{
+	unsigned char b;
+	unsigned char g;
+	unsigned char r;
+	unsigned char t;
+} t_color;
+
+
 void			my_mlx_put_pixel(t_data *data, int x, int y, int color);
 unsigned int	my_mlx_get_pixel(t_data *data, int x, int y);
 t_data			*create_image(char *relative_path);
@@ -75,5 +83,6 @@ int				close_window(void *param);
 int				render_game(void *pram);
 bool			in_range(float start, float end, float num);
 t_point			calc_align(t_point p1, t_point p2, double d);
+size_t get_curr_time();
 
 #endif

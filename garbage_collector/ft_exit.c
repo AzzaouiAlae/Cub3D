@@ -17,6 +17,7 @@ void	ft_exit(int num)
 {
 	ft_destroy_all();
 	mlx_destroy_image(g_mlx, g_win_img.img);
+	mlx_destroy_image(g_mlx, g_map_img.img);
 	mlx_destroy_window(g_mlx, g_win);
 	mlx_destroy_display(g_mlx);
 	free(g_mlx);

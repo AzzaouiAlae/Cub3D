@@ -33,9 +33,12 @@ typedef struct s_point
 
 typedef struct s_player
 {
-	t_point				pos;
+	t_point				pixl_pos;
 	t_point				map_pos;
 	double				angle;
+	double move_speed;
+	double turn_speed;
+
 }						t_player;
 
 typedef struct s_pressed_keys
@@ -46,7 +49,7 @@ typedef struct s_pressed_keys
 	char				d;
 	char				left;
 	char				right;
-	char				door;
+	char				o;
 }						t_keys;
 
 
@@ -66,7 +69,13 @@ extern double			g_height;
 extern t_player			g_player;
 extern t_keys			g_keys;
 extern struct timeval	g_start_time;
-extern t_data			g_min_map_img;
+extern t_data			g_map_img;
 extern t_door g_door_info;
+extern struct timeval time;
+extern struct timeval old_time;
+
+extern struct timeval g_cur_time;
+extern size_t g_time;
+extern size_t g_old_time;
 
 #endif

@@ -11,6 +11,9 @@
         "cmath": "c",
         "ray_casting.h": "c",
         "global.h": "c",
-        "initializer_list": "c"
+        "initializer_list": "c",
+        "mlx.h": "c",
+        "map_game.h": "c",
+        "map": "c"
     }
 }

@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/21 21:26:35 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/23 15:33:42 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,8 +240,8 @@ void init_player(t_player *player, char ch)
 		player->angle = 0;
 	else if (ch == 'W')
 		player->angle = 180;
-	player->pos.x = player->map_pos.x * M_M_TIAL_SIZE + (M_M_TIAL_SIZE / 2);
-	player->pos.y = player->map_pos.y * M_M_TIAL_SIZE + (M_M_TIAL_SIZE / 2);
+	player->pixl_pos.x = player->map_pos.x * TIALSIZE + (TIALSIZE / 2);
+	player->pixl_pos.y = player->map_pos.y * TIALSIZE + (TIALSIZE / 2);
 }
 
 bool	check_map(t_list *map, t_player *player)
