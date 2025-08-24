@@ -1,4 +1,5 @@
 #include "player.h"
+#include "../map_game/map_game.h"
 
 double ph_distance(t_point p1, t_point p2)
 {
@@ -49,7 +50,7 @@ void move_player()
 	calculate_player_speed();
 	if (g_keys.w && is_valid_move(0, -(g_player.move_speed + SAFETY)))
 	{
-			g_player.pixl_pos.y -= g_player.move_speed;
+		g_player.pixl_pos.y -= g_player.move_speed;
 	}
 	if (g_keys.d && is_valid_move(g_player.move_speed + SAFETY, 0))
 	{
@@ -62,6 +63,16 @@ void move_player()
 	if (g_keys.s && is_valid_move(0, g_player.move_speed + SAFETY))
 	{
 		g_player.pixl_pos.y += g_player.move_speed;
+	}
+	if (g_keys.left)
+	{
+		g_player.angle += g_player.turn_speed;
+		normalize_angle(&g_player.angle);
+	}
+	if (g_keys.right)
+	{
+		g_player.angle -= g_player.turn_speed;
+		normalize_angle(&g_player.angle);
 	}
 }
 

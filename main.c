@@ -1,6 +1,7 @@
 #include "cub3d.h"
 #include "game_map/game_map.h"
 #include "map_game/map_game.h"
+#include "raycasting/raycasting.h"
 
 void			*g_mlx;
 void			*g_win;
@@ -21,6 +22,14 @@ size_t get_curr_time()
 
 	gettimeofday(&time, NULL);
 	return ((size_t)(time.tv_sec * 1000000 + time.tv_usec));
+}
+
+void	normalize_angle(double *angle)
+{
+	if (*angle < 0.0)
+		*angle += 360.0;
+	else if (*angle > 360.0)
+		*angle -= 360.0;
 }
 
 void	my_mlx_put_pixel(t_data *data, int x, int y, int color)
@@ -60,9 +69,12 @@ t_data	*create_image(char *relative_path)
 
 int	render_game(void *pram)
 {
+	
 	(void)pram;
 	move_player();
 	map_game();
+	cast_all_rays();
+	mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
 	mlx_put_image_to_window(g_mlx, g_win, g_map_img.img, MAP_MARGIN_X,
 		MAP_MARGIN_Y);
 	return (0);
@@ -91,6 +103,11 @@ int	keydown_hook(int keycode, void *var)
 		g_keys.a = 1;
 	if (ch == 's')
 		g_keys.s = 1;
+	if (ch == 83)
+		g_keys.right = 1;
+	if (ch == 81)
+		g_keys.left = 1;
+	printf("%d\n", ch);
 	return (0);
 }
 
@@ -108,6 +125,10 @@ int	keyup_hook(int keycode, void *var)
 		g_keys.a = 0;
 	if (ch == 's')
 		g_keys.s = 0;
+	if (ch == 83)
+		g_keys.right = 0;
+	if (ch == 81)
+		g_keys.left = 0;
 	return (0);
 }
 

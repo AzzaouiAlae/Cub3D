@@ -19,6 +19,8 @@
         "iterator": "c",
         "memory": "c",
         "random": "c",
-        "functional": "c"
+        "functional": "c",
+        "raycasting.h": "c",
+        "player.h": "c"
     }
 }

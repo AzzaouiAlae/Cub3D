@@ -1,4 +1,7 @@
 #include "map_game.h"
+#include "../raycasting/raycasting.h"
+#include "../player/player.h"
+
 
 void	init_map_pos(t_line *map_pos, t_point *start)
 {
@@ -17,8 +20,8 @@ t_pos_type	check_pos(int x, int y)
 	int		col;
 
 	the_map = g_map->content;
-	row = y / TIALSIZE;
-	col = x / TIALSIZE;
+	row = y / TILESIZE;
+	col = x / TILESIZE;
 	if (row < 0 || g_map->count <= row || y < 0)
 		return (e_invalid);
 	if (col < 0 || the_map[row]->count <= col || x < 0)
@@ -60,8 +63,8 @@ int	get_color(int x, int y, t_line map_pos, t_pos_type pos_type)
 	else
 	{
 		color = get_pos_color(pos_type);
-		if ((!((int)map_pos.start.y % TIALSIZE) || !((int)map_pos.start.x
-					% TIALSIZE)) && pos_type == e_wall)
+		if ((!((int)map_pos.start.y % (int)TILESIZE) || !((int)map_pos.start.x
+					% (int)TILESIZE)) && pos_type == e_wall)
 			color = 0x000000;
 	}
 	return (color);

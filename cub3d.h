@@ -7,21 +7,22 @@
 # include "list/list.h"
 # include "map/map.h"
 # include "string/string.h"
+# include "player/player.h"
 # include <math.h>
 # include <mlx.h>
 # include <stdbool.h>
 # include <unistd.h>
-#include "map_game/map_game.h"
 
-# define MAP_HEIGHT 600.0
-# define MAP_W 800.0
+
+# define MAP_HEIGHT 150.0
+# define MAP_W 200.0
 # define MAP_MARGIN_X 50.0
 # define MAP_MARGIN_Y 40.0
 # define MAP_BORDER_SIZE 1.0
-# define TIALSIZE 40
+# define TILESIZE 40.0
 # define PLAYER_SPEED 160.0
 # define M_PI 3.14159265358979323846
-# define ANGLE_SPEED 3
+# define ANGLE_SPEED 40.0
 # define FOV 60.0
 # define SAFETY 6
 
@@ -54,7 +55,9 @@ typedef struct s_line
 
 typedef struct s_end_point
 {
-	t_point			point;
+	t_point			side_dist;
+	t_point			delta_dist;
+	t_point			end;
 	t_side			side;
 	double			distance;
 }					t_end_point;
@@ -70,12 +73,12 @@ typedef struct s_color
 void				my_mlx_put_pixel(t_data *data, int x, int y, int color);
 unsigned int		my_mlx_get_pixel(t_data *data, int x, int y);
 t_data				*create_image(char *relative_path);
-double				distance(t_point p1, t_point p2);
+double ph_distance(t_point p1, t_point p2);
 int					keyup_hook(int keycode, void *var);
 int					keydown_hook(int keycode, void *var);
 int					close_window(void *param);
 int					render_game(void *pram);
 size_t				get_curr_time(void);
-
+void	normalize_angle(double *angle);
 
 #endif
