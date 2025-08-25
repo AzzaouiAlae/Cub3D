@@ -26,6 +26,7 @@
 # define FOV 60.0
 # define SAFETY 10
 # define DPI 0.08
+# define DARKNESS (TILESIZE * 25)
 
 typedef enum e_side
 {

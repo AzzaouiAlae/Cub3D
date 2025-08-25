@@ -167,13 +167,72 @@ t_data *get_img(t_side side)
 	return g_info.south;
 }
 
-// int foog_efect(int color, double dist)
-// {
-// 	t_color c;
+int darkness_effect(int color, double dist)
+{
+	t_color c;
+	int res;
 
-// 	c = *((t_color *)(&color));
-// 	c.b -=
-// }
+	c = *((t_color *)(&color));
+	res = (255.0 / (double)DARKNESS) * dist;
+	if (res > c.b)
+		c.b = 0;
+	else
+		c.b -= res;
+	if (res > c.r)
+		c.r = 0;
+	else
+		c.r -= res;
+	if (res > c.g)
+		c.g = 0;
+	else
+		c.g -= res;
+	return (*(int *)&c);
+}
+
+int darkness_effect_ceil(int color, double dist)
+{
+	t_color c;
+	int res;
+
+	c = *((t_color *)(&color));
+	res = (255.0 / (g_height * 2)) * dist;
+	if (res > c.b)
+		c.b = 0;
+	else
+		c.b -= res;
+	if (res > c.r)
+		c.r = 0;
+	else
+		c.r -= res;
+	if (res > c.g)
+		c.g = 0;
+	else
+		c.g -= res;
+	return (*(int *)&c);
+}
+
+int darkness_effect_floor(int color, double dist)
+{
+	t_color c;
+	int res;
+
+	c = *((t_color *)(&color));
+	res = (255.0 / (g_height * 1.5)) * dist;
+	res = 255 - res;
+	if (res > c.b)
+		c.b = 0;
+	else
+		c.b -= res;
+	if (res > c.r)
+		c.r = 0;
+	else
+		c.r -= res;
+	if (res > c.g)
+		c.g = 0;
+	else
+		c.g -= res;
+	return (*(int *)&c);
+}
 
 void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_point p)
 {
@@ -187,13 +246,15 @@ void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_p
 	ofst = (img->img_height / orginal_l);
 	while (i < y)
 	{
-		my_mlx_put_pixel(&g_win_img, x, i, g_info.ceil_color);
+		color = darkness_effect_ceil(g_info.ceil_color, i);
+		my_mlx_put_pixel(&g_win_img, x, i, color);
 		i++;
 	}
 	i = 0;
 	while(i < l && y + i < g_height)
 	{
 		color = my_mlx_get_pixel(img, round(img_start.x), round(img_start.y));
+		color = darkness_effect(color, p.distance);
 		my_mlx_put_pixel(&g_win_img, x, y + i, color);
 		img_start.y += ofst;
 		i++;
@@ -201,7 +262,8 @@ void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_p
 	y += i;
 	while (y < g_height)
 	{
-		my_mlx_put_pixel(&g_win_img, x, y, g_info.floor_color);
+		color = darkness_effect_floor(g_info.floor_color, y);
+		my_mlx_put_pixel(&g_win_img, x, y, color);
 		y++;
 	}
 }
