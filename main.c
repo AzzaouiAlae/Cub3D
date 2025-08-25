@@ -116,7 +116,7 @@ int	keydown_hook(int keycode, void *var)
 int	keyup_hook(int keycode, void *var)
 {
 	char	ch;
-	
+
 	(void)var;
 	ch = (char)keycode;
 	if (ch == 'w')
@@ -191,10 +191,9 @@ int mouse_hook(void *param)
 	{
 		mlx_mouse_get_pos(g_mlx, g_win, &x, &y);
 		x = g_width / 2 - x;
-		g_player.angle -= x / 10;
+		g_player.angle += x * DPI;
 		mlx_mouse_move(g_mlx, g_win, g_width / 2, g_height / 2);
 		mlx_mouse_get_pos(g_mlx, g_win, &x, &y);
-		printf("x=%d here\n", x / 10);
 	}
 	return 0;
 }

@@ -14,6 +14,6 @@ typedef enum e_pos_type
 }	t_pos_type;
 
 void map_game();
-t_pos_type			check_pos(int x, int y);
+t_pos_type	check_pos(double x, double y);
 void	init_map_pos(t_line *map_pos, t_point *start);
 #endif

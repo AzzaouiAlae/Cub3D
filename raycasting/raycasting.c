@@ -94,7 +94,7 @@ t_end_point x_intersections(t_point start, double angle)
 
 	if (!(in_range(0, 90, angle) || in_range(270, 360, angle)))
 	{
-		p.end.x = floor(start.x / TILESIZE) * TILESIZE - 0.0001;
+		p.end.x = floor(start.x / TILESIZE) * TILESIZE - 0.000000001;
 		p.delta_dist.x = -TILESIZE;
 	}
 	else
@@ -120,7 +120,7 @@ t_end_point y_intersections(t_point start, double angle)
 
 	if (in_range(0, 180, angle))
 	{
-		p.end.y = floor(start.y / TILESIZE) * TILESIZE - 0.0001;
+		p.end.y = floor(start.y / TILESIZE) * TILESIZE - 0.000000001;
 		p.delta_dist.y = -TILESIZE;
 	}
 	else
@@ -167,6 +167,14 @@ t_data *get_img(t_side side)
 	return g_info.south;
 }
 
+// int foog_efect(int color, double dist)
+// {
+// 	t_color c;
+
+// 	c = *((t_color *)(&color));
+// 	c.b -=
+// }
+
 void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_point p)
 {
 	int i;
@@ -205,14 +213,14 @@ void render_walls(t_end_point p, int i)
 
 	img = get_img(p.side);
     int length = (g_height * TILESIZE) / p.distance;
-	double tile_x = p.end.y - floor(p.end.y / TILESIZE) * TILESIZE; 
+	double tile_x = p.end.y - floor(p.end.y / TILESIZE) * TILESIZE;
 	if (p.side == north || p.side == south)
-		tile_x = p.end.x - floor(p.end.x / TILESIZE) * TILESIZE; 
+		tile_x = p.end.x - floor(p.end.x / TILESIZE) * TILESIZE;
 	img_start.x = (img->img_width / TILESIZE) * tile_x;
 	img_start.y = (g_height - length) / 2;
 	if (img_start.y > 0)
 		img_start.y = 0;
-	else 
+	else
 		img_start.y = fabs(img_start.y) * ((double)img->img_height / (double)length);
     if (length > g_height)
         length = g_height;

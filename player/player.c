@@ -38,9 +38,23 @@ void calculate_player_speed()
 		g_player.turn_speed = ANGLE_SPEED;
 }
 
-bool is_valid_move(int x, int y)
+bool is_valid_move(double x, double y)
 {
-	return check_pos(g_player.pixl_pos.x + x, g_player.pixl_pos.y + y) == e_empty;
+	t_point pos;
+
+	pos.x = g_player.pixl_pos.x + x;
+	pos.y = g_player.pixl_pos.y + y;
+	if (check_pos(pos.x, pos.y) != e_empty)
+		return false;
+	if (check_pos(pos.x + SAFETY, pos.y) != e_empty)
+		return false;
+	if (check_pos(pos.x , pos.y + SAFETY) != e_empty)
+		return false;
+	if (check_pos(pos.x - SAFETY, pos.y) != e_empty)
+		return false;
+	if (check_pos(pos.x , pos.y - SAFETY) != e_empty)
+		return false;
+	return true;
 }
 
 bool is_open_gate(int x, int y)
@@ -51,7 +65,7 @@ bool is_open_gate(int x, int y)
 void player_walk(double angle, double speed)
 {
 	t_point dir;
-	t_point pos; 
+	t_point pos;
 	int i;
 
 	i = 0;
@@ -71,9 +85,9 @@ void player_walk(double angle, double speed)
 				break;
 			}
 		}
-		if (is_valid_move(dir.x + (dir.x * SAFETY), 0))
+		if (is_valid_move(dir.x, 0))
 			g_player.pixl_pos.x += dir.x;
-		if (is_valid_move(0, dir.y + (dir.y * SAFETY)))
+		if (is_valid_move(0, dir.y))
 			g_player.pixl_pos.y += dir.y;
 		i++;
 	}
@@ -122,7 +136,7 @@ void move_player()
 	}
 	if (g_keys.o == 1)
 		open_close_door();
-	
+
 }
 
 /*

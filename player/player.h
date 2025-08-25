@@ -5,6 +5,6 @@
 
 void draw_circle(t_data *img, t_point p, int r, int color);
 void move_player();
-bool is_valid_move(int x, int y);
+bool is_valid_move(double x, double y);
 
 #endif

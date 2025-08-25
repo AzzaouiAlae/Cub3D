@@ -13,7 +13,7 @@ void	init_map_pos(t_line *map_pos, t_point *start)
 	start->y = map_pos->start.y;
 }
 
-t_pos_type	check_pos(int x, int y)
+t_pos_type	check_pos(double x, double y)
 {
 	t_str	**the_map;
 	int		row;

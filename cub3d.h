@@ -24,7 +24,8 @@
 # define M_PI 3.14159265358979323846
 # define ANGLE_SPEED 160.0
 # define FOV 60.0
-# define SAFETY 6
+# define SAFETY 10
+# define DPI 0.08
 
 typedef enum e_side
 {
