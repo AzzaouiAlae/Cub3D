@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/24 19:20:29 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/25 15:41:04 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ bool	check_map(t_list *map, t_player *player)
 		{
 			if (!ft_strchr("10NSEW D", lines[i]->content[j]))
 				return false;
-			if (ft_strchr("0NSEW", lines[i]->content[j]) &&
+			if (!ft_strchr("1 ", lines[i]->content[j]) &&
 					!check_map_tail(map, lines, i, j))
 				return false;
 			if (ft_strchr("NSEW", lines[i]->content[j]))

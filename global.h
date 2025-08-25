@@ -1,6 +1,7 @@
 #ifndef GLOBAL_H
 # define GLOBAL_H
 # include <sys/time.h>
+# include <stdbool.h>
 
 typedef struct s_data
 {
@@ -50,6 +51,7 @@ typedef struct s_pressed_keys
 	char				left;
 	char				right;
 	char				o;
+	bool				mouse;
 }						t_keys;
 
 

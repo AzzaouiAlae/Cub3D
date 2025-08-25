@@ -43,27 +43,73 @@ bool is_valid_move(int x, int y)
 	return check_pos(g_player.pixl_pos.x + x, g_player.pixl_pos.y + y) == e_empty;
 }
 
+bool is_open_gate(int x, int y)
+{
+	return check_pos(g_player.pixl_pos.x + x, g_player.pixl_pos.y + y) == e_opened_gate;
+}
+
+void player_walk(double angle, double speed)
+{
+	t_point dir;
+	t_point pos; 
+	int i;
+
+	i = 0;
+	normalize_angle(&angle);
+	dir.x = cos(angle * M_PI / 180);
+	dir.y = -sin(angle * M_PI / 180);
+	while(i < speed)
+	{
+		if (is_open_gate(dir.x * SAFETY * 2, dir.y * SAFETY * 2))
+		{
+			pos.x = dir.x * (TILESIZE + SAFETY * 3);
+			pos.y = dir.y * (TILESIZE + SAFETY * 3);
+			if (is_valid_move(pos.x, pos.y))
+			{
+				g_player.pixl_pos.x += pos.x;
+				g_player.pixl_pos.y += pos.y;
+				break;
+			}
+		}
+		if (is_valid_move(dir.x + (dir.x * SAFETY), 0))
+			g_player.pixl_pos.x += dir.x;
+		if (is_valid_move(0, dir.y + (dir.y * SAFETY)))
+			g_player.pixl_pos.y += dir.y;
+		i++;
+	}
+}
+
+void open_close_door()
+{
+	t_str	**the_map;
+	double dist;
+
+	g_keys.o = 2;
+	the_map = g_map->content;
+	dist = ph_distance((t_point){0,0}, (t_point){TILESIZE * 1.5, TILESIZE * 1.5});
+	if (dist < g_door_info.dist)
+		return;
+	if (the_map[g_door_info.row]->content[g_door_info.col] == 'D')
+		the_map[g_door_info.row]->content[g_door_info.col] = 'd';
+	else if (the_map[g_door_info.row]->content[g_door_info.col] == 'd')
+		the_map[g_door_info.row]->content[g_door_info.col] = 'D';
+}
+
+
+
 void move_player()
 {
 	g_old_time = g_time;
 	g_time = get_curr_time();
 	calculate_player_speed();
-	if (g_keys.w && is_valid_move(0, -(g_player.move_speed + SAFETY)))
-	{
-		g_player.pixl_pos.y -= g_player.move_speed;
-	}
-	if (g_keys.d && is_valid_move(g_player.move_speed + SAFETY, 0))
-	{
-		g_player.pixl_pos.x += g_player.move_speed;
-	}
-	if (g_keys.a && is_valid_move(-(g_player.move_speed + SAFETY), 0))
-	{
-		g_player.pixl_pos.x -= g_player.move_speed;
-	}
-	if (g_keys.s && is_valid_move(0, g_player.move_speed + SAFETY))
-	{
-		g_player.pixl_pos.y += g_player.move_speed;
-	}
+	if (g_keys.w)
+		player_walk(g_player.angle, g_player.move_speed);
+	if (g_keys.d)
+		player_walk(g_player.angle - 90, g_player.move_speed);
+	if (g_keys.a)
+		player_walk(g_player.angle + 90, g_player.move_speed);
+	if (g_keys.s)
+		player_walk(g_player.angle + 180, g_player.move_speed);
 	if (g_keys.left)
 	{
 		g_player.angle += g_player.turn_speed;
@@ -74,6 +120,9 @@ void move_player()
 		g_player.angle -= g_player.turn_speed;
 		normalize_angle(&g_player.angle);
 	}
+	if (g_keys.o == 1)
+		open_close_door();
+	
 }
 
 /*

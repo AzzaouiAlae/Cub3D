@@ -69,8 +69,8 @@ t_data	*create_image(char *relative_path)
 
 int	render_game(void *pram)
 {
-	
 	(void)pram;
+	mouse_hook(NULL);
 	move_player();
 	map_game();
 	cast_all_rays();
@@ -86,6 +86,7 @@ int	close_window(void *param)
 	ft_exit(0);
 	return (0);
 }
+
 int	keydown_hook(int keycode, void *var)
 {
 	char	ch;
@@ -103,11 +104,12 @@ int	keydown_hook(int keycode, void *var)
 		g_keys.a = 1;
 	if (ch == 's')
 		g_keys.s = 1;
+	if (!g_keys.o && ch == 'o')
+		g_keys.o = 1;
 	if (ch == 83)
 		g_keys.right = 1;
 	if (ch == 81)
 		g_keys.left = 1;
-	printf("%d\n", ch);
 	return (0);
 }
 
@@ -125,6 +127,16 @@ int	keyup_hook(int keycode, void *var)
 		g_keys.a = 0;
 	if (ch == 's')
 		g_keys.s = 0;
+	if (g_keys.o == 2 && ch == 'o')
+		g_keys.o = 0;
+	if (ch == 'u')
+	{
+		g_keys.mouse = !g_keys.mouse;
+		if (g_keys.mouse)
+			mlx_mouse_hide(g_mlx, g_win);
+		else
+			mlx_mouse_show(g_mlx, g_win);
+	}
 	if (ch == 83)
 		g_keys.right = 0;
 	if (ch == 81)
@@ -169,6 +181,24 @@ void	ft_init(void)
 	g_time = get_curr_time();
 }
 
+int mouse_hook(void *param)
+{
+	(void)param;
+	int x;
+	int y;
+
+	if (g_keys.mouse)
+	{
+		mlx_mouse_get_pos(g_mlx, g_win, &x, &y);
+		x = g_width / 2 - x;
+		g_player.angle -= x / 10;
+		mlx_mouse_move(g_mlx, g_win, g_width / 2, g_height / 2);
+		mlx_mouse_get_pos(g_mlx, g_win, &x, &y);
+		printf("x=%d here\n", x / 10);
+	}
+	return 0;
+}
+
 int	main(int arg_c, char *arg_v[])
 {
 	if (arg_c != 2)
@@ -181,6 +211,7 @@ int	main(int arg_c, char *arg_v[])
 	mlx_hook(g_win, on_destroy, 0, close_window, NULL);
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
 	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);
+	mlx_mouse_hook(g_win, mouse_hook, NULL);
 	mlx_loop_hook(g_mlx, render_game, NULL);
 	mlx_loop(g_mlx);
 	ft_free_all();

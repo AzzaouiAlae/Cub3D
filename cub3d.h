@@ -14,15 +14,15 @@
 # include <unistd.h>
 
 
-# define MAP_HEIGHT 150.0
-# define MAP_W 200.0
+# define MAP_HEIGHT 200.0
+# define MAP_W 300.0
 # define MAP_MARGIN_X 50.0
 # define MAP_MARGIN_Y 40.0
 # define MAP_BORDER_SIZE 1.0
-# define TILESIZE 40.0
-# define PLAYER_SPEED 160.0
+# define TILESIZE 40
+# define PLAYER_SPEED 120.0
 # define M_PI 3.14159265358979323846
-# define ANGLE_SPEED 40.0
+# define ANGLE_SPEED 160.0
 # define FOV 60.0
 # define SAFETY 6
 
@@ -80,5 +80,6 @@ int					close_window(void *param);
 int					render_game(void *pram);
 size_t				get_curr_time(void);
 void	normalize_angle(double *angle);
+int mouse_hook(void *param);
 
 #endif
