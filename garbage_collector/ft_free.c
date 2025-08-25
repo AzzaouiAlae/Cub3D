@@ -94,4 +94,3 @@ void	ft_destroy_all(void)
 	free(mem);
 	current_working_mem(NULL, 1);
 }
- 
