@@ -96,4 +96,6 @@ void	map_game(void)
 	}
 	draw_circle(&g_map_img, (t_point){g_player.pixl_pos.x - start.x,
 		g_player.pixl_pos.y - start.y}, 5, 0xff5555);
+	draw_player_dir(g_player.angle + (FOV / 2), 30, start);
+	draw_player_dir(g_player.angle - (FOV / 2), 30, start);
 }

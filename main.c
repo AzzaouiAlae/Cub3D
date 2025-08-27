@@ -132,10 +132,10 @@ int	keyup_hook(int keycode, void *var)
 	if (ch == 'u')
 	{
 		g_keys.mouse = !g_keys.mouse;
-		// if (g_keys.mouse)
-		// 	mlx_mouse_hide(g_mlx, g_win);
-		// else
-		// 	mlx_mouse_show(g_mlx, g_win);
+		if (g_keys.mouse)
+			mlx_mouse_hide(g_mlx, g_win);
+		else
+			mlx_mouse_show(g_mlx, g_win);
 	}
 	if (ch == 83)
 		g_keys.right = 0;

@@ -272,11 +272,13 @@ void render_walls(t_end_point p, int i)
 	t_data *img;
 
 	img = get_img(p.side);
-    int length = (g_height * (double)TILESIZE) / p.distance;
-	double tile_x = p.end.y - floor(p.end.y / (double)TILESIZE) * (double)TILESIZE;
+    int length = (g_height * TILESIZE) / p.distance;
+	double tile_x = p.end.y - floor(p.end.y / TILESIZE) * TILESIZE;
 	if (p.side == north || p.side == south)
-		tile_x = p.end.x - floor(p.end.x / (double)TILESIZE) * (double)TILESIZE;
-	img_start.x = (img->img_width / (double)TILESIZE) * tile_x;
+		tile_x = p.end.x - floor(p.end.x / TILESIZE) * TILESIZE;
+	if (p.side == north || p.side == west)
+		tile_x = TILESIZE - tile_x;
+	img_start.x = ((double)img->img_width / TILESIZE) * tile_x;
 	img_start.y = (g_height - length) / 2;
 	if (img_start.y > 0)
 		img_start.y = 0;
@@ -285,6 +287,24 @@ void render_walls(t_end_point p, int i)
     if (length > g_height)
         length = g_height;
     draw_line(i, (g_height - length) / 2, length, img_start, (g_height * (double)TILESIZE) / p.distance, p);
+}
+
+void draw_player_dir(double angle, double dir_dist, t_point	start)
+{
+	t_point dir;
+	t_point pos;
+
+	normalize_angle(&angle);
+	dir.x = cos(angle * M_PI / 180);
+	dir.y = -sin(angle * M_PI / 180);
+	pos.x = dir.x + g_player.pixl_pos.x;
+	pos.y = dir.y + g_player.pixl_pos.y;
+	while (ph_distance(g_player.pixl_pos, pos) < dir_dist)
+	{
+		my_mlx_put_pixel(&g_map_img, pos.x - start.x, pos.y - start.y, 0xff0000);
+		pos.x += dir.x;
+		pos.y += dir.y;
+	}
 }
 
 void	cast_all_rays()
