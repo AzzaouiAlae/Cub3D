@@ -27,6 +27,7 @@
 # define SAFETY 10
 # define DPI 0.08
 # define DARKNESS (TILESIZE * 25)
+#define C_F_DARKNES 0
 
 typedef enum e_side
 {

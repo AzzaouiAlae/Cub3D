@@ -188,14 +188,13 @@ int darkness_effect(int color, double dist)
 		c.g -= res;
 	return (*(int *)&c);
 }
-
 int darkness_effect_ceil(int color, double dist)
 {
 	t_color c;
 	int res;
 
 	c = *((t_color *)(&color));
-	res = (255.0 / (g_height * 2)) * dist;
+	res = (255.0 / (540 + C_F_DARKNES)) * dist;
 	if (res > c.b)
 		c.b = 0;
 	else
@@ -217,8 +216,7 @@ int darkness_effect_floor(int color, double dist)
 	int res;
 
 	c = *((t_color *)(&color));
-	res = (255.0 / (g_height * 1.5)) * dist;
-	res = 255 - res;
+	res = (255.0 / (540 + C_F_DARKNES)) * (g_height - dist);
 	if (res > c.b)
 		c.b = 0;
 	else

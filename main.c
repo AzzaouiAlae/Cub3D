@@ -132,10 +132,10 @@ int	keyup_hook(int keycode, void *var)
 	if (ch == 'u')
 	{
 		g_keys.mouse = !g_keys.mouse;
-		if (g_keys.mouse)
-			mlx_mouse_hide(g_mlx, g_win);
-		else
-			mlx_mouse_show(g_mlx, g_win);
+		// if (g_keys.mouse)
+		// 	mlx_mouse_hide(g_mlx, g_win);
+		// else
+		// 	mlx_mouse_show(g_mlx, g_win);
 	}
 	if (ch == 83)
 		g_keys.right = 0;
@@ -184,8 +184,8 @@ void	ft_init(void)
 int mouse_hook(void *param)
 {
 	(void)param;
-	int x;
-	int y;
+	int x = 10;
+	int y = 10;
 
 	if (g_keys.mouse)
 	{
@@ -210,7 +210,6 @@ int	main(int arg_c, char *arg_v[])
 	mlx_hook(g_win, on_destroy, 0, close_window, NULL);
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
 	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);
-	mlx_mouse_hook(g_win, mouse_hook, NULL);
 	mlx_loop_hook(g_mlx, render_game, NULL);
 	mlx_loop(g_mlx);
 	ft_free_all();
