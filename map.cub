@@ -1,6 +1,6 @@
-NO textures/wall_north.xpm
+NO textures/wall_north2.xpm
 
-SO textures/wall_south.xpm
+SO textures/wall_south2.xpm
 
 WE textures/wall_west.xpm
 
@@ -11,9 +11,9 @@ DO textures/door2.xpm
 DC textures/door.xpm
 
 
-C 30,30,200
+C 30,30,100
 
-F 225,225,225
+F 100,100,100
 
 
 

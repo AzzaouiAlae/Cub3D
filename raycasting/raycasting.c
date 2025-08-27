@@ -272,11 +272,11 @@ void render_walls(t_end_point p, int i)
 	t_data *img;
 
 	img = get_img(p.side);
-    int length = (g_height * TILESIZE) / p.distance;
-	double tile_x = p.end.y - floor(p.end.y / TILESIZE) * TILESIZE;
+    int length = (g_height * (double)TILESIZE) / p.distance;
+	double tile_x = p.end.y - floor(p.end.y / (double)TILESIZE) * (double)TILESIZE;
 	if (p.side == north || p.side == south)
-		tile_x = p.end.x - floor(p.end.x / TILESIZE) * TILESIZE;
-	img_start.x = (img->img_width / TILESIZE) * tile_x;
+		tile_x = p.end.x - floor(p.end.x / (double)TILESIZE) * (double)TILESIZE;
+	img_start.x = (img->img_width / (double)TILESIZE) * tile_x;
 	img_start.y = (g_height - length) / 2;
 	if (img_start.y > 0)
 		img_start.y = 0;
@@ -284,7 +284,7 @@ void render_walls(t_end_point p, int i)
 		img_start.y = fabs(img_start.y) * ((double)img->img_height / (double)length);
     if (length > g_height)
         length = g_height;
-    draw_line(i, (g_height - length) / 2, length, img_start, (g_height * TILESIZE) / p.distance, p);
+    draw_line(i, (g_height - length) / 2, length, img_start, (g_height * (double)TILESIZE) / p.distance, p);
 }
 
 void	cast_all_rays()
