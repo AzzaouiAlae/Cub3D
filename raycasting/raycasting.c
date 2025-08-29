@@ -62,15 +62,16 @@ void check_door(t_point p, double dist)
 		save_door_info(p.x, p.y, dist);
 }
 
-t_side get_side(t_point p, t_point start,char inter)
+t_side get_side(t_point p, t_point start,char inter, t_side *type)
 {
 	t_pos_type res;
 
+	*type = north;
 	res = check_pos(p.x, p.y);
 	if (res == e_opened_gate)
-		return open_door;
+		*type = open_door;
 	else if (res == e_closed_gate)
-		return close_door;
+		*type = close_door;
 	if (inter == 'x')
 	{
 		if (p.x > start.x)
@@ -110,7 +111,7 @@ t_end_point x_intersections(t_point start, double angle)
 		p.end.y += p.delta_dist.y;
 	}
 	p.distance = ph_distance(start, p.end);
-	p.side = get_side(p.end, start, 'x');
+	p.side = get_side(p.end, start, 'x', &p.type);
 	return (p);
 }
 
@@ -136,7 +137,7 @@ t_end_point y_intersections(t_point start, double angle)
 		p.end.y += p.delta_dist.y;
 	}
 	p.distance = ph_distance(start, p.end);
-	p.side = get_side(p.end, start, 'y');
+	p.side = get_side(p.end, start, 'y', &p.type);
 	return (p);
 }
 
@@ -152,18 +153,18 @@ t_end_point raycaster(t_point start, double angle)
 	return (point_y);
 }
 
-t_data *get_img(t_side side)
+t_data *get_img(t_side side, t_side type)
 {
+	if (type == open_door)
+		return g_info.open_door;
+	if (type == close_door)
+		return g_info.close_door;
 	if (side == east)
 		return g_info.east;
 	if (side == west)
 		return g_info.west;
 	if (side == north)
 		return g_info.north;
-	if (side == open_door)
-		return g_info.open_door;
-	if (side == close_door)
-		return g_info.close_door;
 	return g_info.south;
 }
 
@@ -240,7 +241,7 @@ void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_p
 	t_data *img;
 
 	i = 0;
-	img = get_img(p.side);
+	img = get_img(p.side, p.type);
 	ofst = (img->img_height / orginal_l);
 	while (i < y)
 	{
@@ -271,7 +272,7 @@ void render_walls(t_end_point p, int i)
     t_point img_start;
 	t_data *img;
 
-	img = get_img(p.side);
+	img = get_img(p.side, p.type);
     int length = (g_height * TILESIZE) / p.distance;
 	double tile_x = p.end.y - floor(p.end.y / TILESIZE) * TILESIZE;
 	if (p.side == north || p.side == south)
