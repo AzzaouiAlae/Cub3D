@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:04 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/08/30 11:36:27 by aabouriz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,10 +248,12 @@ bool	check_map(t_list *map, t_player *player)
 {
 	int		i;
 	int		j;
+	int		pcounter;
 	t_str	**lines;
 
 	i = 0;
 	lines = map->content;
+	pcounter = 0;
 	while (lines[i])
 	{
 		j = 0;
@@ -267,11 +269,16 @@ bool	check_map(t_list *map, t_player *player)
 				player->map_pos.x = j;
 				player->map_pos.y = i;
 				init_player(player, lines[i]->content[j]);
+				pcounter++;
+				if (pcounter > 1)
+					return (false);
 			}
 			j++;
 		}
 		i++;
 	}
+	if (pcounter < 1)
+		return (false);
 	return true;
 }
 

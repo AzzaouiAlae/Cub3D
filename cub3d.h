@@ -19,12 +19,12 @@
 # define MAP_MARGIN_X 50.0
 # define MAP_MARGIN_Y 40.0
 # define MAP_BORDER_SIZE 1.0
-# define TILESIZE 16.0
+# define TILESIZE 40.0
 # define PLAYER_SPEED 120.0
 # define M_PI 3.14159265358979323846
 # define ANGLE_SPEED 160.0
 # define FOV 60.0
-# define SAFETY 2
+# define SAFETY 4
 # define DPI 0.08
 # define DARKNESS (TILESIZE * 25)
 #define C_F_DARKNES 0
