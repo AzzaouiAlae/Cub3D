@@ -7,7 +7,7 @@
 			"request": "launch",
 			"program": "${workspaceFolder}/cub3D.out",
 			"args": [
-				"map3.cub"
+				"map.cub"
 			],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
