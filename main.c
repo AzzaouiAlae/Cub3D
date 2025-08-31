@@ -75,8 +75,8 @@ int	render_game(void *pram)
 	map_game();
 	cast_all_rays();
 	mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
-	mlx_put_image_to_window(g_mlx, g_win, g_map_img.img, MAP_MARGIN_X,
-		MAP_MARGIN_Y);
+	// mlx_put_image_to_window(g_mlx, g_win, g_map_img.img, MAP_MARGIN_X,
+	// 	MAP_MARGIN_Y);
 	return (0);
 }
 
