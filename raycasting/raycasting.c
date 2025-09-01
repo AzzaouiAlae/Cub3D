@@ -160,7 +160,7 @@ t_data *get_img(t_side side, t_side type)
 	if (type == close_door)
 		return g_info.close_door;
 	if (side == east)
-		return g_info.east;
+		return ((t_data **)(g_info.list_east->content))[0];
 	if (side == west)
 		return g_info.west;
 	if (side == north)

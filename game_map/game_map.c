@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/30 11:36:27 by aabouriz         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:43:07 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ bool	set_img(char *str, t_data **img)
 	return true;
 }
 
-bool	try_set_info(char **strs, t_info *info)
+bool	parce_single_img(char **strs, t_info *info)
 {
 	if (!ft_strncmp(strs[0], "NO", 3))
 		return set_img(strs[1], &(info->north));
@@ -156,6 +156,57 @@ bool	try_set_info(char **strs, t_info *info)
 	return false;
 }
 
+bool	set_img_list(char *path, t_list **imgs)
+{
+	t_str *str;
+	t_data *img;
+
+	str = str_new();
+	*imgs = list_new(sizeof(t_data *));
+	str_add(str, path);
+	str_add(str, "/img_00.xpm");
+	while (true)
+	{
+		str->content[str->count - 5]++;
+		if (str->content[str->count - 5] > '9')
+		{
+			str->content[str->count - 5] = '0';
+			str->content[str->count - 6]++;
+		}
+		if (access(str->content, R_OK) )
+			break;
+		img = create_image(str->content);
+		if (img == NULL)
+			return false;
+		list_add(*imgs, (long)img);
+		if (str->content[str->count - 6] == '9'
+			&& str->content[str->count - 5] == '9')
+			break;
+	}
+	return true;
+}
+
+bool parce_img_list(char **strs, t_info *info)
+{
+	if (!ft_strncmp(strs[0], "NO", 3))
+		return set_img_list(strs[1], &(info->list_north));
+	else if (!ft_strncmp(strs[0], "SO", 3))
+		return set_img_list(strs[1], &(info->list_south));
+	else if (!ft_strncmp(strs[0], "WE", 3))
+		return set_img_list(strs[1], &(info->list_west));
+	else if (!ft_strncmp(strs[0], "EA", 3))
+		return set_img_list(strs[1], &(info->list_east));
+	else if (!ft_strncmp(strs[0], "DO", 3))
+		return set_img_list(strs[1], &(info->list_open_door));
+	else if (!ft_strncmp(strs[0], "DC", 3))
+		return set_img_list(strs[1], &(info->list_close_door));
+	if (!ft_strncmp(strs[0], "F", 2))
+		return set_colors(strs[1], &(info->floor_color));
+	if (!ft_strncmp(strs[0], "C", 2))
+		return set_colors(strs[1], &(info->ceil_color));
+	return false;
+}
+
 bool	try_parse_info(t_list *str_info, t_info *info)
 {
 	int		i;
@@ -167,8 +218,16 @@ bool	try_parse_info(t_list *str_info, t_info *info)
 	while (lines[i])
 	{
 		strs = ft_super_split(lines[i]->content, " ", "");
-		if (try_set_info(strs, info) == false)
-			return false;
+		if (file_extension(strs[1], ".xpm"))
+		{
+			if (parce_single_img(strs, info) == false)
+				return false;
+		}
+		else
+		{
+			if (parce_img_list(strs, info) == false)
+				return false;
+		}
 		i++;
 	}
 	return true;

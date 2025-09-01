@@ -22,6 +22,12 @@ typedef struct s_info
 	t_data				*east;
 	t_data 				*close_door;
 	t_data 				*open_door;
+	t_list				*list_north;
+	t_list				*list_south;
+	t_list				*list_west;
+	t_list				*list_east;
+	t_list 				*list_close_door;
+	t_list 				*list_open_door;
 	int					floor_color;
 	int					ceil_color;
 }						t_info;

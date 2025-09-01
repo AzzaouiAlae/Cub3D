@@ -109,8 +109,6 @@ void open_close_door()
 		the_map[g_door_info.row]->content[g_door_info.col] = 'D';
 }
 
-
-
 void move_player()
 {
 	g_old_time = g_time;
@@ -138,13 +136,3 @@ void move_player()
 		open_close_door();
 
 }
-
-/*
-time;
-old_time;
-sec
-player_speed
-
-(sec / (time - old_time)) / player_speed;
-
-*/
