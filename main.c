@@ -224,7 +224,7 @@ int	main(int arg_c, char *arg_v[])
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
 	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);
 	mlx_loop_hook(g_mlx, render_game, NULL);
-	play_video("media/intro1.mp4");
+	// play_video("media/intro1.mp4");
 	mlx_loop(g_mlx);
 	ft_free_all();
 }
