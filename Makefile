@@ -16,31 +16,26 @@ OBJ =  main.o \
 		list/list_add.o	list/list_contains.o	list/list_delete.o	list/list_insert.o	list/list_new.o	list/list_resize.o \
 		map_game/map_game.o player/player.o raycasting/raycasting.o imgs/imgs.o
 
-CC = cc -Wall -Wextra #-Werror
+CC = cc -Wall -Wextra -Werror
 NAME=cub3D.out
 f = -fsanitize=address
-# -Ivlc_mlx/
-#-Wall -Wextra -Werror
 CFLAGS= -I/usr/include -I. -Imlx_linux -Imap_game -Iplayer -g3 #-O3
 mlx = -Lmlx_linux -lmlx_Linux -L/usr/lib -L. -Imlx_linux -Imap_game -lXext -lX11 -lm -lz
-# mlx_vlc
-all :  $(NAME)
 
-# vlc_mlx/libvlcmlx.a
+all : mlx_vlc $(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) $(mlx)  -o $(NAME)
+	$(CC) $(OBJ) $(mlx) vlc_mlx/libvlcmlx -o $(NAME)
 
-# mlx_vlc :
-# 	@$(MAKE) -C vlc_mlx
+mlx_vlc:
+	@$(MAKE) -C vlc_mlx
 
-
-# -C vlc_mlx
 clean :
+	@$(MAKE) clean -C vlc_mlx
 	rm -fr $(OBJ) $(vlc_OBJ) 
 
-#-C vlc_mlx
 fclean : clean
+	@$(MAKE) fclean -C vlc_mlx
 	rm -fr $(NAME)
 
 re : fclean $(all)

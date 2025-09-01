@@ -1,6 +1,8 @@
 #include "player.h"
 #include "../map_game/map_game.h"
 
+int g_audio_index;
+
 double ph_distance(t_point p1, t_point p2)
 {
 	return (sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2)));
@@ -109,11 +111,27 @@ void open_close_door()
 		the_map[g_door_info.row]->content[g_door_info.col] = 'D';
 }
 
+void media_walking()
+{
+	if (g_audio_index > 2)
+		g_audio_index = 0;
+	set_play_speed(100);
+	if (g_audio_index == 0)
+		play_audio("media/walking1.mp3");
+	else if (g_audio_index == 1)
+		play_audio("media/walking2.mp3");
+	else if (g_audio_index == 2)
+		play_audio("media/walking3.mp3");
+	g_audio_index++;
+}
+
 void move_player()
 {
 	g_old_time = g_time;
 	g_time = get_curr_time();
 	calculate_player_speed();
+	if (g_keys.w || g_keys.d || g_keys.a || g_keys.s)
+		media_walking();
 	if (g_keys.w)
 		player_walk(g_player.angle, g_player.move_speed);
 	if (g_keys.d)
@@ -134,5 +152,4 @@ void move_player()
 	}
 	if (g_keys.o == 1)
 		open_close_door();
-
 }

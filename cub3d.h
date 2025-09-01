@@ -12,6 +12,7 @@
 # include <mlx.h>
 # include <stdbool.h>
 # include <unistd.h>
+#include "vlc_mlx/vlc_mlx.h"
 
 
 # define MAP_HEIGHT 200.0

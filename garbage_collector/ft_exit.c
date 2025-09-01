@@ -20,6 +20,7 @@ void	ft_exit(int num)
 	mlx_destroy_image(g_mlx, g_map_img.img);
 	mlx_destroy_window(g_mlx, g_win);
 	mlx_destroy_display(g_mlx);
+	exit_clear_vlc();
 	free(g_mlx);
 	ft_free_all();
 	exit(num);

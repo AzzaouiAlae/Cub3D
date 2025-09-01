@@ -70,14 +70,25 @@ t_data	*create_image(char *relative_path)
 int	render_game(void *pram)
 {
 	(void)pram;
-	mouse_hook(NULL);
-	move_player();
-	map_game();
-	
-	cast_all_rays();
-	mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
-	// mlx_put_image_to_window(g_mlx, g_win, g_map_img.img, MAP_MARGIN_X,
-	// 	MAP_MARGIN_Y);
+	if (new_frame())
+    {
+        copy_frame(&g_win_img, g_width, g_height);
+        mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
+    }
+	else if (!should_play_video())
+    {
+		mouse_hook(NULL);
+		move_player();
+		map_game();
+		cast_all_rays();
+		mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
+		// mlx_put_image_to_window(g_mlx, g_win, g_map_img.img, MAP_MARGIN_X,
+		// 	MAP_MARGIN_Y);
+	}
+    if (should_clean_vlc())
+	{
+        clear_vlc();
+	}
 	return (0);
 }
 
@@ -180,6 +191,7 @@ void	ft_init(void)
 			&(g_map_img.endian));
 	g_map = list_new(sizeof(t_str *));
 	g_time = get_curr_time();
+	init_flags();
 }
 
 int mouse_hook(void *param)
@@ -212,6 +224,7 @@ int	main(int arg_c, char *arg_v[])
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
 	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);
 	mlx_loop_hook(g_mlx, render_game, NULL);
+	play_video("media/intro1.mp4");
 	mlx_loop(g_mlx);
 	ft_free_all();
 }
