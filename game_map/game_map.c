@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/09/01 14:43:07 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/09/01 16:55:51 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,16 @@ bool	parce_single_img(char **strs, t_info *info)
 	return false;
 }
 
+void add_one_to_str(t_str *str)
+{
+	str->content[str->count - 5]++;
+	if (str->content[str->count - 5] > '9')
+	{
+		str->content[str->count - 5] = '0';
+		str->content[str->count - 6]++;
+	}
+}
+
 bool	set_img_list(char *path, t_list **imgs)
 {
 	t_str *str;
@@ -167,13 +177,8 @@ bool	set_img_list(char *path, t_list **imgs)
 	str_add(str, "/img_00.xpm");
 	while (true)
 	{
-		str->content[str->count - 5]++;
-		if (str->content[str->count - 5] > '9')
-		{
-			str->content[str->count - 5] = '0';
-			str->content[str->count - 6]++;
-		}
-		if (access(str->content, R_OK) )
+		add_one_to_str(str);
+		if (access(str->content, R_OK))
 			break;
 		img = create_image(str->content);
 		if (img == NULL)
@@ -183,7 +188,7 @@ bool	set_img_list(char *path, t_list **imgs)
 			&& str->content[str->count - 5] == '9')
 			break;
 	}
-	return true;
+	return ((*imgs)->count > 0);
 }
 
 bool parce_img_list(char **strs, t_info *info)

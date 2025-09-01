@@ -1,5 +1,6 @@
 #include "raycasting.h"
 #include "../map_game/map_game.h"
+#include "../imgs/imgs.h"
 
 t_door g_door_info;
 
@@ -156,16 +157,16 @@ t_end_point raycaster(t_point start, double angle)
 t_data *get_img(t_side side, t_side type)
 {
 	if (type == open_door)
-		return g_info.open_door;
+		return get_open_door_img();
 	if (type == close_door)
-		return g_info.close_door;
+		return get_close_door_img();
 	if (side == east)
-		return ((t_data **)(g_info.list_east->content))[0];
+		return (get_east_img());
 	if (side == west)
-		return g_info.west;
+		return get_west_img();
 	if (side == north)
-		return g_info.north;
-	return g_info.south;
+		return get_north_img();
+	return get_south_img();
 }
 
 int darkness_effect(int color, double dist)

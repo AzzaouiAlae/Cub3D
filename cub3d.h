@@ -86,4 +86,5 @@ size_t				get_curr_time(void);
 void	normalize_angle(double *angle);
 int mouse_hook(void *param);
 
+
 #endif

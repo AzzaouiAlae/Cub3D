@@ -1,0 +1,198 @@
+# vlc\_mlx
+
+A small, easy-to-use wrapper that integrates VLC media playback with `mlx`.
+`vlc_mlx` lets you render video frames and play audio inside an `mlx` application via a minimal, flag-driven API.
+
+---
+
+## Features
+
+* Play video with audio while rendering frames into an `mlx` image.
+* Play standalone audio files and control playback speed.
+* Simple flag-based API for easy integration into a game loop.
+* Explicit init / cleanup functions to avoid leaking resources.
+
+---
+
+## Requirements
+
+* `mlx` (MiniLibX)
+
+---
+
+## Quick start
+
+Include the header:
+
+```c
+#include "vlc_mlx/vlc_mlx.h"
+```
+
+Initialize flags before using the library:
+
+```c
+init_flags();
+```
+
+Start playback:
+
+```c
+play_video("media/intro1.mp4");   // plays video + audio, provides frames to render
+play_audio("sfx/footstep.wav");   // plays an audio file
+set_play_speed(150);              // 100 == normal speed, 150 == 1.5x
+```
+
+When your program is about to exit, free all library resources:
+
+```c
+exit_clear_vlc();
+```
+
+---
+
+## Public API
+
+```c
+void    init_flags(void);                                // Must be called first before using vlc_mlx
+void    play_video(char *file);                          // Plays a video with audio and provides its frames.
+                                                        // Use should_play_video() and new_frame() to check playback status and frame availability.
+                                                        // Use copy_frame() or copy_resized_frame() to copy the frame into a t_data image.
+                                                        // After playback, call should_clean_vlc() and clear_vlc() to clean up.
+void    play_audio(char *file);                          // Plays an audio file
+void    set_play_speed(int speed);                       // Sets playback speed (100 = normal, 200 = double, etc.)
+bool    played_audio(void);                              // Returns true if an audio file is currently playing
+bool    should_play_video(void);                         // Returns true if a video is currently playing
+bool    should_clean_vlc(void);                          // Returns true if vlc_mlx needs cleanup after playing a video
+bool    new_frame(void);                                 // Returns true if a new frame is available
+void    copy_frame(void *data_img, size_t img_w, size_t img_h);          
+                                                        // Copies the current frame into a t_data image
+void    copy_resized_frame(void *dt, size_t img_w, size_t img_h);  
+                                                        // Copies and resizes the current frame into a t_data image
+void	copy_start_end_frame(void *data)                // Copies and resizes the current frame into a t_data image
+                                                        // with void set_frame_start_end you set the start, end of the frame in the image
+void	set_frame_start_end(int start_x, int start_y, int end_x, int end_y);
+                                                        // set start and end of the frame to use it with function copy_start_end_frame
+void    clear_vlc(void);                                 // Cleans up vlc_mlx after video playback
+size_t  video_h(void);                                   // Returns the current video height
+size_t  video_w(void);                                   // Returns the current video width
+void    exit_clear_vlc(void);                            // Cleans up vlc_mlx before exiting the program
+int     play_speed(void);                                // Returns the current playback speed set by set_play_speed()
+```
+
+**Notes**
+
+* `play_video()` plays the video and its audio track and makes frames available via `new_frame()`/`copy_frame()`.
+* `copy_frame()` copies the current frame into your `mlx` image buffer. Use `video_w()` / `video_h()` to query frame size.
+* `copy_resized_frame()` can be used when destination buffer dimensions differ from the source.
+* `should_clean_vlc()` becomes true when playback finishes; call `clear_vlc()` to free playback resources.
+* `set_play_speed(int speed)` expects an integer where `100` is normal speed (e.g. `150` == 1.5×).
+
+---
+
+## Example integration
+
+```c
+int render_game(void *param)
+{
+    (void)param;
+
+    if (new_frame())
+    {
+        // copy latest video frame into your mlx image and present it
+        copy_frame(&g_win_img, 1920, 1080);
+        mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
+    }
+    else if (!should_play_video())
+    {
+        // normal game rendering & logic
+        set_play_speed(150); // example: 1.5x audio speed
+        play_audio(get_audio_file_name());
+    }
+
+    if (should_clean_vlc())
+        clear_vlc();
+
+    return 0;
+}
+
+int main(int argc, char **argv)
+{
+    (void)argc; (void)argv;
+
+    // initialize library flags and mlx
+    init_flags();
+    // ... create mlx context, window, and images ...
+
+    mlx_loop_hook(g_mlx, render_game, NULL);
+
+    // start playback (provides frames to the render loop)
+    play_video("media/intro1.mp4");
+
+    mlx_loop(g_mlx);
+
+    // final cleanup in case the loop exits
+    exit_clear_vlc();
+    return 0;
+}
+
+int close_window(void *param)
+{
+    (void)param;
+    exit_clear_vlc();
+    exit(0);
+    return 0;
+}
+```
+
+---
+
+## How to compile
+
+The repository builds `vlc_mlx` as a sub-target. Example `Makefile` snippet to compile your program and build the `vlc_mlx` static library first:
+
+```makefile
+NAME := my_app
+CC   := cc
+CFLAGS := -Wall -Wextra -Werror 
+
+SRCS := main.c game.c ...
+OBJ  := $(SRCS:.c=.o)
+
+all: mlx_vlc $(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) vlc_mlx/libvlcmlx -o $(NAME)
+
+mlx_vlc:
+	@$(MAKE) -C vlc_mlx
+
+clean :
+	@$(MAKE) clean -C vlc_mlx
+	rm -fr $(OBJ)
+
+fclean : clean
+	@$(MAKE) fclean -C vlc_mlx
+	rm -fr $(NAME)
+
+```
+
+**Notes & tips**
+
+* Ensure `vlc_mlx/libvlcmlx` is built before linking your binary (the `mlx_vlc` target handles this).
+
+---
+
+## Tips & integration notes
+
+* Call `init_flags()` once before starting playback.
+* Use `new_frame()` to detect when `copy_frame()` has fresh frame data to render.
+* Always call `exit_clear_vlc()` for final cleanup before terminating the program.
+* Use `should_clean_vlc()` + `clear_vlc()` to free playback resources immediately after a playback finishes.
+
+---
+
+## Contributing
+
+Contributions, bug reports, and feature requests are welcome. Please open an issue or submit a pull request with a clear description and a minimal reproduction case when possible.
+
+---
