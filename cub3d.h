@@ -26,7 +26,7 @@
 # define FOV 60.0
 # define SAFETY 4
 # define DPI 0.08
-# define DARKNESS (TILESIZE * 25)
+# define DARKNESS (TILESIZE * 15)
 #define C_F_DARKNES 0
 
 typedef enum e_side
