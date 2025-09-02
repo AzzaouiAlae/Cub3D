@@ -64,6 +64,7 @@ bool is_open_gate(int x, int y)
 	return check_pos(g_player.pixl_pos.x + x, g_player.pixl_pos.y + y) == e_opened_gate;
 }
 
+
 void player_walk(double angle, double speed)
 {
 	t_point dir;
@@ -82,6 +83,8 @@ void player_walk(double angle, double speed)
 			pos.y = dir.y * (TILESIZE + SAFETY * 3);
 			if (is_valid_move(pos.x, pos.y))
 			{
+				play_video("media/gate4.mp4");
+				g_gate_video = true;
 				g_player.pixl_pos.x += pos.x;
 				g_player.pixl_pos.y += pos.y;
 				break;

@@ -19,7 +19,7 @@ OBJ =  main.o \
 CC = cc -Wall -Wextra -Werror
 NAME=cub3D.out
 f = -fsanitize=address
-CFLAGS= -I/usr/include -I. -Imlx_linux -Imap_game -Iplayer -O3  # -g3
+CFLAGS= -I/usr/include -I. -Imlx_linux -Imap_game -Iplayer -g3   # -O3
 mlx = -Lmlx_linux -lmlx_Linux -L/usr/lib -L. -Imlx_linux -Imap_game -lXext -lX11 -lm -lz
 
 all : mlx_vlc $(NAME)

@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include "../cub3d.h"
 #include <stdbool.h>
+#include <unistd.h>
 
 void draw_circle(t_data *img, t_point p, int r, int color);
 void move_player();
