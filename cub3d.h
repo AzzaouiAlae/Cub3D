@@ -6,14 +6,13 @@
 # include "global.h"
 # include "list/list.h"
 # include "map/map.h"
-# include "string/string.h"
 # include "player/player.h"
+# include "string/string.h"
+# include "vlc_mlx/vlc_mlx.h"
 # include <math.h>
 # include <mlx.h>
 # include <stdbool.h>
 # include <unistd.h>
-#include "vlc_mlx/vlc_mlx.h"
-
 
 # define MAP_HEIGHT 200.0
 # define MAP_W 300.0
@@ -28,7 +27,7 @@
 # define SAFETY 4
 # define DPI 0.08
 # define DARKNESS (TILESIZE * 15)
-#define C_F_DARKNES 0
+# define C_F_DARKNES 0
 
 typedef enum e_side
 {
@@ -78,14 +77,14 @@ typedef struct s_color
 void				my_mlx_put_pixel(t_data *data, int x, int y, int color);
 unsigned int		my_mlx_get_pixel(t_data *data, int x, int y);
 t_data				*create_image(char *relative_path);
-double ph_distance(t_point p1, t_point p2);
+double				ph_distance(t_point p1, t_point p2);
 int					keyup_hook(int keycode, void *var);
 int					keydown_hook(int keycode, void *var);
 int					close_window(void *param);
 int					render_game(void *pram);
 size_t				get_curr_time(void);
-void	normalize_angle(double *angle);
-int mouse_hook(void *param);
-
+void				normalize_angle(double *angle);
+int					mouse_hook(void *param);
+void				gate_effect_video(void);
 
 #endif

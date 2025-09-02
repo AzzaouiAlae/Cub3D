@@ -17,6 +17,6 @@ void				read_info(int fd, t_list *info);
 int					check_info(t_list *str_info);
 bool				try_parse_info(t_list *str_info, t_info *info);
 bool				read_map(t_list *map, int fd);
-bool	check_map(t_list *map, t_player *player);
+bool				check_map(t_list *map, t_player *player);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 19:02:47 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/09/01 16:55:51 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/09/02 15:10:17 by aabouriz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,11 @@ int	choose_flag(t_str *line, char flags)
 		return (16);
 	if (!ft_strncmp(line->content, "C ", 2) && !(flags & 32) && line->count > 8)
 		return (32);
-	if (!ft_strncmp(line->content, "DO ", 3) && !(flags & 64) && line->count > 8)
+	if (!ft_strncmp(line->content, "DO ", 3) && !(flags & 64)
+		&& line->count > 8)
 		return (64);
-	if (!ft_strncmp(line->content, "DC ", 3) && !(flags & 128) && line->count > 8)
+	if (!ft_strncmp(line->content, "DC ", 3) && !(flags & 128)
+		&& line->count > 8)
 		return (128);
 	return (0);
 }
@@ -74,9 +76,9 @@ int	choose_flag(t_str *line, char flags)
 int	check_info(t_list *info)
 {
 	unsigned char	flags;
-	int		i;
-	t_str	**lines;
-	int		result;
+	int				i;
+	t_str			**lines;
+	int				result;
 
 	if (info->count != 8)
 		return (0);
@@ -119,44 +121,44 @@ bool	set_colors(char *str, int *color)
 	if (len != 3)
 		return (false);
 	if (set_color(&(clr[2]), strs[0]) == false)
-		return false;
+		return (false);
 	if (set_color(&(clr[1]), strs[1]) == false)
-		return false;
+		return (false);
 	if (set_color(&(clr[0]), strs[2]) == false)
-		return false;
-	return true;
+		return (false);
+	return (true);
 }
 
 bool	set_img(char *str, t_data **img)
 {
 	*img = create_image(str);
 	if (*img == NULL)
-		return false;
-	return true;
+		return (false);
+	return (true);
 }
 
 bool	parce_single_img(char **strs, t_info *info)
 {
 	if (!ft_strncmp(strs[0], "NO", 3))
-		return set_img(strs[1], &(info->north));
+		return (set_img(strs[1], &(info->north)));
 	else if (!ft_strncmp(strs[0], "SO", 3))
-		return set_img(strs[1], &(info->south));
+		return (set_img(strs[1], &(info->south)));
 	else if (!ft_strncmp(strs[0], "WE", 3))
-		return set_img(strs[1], &(info->west));
+		return (set_img(strs[1], &(info->west)));
 	else if (!ft_strncmp(strs[0], "EA", 3))
-		return set_img(strs[1], &(info->east));
+		return (set_img(strs[1], &(info->east)));
 	else if (!ft_strncmp(strs[0], "DO", 3))
-		return set_img(strs[1], &(info->open_door));
+		return (set_img(strs[1], &(info->open_door)));
 	else if (!ft_strncmp(strs[0], "DC", 3))
-		return set_img(strs[1], &(info->close_door));
+		return (set_img(strs[1], &(info->close_door)));
 	if (!ft_strncmp(strs[0], "F", 2))
-		return set_colors(strs[1], &(info->floor_color));
+		return (set_colors(strs[1], &(info->floor_color)));
 	if (!ft_strncmp(strs[0], "C", 2))
-		return set_colors(strs[1], &(info->ceil_color));
-	return false;
+		return (set_colors(strs[1], &(info->ceil_color)));
+	return (false);
 }
 
-void add_one_to_str(t_str *str)
+void	add_one_to_str(t_str *str)
 {
 	str->content[str->count - 5]++;
 	if (str->content[str->count - 5] > '9')
@@ -168,8 +170,8 @@ void add_one_to_str(t_str *str)
 
 bool	set_img_list(char *path, t_list **imgs)
 {
-	t_str *str;
-	t_data *img;
+	t_str	*str;
+	t_data	*img;
 
 	str = str_new();
 	*imgs = list_new(sizeof(t_data *));
@@ -179,37 +181,37 @@ bool	set_img_list(char *path, t_list **imgs)
 	{
 		add_one_to_str(str);
 		if (access(str->content, R_OK))
-			break;
+			break ;
 		img = create_image(str->content);
 		if (img == NULL)
-			return false;
+			return (false);
 		list_add(*imgs, (long)img);
-		if (str->content[str->count - 6] == '9'
-			&& str->content[str->count - 5] == '9')
-			break;
+		if (str->content[str->count - 6] == '9' && str->content[str->count
+			- 5] == '9')
+			break ;
 	}
 	return ((*imgs)->count > 0);
 }
 
-bool parce_img_list(char **strs, t_info *info)
+bool	parce_img_list(char **strs, t_info *info)
 {
 	if (!ft_strncmp(strs[0], "NO", 3))
-		return set_img_list(strs[1], &(info->list_north));
+		return (set_img_list(strs[1], &(info->list_north)));
 	else if (!ft_strncmp(strs[0], "SO", 3))
-		return set_img_list(strs[1], &(info->list_south));
+		return (set_img_list(strs[1], &(info->list_south)));
 	else if (!ft_strncmp(strs[0], "WE", 3))
-		return set_img_list(strs[1], &(info->list_west));
+		return (set_img_list(strs[1], &(info->list_west)));
 	else if (!ft_strncmp(strs[0], "EA", 3))
-		return set_img_list(strs[1], &(info->list_east));
+		return (set_img_list(strs[1], &(info->list_east)));
 	else if (!ft_strncmp(strs[0], "DO", 3))
-		return set_img_list(strs[1], &(info->list_open_door));
+		return (set_img_list(strs[1], &(info->list_open_door)));
 	else if (!ft_strncmp(strs[0], "DC", 3))
-		return set_img_list(strs[1], &(info->list_close_door));
+		return (set_img_list(strs[1], &(info->list_close_door)));
 	if (!ft_strncmp(strs[0], "F", 2))
-		return set_colors(strs[1], &(info->floor_color));
+		return (set_colors(strs[1], &(info->floor_color)));
 	if (!ft_strncmp(strs[0], "C", 2))
-		return set_colors(strs[1], &(info->ceil_color));
-	return false;
+		return (set_colors(strs[1], &(info->ceil_color)));
+	return (false);
 }
 
 bool	try_parse_info(t_list *str_info, t_info *info)
@@ -226,16 +228,16 @@ bool	try_parse_info(t_list *str_info, t_info *info)
 		if (file_extension(strs[1], ".xpm"))
 		{
 			if (parce_single_img(strs, info) == false)
-				return false;
+				return (false);
 		}
 		else
 		{
 			if (parce_img_list(strs, info) == false)
-				return false;
+				return (false);
 		}
 		i++;
 	}
-	return true;
+	return (true);
 }
 
 t_str	*read_line(int fd, int skip_empty_line)
@@ -252,7 +254,7 @@ t_str	*read_line(int fd, int skip_empty_line)
 			break ;
 		str_add_char(line, ch);
 	}
-	return line;
+	return (line);
 }
 
 bool	read_map(t_list *map, int fd)
@@ -261,7 +263,7 @@ bool	read_map(t_list *map, int fd)
 
 	line = read_line(fd, 1);
 	if (line->count == 0)
-		return false;
+		return (false);
 	list_add(map, (long)line);
 	while (1)
 	{
@@ -272,8 +274,8 @@ bool	read_map(t_list *map, int fd)
 	}
 	line = read_line(fd, 1);
 	if (line->count || map->count < 3)
-		return false;
-	return true;
+		return (false);
+	return (true);
 }
 
 bool	check_map_tail(t_list *map, t_str **lines, int i, int j)
@@ -284,17 +286,17 @@ bool	check_map_tail(t_list *map, t_str **lines, int i, int j)
 	max_hiegh = map->count - 1;
 	max_width = lines[i]->count - 1;
 	if (i == 0 || max_hiegh <= i || j == 0 || max_width <= j)
-		return false;
+		return (false);
 	if (lines[i]->content[j + 1] == ' ' || lines[i]->content[j - 1] == ' ')
-		return false;
+		return (false);
 	if (lines[i - 1]->count - 1 < j || lines[i + 1]->count - 1 < j)
-		return false;
+		return (false);
 	if (lines[i - 1]->content[j] == ' ' || lines[i + 1]->content[j] == ' ')
-		return false;
-	return true;
+		return (false);
+	return (true);
 }
 
-void init_player(t_player *player, char ch)
+void	init_player(t_player *player, char ch)
 {
 	if (ch == 'N')
 		player->angle = 90;
@@ -324,10 +326,10 @@ bool	check_map(t_list *map, t_player *player)
 		while (lines[i]->count > j)
 		{
 			if (!ft_strchr("10NSEW D", lines[i]->content[j]))
-				return false;
-			if (!ft_strchr("1 ", lines[i]->content[j]) &&
-					!check_map_tail(map, lines, i, j))
-				return false;
+				return (false);
+			if (!ft_strchr("1 ", lines[i]->content[j]) && !check_map_tail(map,
+					lines, i, j))
+				return (false);
 			if (ft_strchr("NSEW", lines[i]->content[j]))
 			{
 				player->map_pos.x = j;
@@ -343,7 +345,7 @@ bool	check_map(t_list *map, t_player *player)
 	}
 	if (pcounter < 1)
 		return (false);
-	return true;
+	return (true);
 }
 
 t_game_map_status	game_map(char *filename, t_info *info)
@@ -353,18 +355,18 @@ t_game_map_status	game_map(char *filename, t_info *info)
 
 	str_info = list_new(sizeof(t_str *));
 	if (!file_extension(filename, ".cub"))
-		return err_file_extension;
+		return (err_file_extension);
 	fd = ft_open(filename, O_RDONLY, 0666);
 	if (fd == -1)
-		return err_open_file;
+		return (err_open_file);
 	read_info(fd, str_info);
 	if (check_info(str_info) != 255)
-		return err_invalid_info;
+		return (err_invalid_info);
 	if (try_parse_info(str_info, info) == false)
-		return err_invalid_info;
+		return (err_invalid_info);
 	if (read_map(g_map, fd) == false)
-		return err_invalid_map;
+		return (err_invalid_map);
 	if (check_map(g_map, &g_player) == false)
-		return err_invalid_map;
-	return ok;
+		return (err_invalid_map);
+	return (ok);
 }
