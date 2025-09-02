@@ -109,12 +109,15 @@ int	set_color(char *clr, char *str)
 	return (true);
 }
 
+
 bool	set_colors(char *str, int *color)
 {
 	char	*clr;
 	char	**strs;
 	int		len;
 
+	if (ft_count_char(str, ',') != 2)
+		return false;
 	clr = (char *)color;
 	strs = ft_super_split(str, ",", "");
 	len = ft_strslen(strs);
