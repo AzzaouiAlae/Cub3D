@@ -41,5 +41,6 @@ char		*ft_strrchr(const char *s, int c);
 void		ft_putstr_fd(int fd, char *s, int len);
 void		ft_close(int fd);
 int			ft_open(char *file_name, int flag, int perm);
+int ft_count_char(char *str, char ch);
 
 #endif
