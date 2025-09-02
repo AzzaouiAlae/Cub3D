@@ -12,6 +12,11 @@
 
 #include "ft_func.h"
 
+int	is_digit(char ch)
+{
+	return (ch >= '0' && ch <= '9');
+}
+
 int	is_valid_num(int num, long total)
 {
 	if (total > 0)

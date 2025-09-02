@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cpp_string.h                                       :+:      :+:    :+:   */
+/*   string.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oel-bann <oel-bann@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 22:23:03 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/05/08 05:36:06 by oel-bann         ###   ########.fr       */
+/*   Created: 2025/09/02 22:58:16 by aazzaoui          #+#    #+#             */
+/*   Updated: 2025/09/02 22:58:33 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CPP_STRING_H
-# define CPP_STRING_H
+#ifndef STRING_H
+# define STRING_H
 # include "../garbage_collector/garbage_collector.h"
 
 typedef struct s_str
@@ -29,10 +29,10 @@ void		str_insert_char(t_str *str, char value, int index);
 void		str_add_len(t_str *str, char *arr, int len);
 void		str_add(t_str *str, char *arr);
 void		str_add_char(t_str *str, char ch);
-t_str	*str_new_capacity(int capacity);
-t_str	*str_new(void);
+t_str		*str_new_capacity(int capacity);
+t_str		*str_new(void);
 void		str_delete_char(t_str *str, int index);
-t_str	*str_new_substitute(char *s);
+t_str		*str_new_substitute(char *s);
 void		str_clear(t_str *str);
 
 #endif

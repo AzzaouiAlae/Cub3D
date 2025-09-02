@@ -16,12 +16,12 @@
 void	ft_exit(int num)
 {
 	ft_destroy_all();
-	mlx_destroy_image(g_mlx, g_win_img.img);
-	mlx_destroy_image(g_mlx, g_map_img.img);
-	mlx_destroy_window(g_mlx, g_win);
-	mlx_destroy_display(g_mlx);
+	mlx_destroy_image(g_vars()->mlx, g_vars()->win_img.img);
+	mlx_destroy_image(g_vars()->mlx, g_vars()->map_img.img);
+	mlx_destroy_window(g_vars()->mlx, g_vars()->win);
+	mlx_destroy_display(g_vars()->mlx);
 	exit_clear_vlc();
-	free(g_mlx);
+	free(g_vars()->mlx);
 	ft_free_all();
 	exit(num);
 }

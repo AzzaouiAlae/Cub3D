@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 15:20:13 by aabouriz          #+#    #+#             */
-/*   Updated: 2025/09/02 16:47:09 by aabouriz         ###   ########.fr       */
+/*   Updated: 2025/09/02 23:04:52 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "game_parse/game_parse.h"
 #include "map_game/map_game.h"
 #include "raycasting/raycasting.h"
+
+t_global_vars	*g_vars(void)
+{
+	static t_global_vars	vars;
+
+	return (&vars);
+}
 
 int	mouse_hook(void *param)
 {
@@ -23,13 +30,14 @@ int	mouse_hook(void *param)
 	(void)param;
 	x = 10;
 	y = 10;
-	if (g_keys.mouse)
+	if (g_vars()->keys.mouse)
 	{
-		mlx_mouse_get_pos(g_mlx, g_win, &x, &y);
-		x = g_width / 2 - x;
-		g_player.angle += x * DPI;
-		mlx_mouse_move(g_mlx, g_win, g_width / 2, g_height / 2);
-		mlx_mouse_get_pos(g_mlx, g_win, &x, &y);
+		mlx_mouse_get_pos(g_vars()->mlx, g_vars()->win, &x, &y);
+		x = g_vars()->width / 2 - x;
+		g_vars()->player.angle += x * DPI;
+		mlx_mouse_move(g_vars()->mlx, g_vars()->win, g_vars()->width / 2,
+			g_vars()->height / 2);
+		mlx_mouse_get_pos(g_vars()->mlx, g_vars()->win, &x, &y);
 	}
 	return (0);
 }
@@ -41,30 +49,30 @@ int	keyup_hook(int keycode, void *var)
 	(void)var;
 	ch = (char)keycode;
 	if (ch == 'w')
-		g_keys.w = 0;
+		g_vars()->keys.w = 0;
 	if (ch == 'd')
-		g_keys.d = 0;
+		g_vars()->keys.d = 0;
 	if (ch == 'a')
-		g_keys.a = 0;
+		g_vars()->keys.a = 0;
 	if (ch == 's')
-		g_keys.s = 0;
-	if (g_keys.o == 2 && ch == 'o')
-		g_keys.o = 0;
+		g_vars()->keys.s = 0;
+	if (g_vars()->keys.o == 2 && ch == 'o')
+		g_vars()->keys.o = 0;
 	if (ch == 'u')
 	{
-		g_keys.mouse = !g_keys.mouse;
+		g_vars()->keys.mouse = !g_vars()->keys.mouse;
 	}
 	if (ch == 83)
-		g_keys.right = 0;
+		g_vars()->keys.right = 0;
 	if (ch == 81)
-		g_keys.left = 0;
+		g_vars()->keys.left = 0;
 	return (0);
 }
 
-// if (g_keys.mouse)
-// 	mlx_mouse_hide(g_mlx, g_win);
+// if (g_vars()->keys.mouse)
+// 	mlx_mouse_hide(g_vars()->mlx, g_vars()->win);
 // else
-// 	mlx_mouse_show(g_mlx, g_win);
+// 	mlx_mouse_show(g_vars()->mlx, g_vars()->win);
 
 int	keydown_hook(int keycode, void *var)
 {
@@ -76,19 +84,19 @@ int	keydown_hook(int keycode, void *var)
 	if (keycode == 65307)
 		ft_exit(0);
 	if (ch == 'w')
-		g_keys.w = 1;
+		g_vars()->keys.w = 1;
 	if (ch == 'd')
-		g_keys.d = 1;
+		g_vars()->keys.d = 1;
 	if (ch == 'a')
-		g_keys.a = 1;
+		g_vars()->keys.a = 1;
 	if (ch == 's')
-		g_keys.s = 1;
-	if (!g_keys.o && ch == 'o')
-		g_keys.o = 1;
+		g_vars()->keys.s = 1;
+	if (!g_vars()->keys.o && ch == 'o')
+		g_vars()->keys.o = 1;
 	if (ch == 83)
-		g_keys.right = 1;
+		g_vars()->keys.right = 1;
 	if (ch == 81)
-		g_keys.left = 1;
+		g_vars()->keys.left = 1;
 	return (0);
 }
 
@@ -96,34 +104,5 @@ int	close_window(void *param)
 {
 	(void)param;
 	ft_exit(0);
-	return (0);
-}
-
-int	render_game(void *pram)
-{
-	(void)pram;
-	if (new_frame())
-	{
-		if (g_gate_video)
-			gate_effect_video();
-		else
-			copy_resized_frame(&g_win_img, g_width, g_height - 70);
-		mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
-	}
-	else if (!should_play_video())
-	{
-		mouse_hook(NULL);
-		move_player();
-		map_game();
-		if (!g_gate_video)
-			cast_all_rays();
-		mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
-		mlx_put_image_to_window(g_mlx, g_win, g_map_img.img, MAP_MARGIN_X,
-			MAP_MARGIN_Y);
-	}
-	if (should_clean_vlc())
-	{
-		clear_vlc();
-	}
 	return (0);
 }

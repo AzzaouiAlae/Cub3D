@@ -23,6 +23,17 @@
         "raycasting.h": "c",
         "player.h": "c",
         "imgs.h": "c",
-        "game_parse.h": "c"
+        "game_parse.h": "c",
+        "vlc_mlx_init.h": "c",
+        "unistd.h": "c",
+        "fcntl.h": "c",
+        "stdlib.h": "c",
+        "string_view": "c",
+        "chrono": "c",
+        "istream": "c",
+        "ostream": "c",
+        "sstream": "c",
+        "streambuf": "c",
+        "ratio": "c"
     }
 }

@@ -33,8 +33,8 @@ void					ft_free(void *mem);
 void					add_mem(t_mem_list *node);
 void					save_mem(void *mem);
 void					ft_bzero(void *mem, size_t size);
-t_mem_list	**ft_img_list(void);
-void	ft_destroy_all(void);
-void	save_img(void *mem);
+t_mem_list				**ft_img_list(void);
+void					ft_destroy_all(void);
+void					save_img(void *mem);
 
 #endif

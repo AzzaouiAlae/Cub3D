@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 23:05:11 by aazzaoui          #+#    #+#             */
+/*   Updated: 2025/09/02 23:06:23 by aazzaoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -11,9 +23,8 @@
 # include <math.h>
 # include <mlx.h>
 # include <stdbool.h>
+# include <sys/time.h>
 # include <unistd.h>
-#include <sys/time.h>
-
 
 # define MAP_HEIGHT 200.0
 # define MAP_W 300.0
@@ -21,13 +32,13 @@
 # define MAP_MARGIN_Y 40.0
 # define MAP_BORDER_SIZE 1.0
 # define TILESIZE 40.0
-# define PLAYER_SPEED (TILESIZE * 3)
+# define PLAYER_SPEED 120.0
 # define M_PI 3.14159265358979323846
 # define ANGLE_SPEED 160.0
 # define FOV 60.0
 # define SAFETY 4
 # define DPI 0.08
-# define DARKNESS (TILESIZE * 15)
+# define DARKNESS 600
 # define C_F_DARKNES 0
 
 typedef enum e_side
@@ -87,5 +98,7 @@ size_t				get_curr_time(void);
 void				normalize_angle(double *angle);
 int					mouse_hook(void *param);
 void				gate_effect_video(void);
+t_global_vars		*g_vars(void);
+void				render_video(void);
 
 #endif

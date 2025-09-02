@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "garbage_collector.h"
 #include "../cub3d.h"
+#include "garbage_collector.h"
 
 void	ft_free_all(void)
 {
@@ -87,11 +87,10 @@ void	ft_destroy_all(void)
 	{
 		tmp = *list;
 		*list = (*list)->next;
-		mlx_destroy_image(g_mlx, tmp->mem);
+		mlx_destroy_image(g_vars()->mlx, tmp->mem);
 		free(tmp);
 	}
 	mem = current_working_mem(NULL, 0);
 	free(mem);
 	current_working_mem(NULL, 1);
 }
- 

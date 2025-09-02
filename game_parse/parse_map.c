@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 22:19:16 by aazzaoui          #+#    #+#             */
+/*   Updated: 2025/09/02 22:19:19 by aazzaoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "game_parse.h"
 
 bool	read_map(t_list *map, int fd)
@@ -6,7 +18,7 @@ bool	read_map(t_list *map, int fd)
 
 	line = read_line(fd, 1);
 	if (line->count == 0)
-		return false;
+		return (false);
 	list_add(map, (long)line);
 	while (1)
 	{
@@ -17,8 +29,8 @@ bool	read_map(t_list *map, int fd)
 	}
 	line = read_line(fd, 1);
 	if (line->count || map->count < 3)
-		return false;
-	return true;
+		return (false);
+	return (true);
 }
 
 bool	check_map_tail(t_list *map, t_str **lines, int i, int j)
@@ -29,25 +41,25 @@ bool	check_map_tail(t_list *map, t_str **lines, int i, int j)
 	max_hiegh = map->count - 1;
 	max_width = lines[i]->count - 1;
 	if (i == 0 || max_hiegh <= i || j == 0 || max_width <= j)
-		return false;
+		return (false);
 	if (lines[i]->content[j + 1] == ' ' || lines[i]->content[j - 1] == ' ')
-		return false;
+		return (false);
 	if (lines[i - 1]->count - 1 < j || lines[i + 1]->count - 1 < j)
-		return false;
+		return (false);
 	if (lines[i - 1]->content[j] == ' ' || lines[i + 1]->content[j] == ' ')
-		return false;
-	return true;
+		return (false);
+	return (true);
 }
 
-bool init_player(t_player *player, char ch, int i, int j)
+bool	init_player(t_player *player, char ch, int i, int j)
 {
-	static int		count;
+	static int	count;
 
 	if (count)
-		return false;
+		return (false);
 	count++;
 	if (ch == 'c')
-		return true;
+		return (true);
 	if (ch == 'N')
 		player->angle = 90;
 	else if (ch == 'S')
@@ -77,13 +89,13 @@ bool	check_map(t_list *map, t_player *player)
 		while (lines[i]->count > j)
 		{
 			if (!ft_strchr("10NSEW D", lines[i]->content[j]))
-				return false;
-			if (!ft_strchr("1 ", lines[i]->content[j]) &&
-					!check_map_tail(map, lines, i, j))
-				return false;
-			if (ft_strchr("NSEW", lines[i]->content[j])
-				&& init_player(player, lines[i]->content[j], i, j) == false)
-				return false;
+				return (false);
+			if (!ft_strchr("1 ", lines[i]->content[j]) && !check_map_tail(map,
+					lines, i, j))
+				return (false);
+			if (ft_strchr("NSEW", lines[i]->content[j]) && init_player(player,
+					lines[i]->content[j], i, j) == false)
+				return (false);
 			j++;
 		}
 		i++;

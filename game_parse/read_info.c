@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_info.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 22:20:23 by aazzaoui          #+#    #+#             */
+/*   Updated: 2025/09/02 22:20:25 by aazzaoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "game_parse.h"
 
 int	file_extension(char *filename, char *extension)
@@ -52,9 +64,11 @@ int	choose_flag(t_str *line, char flags)
 		return (16);
 	if (!ft_strncmp(line->content, "C ", 2) && !(flags & 32) && line->count > 8)
 		return (32);
-	if (!ft_strncmp(line->content, "DO ", 3) && !(flags & 64) && line->count > 8)
+	if (!ft_strncmp(line->content, "DO ", 3) && !(flags & 64)
+		&& line->count > 8)
 		return (64);
-	if (!ft_strncmp(line->content, "DC ", 3) && !(flags & 128) && line->count > 8)
+	if (!ft_strncmp(line->content, "DC ", 3) && !(flags & 128)
+		&& line->count > 8)
 		return (128);
 	return (0);
 }
@@ -62,9 +76,9 @@ int	choose_flag(t_str *line, char flags)
 int	check_info(t_list *info)
 {
 	unsigned char	flags;
-	int		i;
-	t_str	**lines;
-	int		result;
+	int				i;
+	t_str			**lines;
+	int				result;
 
 	if (info->count != 8)
 		return (0);

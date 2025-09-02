@@ -99,8 +99,8 @@ int render_game(void *param)
     if (new_frame())
     {
         // copy latest video frame into your mlx image and present it
-        copy_frame(&g_win_img, 1920, 1080);
-        mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
+        copy_frame(&g_vars()->win_img, 1920, 1080);
+        mlx_put_image_to_window(g_vars()->mlx, g_vars()->win, g_vars()->win_img.img, 0, 0);
     }
     else if (!should_play_video())
     {
@@ -123,12 +123,12 @@ int main(int argc, char **argv)
     init_flags();
     // ... create mlx context, window, and images ...
 
-    mlx_loop_hook(g_mlx, render_game, NULL);
+    mlx_loop_hook(g_vars()->mlx, render_game, NULL);
 
     // start playback (provides frames to the render loop)
     play_video("media/intro1.mp4");
 
-    mlx_loop(g_mlx);
+    mlx_loop(g_vars()->mlx);
 
     // final cleanup in case the loop exits
     exit_clear_vlc();

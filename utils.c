@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 16:48:15 by aabouriz          #+#    #+#             */
-/*   Updated: 2025/09/02 16:48:34 by aabouriz         ###   ########.fr       */
+/*   Updated: 2025/09/02 23:07:17 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ t_data	*create_image(char *relative_path)
 	t_data	*data;
 
 	data = ft_calloc(1, sizeof(t_data));
-	data->img = mlx_xpm_file_to_image(g_mlx, relative_path, &(data->img_width),
-			&(data->img_height));
+	data->img = mlx_xpm_file_to_image(g_vars()->mlx, relative_path,
+			&(data->img_width), &(data->img_height));
 	if (!(data->img))
 		return (NULL);
 	save_img(data->img);

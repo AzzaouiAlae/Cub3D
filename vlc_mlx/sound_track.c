@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 14:37:21 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/09/02 14:37:22 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/09/02 22:20:31 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	play_sound_track(void)
 	len = 0;
 	while (files_name && files_name[len])
 		len++;
+	if (!file_exists(files_name[i]))
+		return ;
 	if (!len)
 		return ;
 	if (exec_sound_track(files_name[i]))

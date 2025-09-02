@@ -27,19 +27,3 @@ char	*ft_strchr(const char *s, int c)
 		return (&((char *)s)[i]);
 	return (0);
 }
-
-char	*str_find_char(const char *s, char *sep)
-{
-	int		i;
-	char	*str;
-
-	i = 0;
-	while (s[i])
-	{
-		str = ft_strchr(sep, s[i]);
-		if (str)
-			return (&(((char *)s)[i]));
-		i++;
-	}
-	return (0);
-}
