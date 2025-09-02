@@ -1,43 +1,22 @@
-#include "raycasting.h"
-#include "../map_game/map_game.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 17:51:37 by aabouriz          #+#    #+#             */
+/*   Updated: 2025/09/02 18:03:35 by aabouriz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../imgs/imgs.h"
+#include "../map_game/map_game.h"
+#include "raycasting.h"
 
-t_door g_door_info;
+t_door		g_door_info;
 
-bool is_valid_ray(int x, int y)
-{
-	return check_pos(x, y) == e_empty;
-}
-
-bool in_range(double start, double end, double num)
-{
-	return (start <= num && end >= num);
-}
-
-double	my_tan(double angle, char inter)
-{
-	if (inter == 'y')
-	{
-		if (!(angle > 0 && 180 > angle))
-		angle = 180 - angle;
-	}
-	else if (inter == 'x')
-	{
-		if ((angle <= 90 || 270 < angle))
-			angle = 180 - angle;
-	}
-	normalize_angle(&angle);
-	if (angle == 0)
-		angle = 0.0001;
-	return (tan(angle * (M_PI / 180)));
-}
-
-double my_cos(float alpha)
-{
-    return (cos(alpha * (float)(M_PI / 180)));
-}
-
-void save_door_info(int x, int y, double dist)
+void	save_door_info(int x, int y, double dist)
 {
 	if (dist < g_door_info.dist || !g_door_info.dist)
 	{
@@ -47,25 +26,25 @@ void save_door_info(int x, int y, double dist)
 	}
 }
 
-void reset_door_info()
+void	reset_door_info(void)
 {
 	g_door_info.col = 0;
 	g_door_info.row = 0;
 	g_door_info.dist = 0;
 }
 
-void check_door(t_point p, double dist)
+void	check_door(t_point p, double dist)
 {
-	t_pos_type res;
+	t_pos_type	res;
 
 	res = check_pos(p.x, p.y);
 	if (res == e_opened_gate || res == e_closed_gate)
 		save_door_info(p.x, p.y, dist);
 }
 
-t_side get_side(t_point p, t_point start,char inter, t_side *type)
+t_side	get_side(t_point p, t_point start, char inter, t_side *type)
 {
-	t_pos_type res;
+	t_pos_type	res;
 
 	*type = north;
 	res = check_pos(p.x, p.y);
@@ -76,23 +55,23 @@ t_side get_side(t_point p, t_point start,char inter, t_side *type)
 	if (inter == 'x')
 	{
 		if (p.x > start.x)
-			return east;
+			return (east);
 		else
-			return west;
+			return (west);
 	}
 	else if (inter == 'y')
 	{
 		if (p.y < start.y)
-			return south;
+			return (south);
 		else
-			return north;
+			return (north);
 	}
-	return north;
+	return (north);
 }
 
-t_end_point x_intersections(t_point start, double angle)
+t_end_point	x_intersections(t_point start, double angle)
 {
-	t_end_point p;
+	t_end_point	p;
 
 	if (!(in_range(0, 90, angle) || in_range(270, 360, angle)))
 	{
@@ -116,9 +95,9 @@ t_end_point x_intersections(t_point start, double angle)
 	return (p);
 }
 
-t_end_point y_intersections(t_point start, double angle)
+t_end_point	y_intersections(t_point start, double angle)
 {
-	t_end_point p;
+	t_end_point	p;
 
 	if (in_range(0, 180, angle))
 	{
@@ -142,10 +121,10 @@ t_end_point y_intersections(t_point start, double angle)
 	return (p);
 }
 
-t_end_point raycaster(t_point start, double angle)
+t_end_point	raycaster(t_point start, double angle)
 {
-	t_end_point point_x;
-	t_end_point point_y;
+	t_end_point	point_x;
+	t_end_point	point_y;
 
 	point_x = x_intersections(start, angle);
 	point_y = y_intersections(start, angle);
@@ -154,147 +133,25 @@ t_end_point raycaster(t_point start, double angle)
 	return (point_y);
 }
 
-t_data *get_img(t_side side, t_side type)
+t_data	*get_img(t_side side, t_side type)
 {
 	if (type == open_door)
-		return get_open_door_img();
+		return (get_open_door_img());
 	if (type == close_door)
-		return get_close_door_img();
+		return (get_close_door_img());
 	if (side == east)
 		return (get_east_img());
 	if (side == west)
-		return get_west_img();
+		return (get_west_img());
 	if (side == north)
-		return get_north_img();
-	return get_south_img();
+		return (get_north_img());
+	return (get_south_img());
 }
 
-int darkness_effect(int color, double dist)
+void	draw_player_dir(double angle, double dir_dist, t_point start)
 {
-	t_color c;
-	int res;
-
-	c = *((t_color *)(&color));
-	res = (255.0 / (double)DARKNESS) * dist;
-	if (res > c.b)
-		c.b = 0;
-	else
-		c.b -= res;
-	if (res > c.r)
-		c.r = 0;
-	else
-		c.r -= res;
-	if (res > c.g)
-		c.g = 0;
-	else
-		c.g -= res;
-	return (*(int *)&c);
-}
-int darkness_effect_ceil(int color, double dist)
-{
-	t_color c;
-	int res;
-
-	c = *((t_color *)(&color));
-	res = (255.0 / (540 + C_F_DARKNES)) * dist;
-	if (res > c.b)
-		c.b = 0;
-	else
-		c.b -= res;
-	if (res > c.r)
-		c.r = 0;
-	else
-		c.r -= res;
-	if (res > c.g)
-		c.g = 0;
-	else
-		c.g -= res;
-	return (*(int *)&c);
-}
-
-int darkness_effect_floor(int color, double dist)
-{
-	t_color c;
-	int res;
-
-	c = *((t_color *)(&color));
-	res = (255.0 / (540 + C_F_DARKNES)) * (g_height - dist);
-	if (res > c.b)
-		c.b = 0;
-	else
-		c.b -= res;
-	if (res > c.r)
-		c.r = 0;
-	else
-		c.r -= res;
-	if (res > c.g)
-		c.g = 0;
-	else
-		c.g -= res;
-	return (*(int *)&c);
-}
-
-void draw_line(int x, int y, int l, t_point img_start, double orginal_l, t_end_point p)
-{
-	int i;
-	int color;
-	double ofst;
-	t_data *img;
-
-	i = 0;
-	img = get_img(p.side, p.type);
-	ofst = (img->img_height / orginal_l);
-	while (i < y)
-	{
-		color = darkness_effect_ceil(g_info.ceil_color, i);
-		my_mlx_put_pixel(&g_win_img, x, i, color);
-		i++;
-	}
-	i = 0;
-	while(i < l && y + i < g_height)
-	{
-		color = my_mlx_get_pixel(img, round(img_start.x), round(img_start.y));
-		color = darkness_effect(color, p.distance);
-		my_mlx_put_pixel(&g_win_img, x, y + i, color);
-		img_start.y += ofst;
-		i++;
-	}
-	y += i;
-	while (y < g_height)
-	{
-		color = darkness_effect_floor(g_info.floor_color, y);
-		my_mlx_put_pixel(&g_win_img, x, y, color);
-		y++;
-	}
-}
-
-void render_walls(t_end_point p, int i)
-{
-    t_point img_start;
-	t_data *img;
-
-	img = get_img(p.side, p.type);
-    int length = (g_height * TILESIZE) / p.distance;
-	double tile_x = p.end.y - floor(p.end.y / TILESIZE) * TILESIZE;
-	if (p.side == north || p.side == south)
-		tile_x = p.end.x - floor(p.end.x / TILESIZE) * TILESIZE;
-	if (p.side == north || p.side == west)
-		tile_x = TILESIZE - tile_x;
-	img_start.x = ((double)img->img_width / TILESIZE) * tile_x;
-	img_start.y = (g_height - length) / 2;
-	if (img_start.y > 0)
-		img_start.y = 0;
-	else
-		img_start.y = fabs(img_start.y) * ((double)img->img_height / (double)length);
-    if (length > g_height)
-        length = g_height;
-    draw_line(i, (g_height - length) / 2, length, img_start, (g_height * (double)TILESIZE) / p.distance, p);
-}
-
-void draw_player_dir(double angle, double dir_dist, t_point	start)
-{
-	t_point dir;
-	t_point pos;
+	t_point	dir;
+	t_point	pos;
 
 	normalize_angle(&angle);
 	dir.x = cos(angle * M_PI / 180);
@@ -303,25 +160,26 @@ void draw_player_dir(double angle, double dir_dist, t_point	start)
 	pos.y = dir.y + g_player.pixl_pos.y;
 	while (ph_distance(g_player.pixl_pos, pos) < dir_dist)
 	{
-		my_mlx_put_pixel(&g_map_img, pos.x - start.x, pos.y - start.y, 0xff0000);
+		my_mlx_put_pixel(&g_map_img, pos.x - start.x, pos.y - start.y,
+			0xff0000);
 		pos.x += dir.x;
 		pos.y += dir.y;
 	}
 }
 
-void	cast_all_rays()
+void	cast_all_rays(void)
 {
-	double	dpr;
-	double angle;
-	double real_alpha;
-	t_end_point p;
-	int i;
+	double		dpr;
+	double		angle;
+	double		real_alpha;
+	t_end_point	p;
+	int			i;
 	t_line		map_pos;
 	t_point		start;
 
 	i = 0;
 	dpr = FOV / g_width;
-	angle =  g_player.angle + (FOV / 2);
+	angle = g_player.angle + (FOV / 2);
 	real_alpha = 30;
 	init_map_pos(&map_pos, &start);
 	reset_door_info();
