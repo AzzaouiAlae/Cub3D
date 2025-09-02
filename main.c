@@ -3,6 +3,7 @@
 #include "map_game/map_game.h"
 #include "raycasting/raycasting.h"
 
+bool g_gate_video;
 void			*g_mlx;
 void			*g_win;
 t_list			*g_map;
@@ -67,20 +68,67 @@ t_data	*create_image(char *relative_path)
 	return (data);
 }
 
+void init_gate_video(t_line *vdo_brd, t_point *step)
+{
+	step->x = ((g_width / 2) / 10);
+	step->y = ((g_height / 2) / 10); 
+	vdo_brd->start.x = (g_width / 2) - step->x;
+	vdo_brd->start.y = (g_height / 2) - step->x;
+	vdo_brd->end.x = (g_width / 2) + step->x;
+	vdo_brd->end.y = (g_height / 2) + step->x;
+}
+
+void gate_effect_video()
+{
+	static int first_time = 1;
+	static t_line vdo_brd;
+	static t_point step;
+	
+	if (first_time)
+		init_gate_video(&vdo_brd, &step);
+	if (vdo_brd.start.x > 0 && vdo_brd.start.y > 0
+		&& vdo_brd.end.x < g_width && g_height > vdo_brd.end.y)
+	{
+		first_time = 0;
+		set_frame_start_end(vdo_brd.start.x, vdo_brd.start.y, vdo_brd.end.x, vdo_brd.end.y);
+		copy_start_end_frame(&g_win_img);
+		vdo_brd.start.x -= step.x;
+		vdo_brd.start.y -= step.y;
+		vdo_brd.end.x += step.x;
+		vdo_brd.end.y += step.y;
+	}
+	else
+	{
+		first_time = 1;
+		g_gate_video = false;
+	}
+}
+
 int	render_game(void *pram)
 {
 	(void)pram;
 	if (new_frame())
+<<<<<<< HEAD
 	{
 		copy_frame(&g_win_img, g_width, g_height);
 		mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
 	}
+=======
+    {
+		if (g_gate_video)
+			gate_effect_video();
+		else
+        	copy_frame(&g_win_img, g_width, g_height);
+        mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
+    }
+>>>>>>> 35bdff1ff30819c48744749ee18ba5260f71cd10
 	else if (!should_play_video())
 	{
 		mouse_hook(NULL);
 		move_player();
 		map_game();
-		cast_all_rays();
+		if (!g_gate_video)
+			cast_all_rays();
 		mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
 		mlx_put_image_to_window(g_mlx, g_win, g_map_img.img, MAP_MARGIN_X,
 			MAP_MARGIN_Y);

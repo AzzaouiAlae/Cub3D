@@ -85,5 +85,6 @@ extern struct timeval old_time;
 extern struct timeval g_cur_time;
 extern size_t g_time;
 extern size_t g_old_time;
+extern bool g_gate_video;
 
 #endif
