@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vlc_mlx.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 18:46:36 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/08/26 18:46:38 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/09/02 12:20:57 by aabouriz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ void	exit_clear_vlc(void);
 int		play_speed(void);
 void	set_frame_start_end(int start_x, int start_y, int end_x, int end_y);
 void	copy_start_end_frame(void *data);
+void	sound_track(char **files);
 
 #endif

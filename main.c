@@ -71,7 +71,7 @@ t_data	*create_image(char *relative_path)
 void init_gate_video(t_line *vdo_brd, t_point *step)
 {
 	step->x = ((g_width / 2) / 10);
-	step->y = ((g_height / 2) / 10); 
+	step->y = ((g_height / 2) / 10);
 	vdo_brd->start.x = (g_width / 2) - step->x;
 	vdo_brd->start.y = (g_height / 2) - step->x;
 	vdo_brd->end.x = (g_width / 2) + step->x;
@@ -83,7 +83,7 @@ void gate_effect_video()
 	static int first_time = 1;
 	static t_line vdo_brd;
 	static t_point step;
-	
+
 	if (first_time)
 		init_gate_video(&vdo_brd, &step);
 	if (vdo_brd.start.x > 0 && vdo_brd.start.y > 0
@@ -108,20 +108,13 @@ int	render_game(void *pram)
 {
 	(void)pram;
 	if (new_frame())
-<<<<<<< HEAD
-	{
-		copy_frame(&g_win_img, g_width, g_height);
-		mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
-	}
-=======
     {
 		if (g_gate_video)
 			gate_effect_video();
 		else
-        	copy_frame(&g_win_img, g_width, g_height);
+        	copy_resized_frame(&g_win_img, g_width, g_height - 70);
         mlx_put_image_to_window(g_mlx, g_win, g_win_img.img, 0, 0);
     }
->>>>>>> 35bdff1ff30819c48744749ee18ba5260f71cd10
 	else if (!should_play_video())
 	{
 		mouse_hook(NULL);
@@ -272,7 +265,7 @@ int	main(int arg_c, char *arg_v[])
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
 	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);
 	mlx_loop_hook(g_mlx, render_game, NULL);
-	play_video("media/intro.mp4");
+	// play_video("media/blasphemous_intro.mp4");
 	mlx_loop(g_mlx);
 	ft_free_all();
 }

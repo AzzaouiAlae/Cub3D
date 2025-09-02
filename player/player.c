@@ -83,7 +83,7 @@ void player_walk(double angle, double speed)
 			pos.y = dir.y * (TILESIZE + SAFETY * 3);
 			if (is_valid_move(pos.x, pos.y))
 			{
-				play_video("media/gate4.mp4");
+				play_video("media/gate5.mp4");
 				g_gate_video = true;
 				g_player.pixl_pos.x += pos.x;
 				g_player.pixl_pos.y += pos.y;
