@@ -5,7 +5,6 @@
 # include "garbage_collector/garbage_collector.h"
 # include "global.h"
 # include "list/list.h"
-# include "map/map.h"
 # include "string/string.h"
 # include "player/player.h"
 # include <math.h>
@@ -13,6 +12,7 @@
 # include <stdbool.h>
 # include <unistd.h>
 #include "vlc_mlx/vlc_mlx.h"
+
 
 
 # define MAP_HEIGHT 200.0

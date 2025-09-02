@@ -1,44 +1,7 @@
 #include "player.h"
 #include "../map_game/map_game.h"
 
-int g_audio_index;
-
-double ph_distance(t_point p1, t_point p2)
-{
-	return (sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2)));
-}
-
-void draw_circle(t_data *img, t_point p, int r, int color)
-{
-	t_line circle_bor;
-	double x;
-
-	circle_bor.start.x = p.x - r;
-	circle_bor.start.y = p.y - r;
-	circle_bor.end.x = p.x + r;
-	circle_bor.end.y = p.y + r;
-	while(circle_bor.start.y <= circle_bor.end.y)
-	{
-		x = circle_bor.start.x;
-		while(x <= circle_bor.end.x)
-		{
-			if (ph_distance(p, (t_point){x, circle_bor.start.y}) <= r)
-				my_mlx_put_pixel(img, x, circle_bor.start.y, color);
-			x++;
-		}
-		circle_bor.start.y++;
-	}
-}
-
-void calculate_player_speed()
-{
-	g_player.move_speed = (PLAYER_SPEED / (1000 * 1000)) * (g_time - g_old_time);
-	if (g_player.move_speed > PLAYER_SPEED)
-		g_player.move_speed = PLAYER_SPEED;
-	g_player.turn_speed = (ANGLE_SPEED / (1000 * 1000) * (g_time - g_old_time));
-	if (g_player.turn_speed > ANGLE_SPEED)
-		g_player.turn_speed = ANGLE_SPEED;
-}
+;
 
 bool is_valid_move(double x, double y)
 {
@@ -59,16 +22,9 @@ bool is_valid_move(double x, double y)
 	return true;
 }
 
-bool is_open_gate(int x, int y)
-{
-	return check_pos(g_player.pixl_pos.x + x, g_player.pixl_pos.y + y) == e_opened_gate;
-}
-
-
 void player_walk(double angle, double speed)
 {
 	t_point dir;
-	t_point pos;
 	int i;
 
 	i = 0;
@@ -79,16 +35,8 @@ void player_walk(double angle, double speed)
 	{
 		if (is_open_gate(dir.x * SAFETY * 2, dir.y * SAFETY * 2))
 		{
-			pos.x = dir.x * (TILESIZE + SAFETY * 3);
-			pos.y = dir.y * (TILESIZE + SAFETY * 3);
-			if (is_valid_move(pos.x, pos.y))
-			{
-				play_video("media/gate5.mp4");
-				g_gate_video = true;
-				g_player.pixl_pos.x += pos.x;
-				g_player.pixl_pos.y += pos.y;
+			if (is_teleportation_move(dir))
 				break;
-			}
 		}
 		if (is_valid_move(dir.x, 0))
 			g_player.pixl_pos.x += dir.x;
@@ -116,16 +64,18 @@ void open_close_door()
 
 void media_walking()
 {
-	if (g_audio_index > 2)
-		g_audio_index = 0;
+	static int audio_index;
+	
+	if (audio_index > 2)
+		audio_index = 0;
 	set_play_speed(100);
-	if (g_audio_index == 0)
+	if (audio_index == 0)
 		play_audio("media/walking1.mp3");
-	else if (g_audio_index == 1)
+	else if (audio_index == 1)
 		play_audio("media/walking2.mp3");
-	else if (g_audio_index == 2)
+	else if (audio_index == 2)
 		play_audio("media/walking3.mp3");
-	g_audio_index++;
+	audio_index++;
 }
 
 void move_player()

@@ -18,5 +18,6 @@ t_data *get_west_img();
 t_data *get_open_door_img();
 t_data *get_close_door_img();
 t_data *get_wall_img(t_list *list, t_data *data, int *i, long *old_time);
+int fps(bool set, int fps);
 
 #endif

@@ -12,11 +12,11 @@
 
 #ifndef FT_FUNC_H
 # define FT_FUNC_H
-# include "../map/map.h"
 # include "../string/string.h"
 # include "../garbage_collector/garbage_collector.h"
 # include <fcntl.h>
 # include <stdlib.h>
+#include <unistd.h>
 
 char		*ft_strchr(const char *s, int c);
 char		*ft_strdup(const char *s1);

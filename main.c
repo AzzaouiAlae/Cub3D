@@ -1,5 +1,5 @@
 #include "cub3d.h"
-#include "game_map/game_map.h"
+#include "game_parse/game_parse.h"
 #include "map_game/map_game.h"
 #include "raycasting/raycasting.h"
 
@@ -260,7 +260,7 @@ int	main(int arg_c, char *arg_v[])
 		exit(255);
 	}
 	ft_init();
-	hanle_parsing_error(game_map(arg_v[1], &g_info));
+	hanle_parsing_error(game_parse(arg_v[1], &g_info));
 	mlx_hook(g_win, on_destroy, 0, close_window, NULL);
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
 	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);

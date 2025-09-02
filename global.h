@@ -2,6 +2,7 @@
 # define GLOBAL_H
 # include <sys/time.h>
 # include <stdbool.h>
+#include "list/list.h"
 
 typedef struct s_data
 {

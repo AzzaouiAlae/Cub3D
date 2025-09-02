@@ -190,6 +190,7 @@ int darkness_effect(int color, double dist)
 		c.g -= res;
 	return (*(int *)&c);
 }
+
 int darkness_effect_ceil(int color, double dist)
 {
 	t_color c;

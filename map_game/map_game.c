@@ -2,7 +2,6 @@
 #include "../raycasting/raycasting.h"
 #include "../player/player.h"
 
-
 void	init_map_pos(t_line *map_pos, t_point *start)
 {
 	map_pos->start.x = g_player.pixl_pos.x - (MAP_W / 2);
