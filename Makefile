@@ -5,7 +5,7 @@ SRC = main.c \
 		garbage_collector/ft_calloc.c	garbage_collector/ft_save_mem.c	garbage_collector/mem_list.c	garbage_collector/ft_exit.c	garbage_collector/ft_free.c \
 		list/list_add.c	list/list_contains.c	list/list_delete.c	list/list_insert.c	list/list_new.c	list/list_resize.c \
 		map_game/map_game.c player/player.c raycasting/raycasting.c imgs/imgs.c imgs/door_imgs.c \
-		player/player_calc.c	player/player_teleportation_move.c
+		player/player_calc.c	player/player_teleportation_move.c raycasting/utils.c raycasting/walls.c hooks.c utils.c
 
 OBJ =  main.o \
   		ft_func/ft_count_char.o ft_func/ft_strchr.o ft_func/ft_atoi.o	ft_func/ft_close.o	ft_func/ft_itoa.o	ft_func/ft_memcpy.o	ft_func/ft_open.o	ft_func/ft_putstr_fd.o	ft_func/ft_split.o	ft_func/ft_strdup.o	ft_func/ft_strjoin.o	ft_func/ft_strlcat.o	ft_func/ft_strlen.o	ft_func/ft_strncmp.o	ft_func/ft_strnstr.o	ft_func/ft_substr.o \
@@ -14,7 +14,7 @@ OBJ =  main.o \
 		garbage_collector/ft_calloc.o	garbage_collector/ft_save_mem.o	garbage_collector/mem_list.o	garbage_collector/ft_exit.o	garbage_collector/ft_free.o \
 		list/list_add.o	list/list_contains.o	list/list_delete.o	list/list_insert.o	list/list_new.o	list/list_resize.o \
 		map_game/map_game.o player/player.o raycasting/raycasting.o imgs/imgs.o imgs/door_imgs.o \
-		player/player_calc.o	player/player_teleportation_move.o
+		player/player_calc.o	player/player_teleportation_move.o raycasting/utils.o raycasting/walls.o hooks.o utils.o
 
 CC = cc -Wall -Wextra -Werror
 NAME=cub3D.out
@@ -32,7 +32,7 @@ mlx_vlc:
 
 clean :
 	@$(MAKE) clean -C vlc_mlx
-	rm -fr $(OBJ) $(vlc_OBJ) 
+	rm -fr $(OBJ) $(vlc_OBJ)
 
 fclean : clean
 	@$(MAKE) fclean -C vlc_mlx

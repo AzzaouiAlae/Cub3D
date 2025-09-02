@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oel-bann <oel-bann@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 22:23:18 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/05/08 10:54:18 by oel-bann         ###   ########.fr       */
+/*   Updated: 2025/09/02 18:27:32 by aabouriz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_str	*ft_itoa(int num)
 {
-	long		n;
+	long	n;
 	t_str	*str;
 
 	n = num;

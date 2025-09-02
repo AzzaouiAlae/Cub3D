@@ -1,6 +1,5 @@
 #ifndef GLOBAL_H
 # define GLOBAL_H
-# include <sys/time.h>
 # include <stdbool.h>
 #include "list/list.h"
 
@@ -21,14 +20,14 @@ typedef struct s_info
 	t_data				*south;
 	t_data				*west;
 	t_data				*east;
-	t_data 				*close_door;
-	t_data 				*open_door;
+	t_data				*close_door;
+	t_data				*open_door;
 	t_list				*list_north;
 	t_list				*list_south;
 	t_list				*list_west;
 	t_list				*list_east;
-	t_list 				*list_close_door;
-	t_list 				*list_open_door;
+	t_list				*list_close_door;
+	t_list				*list_open_door;
 	int					floor_color;
 	int					ceil_color;
 }						t_info;
@@ -44,8 +43,8 @@ typedef struct s_player
 	t_point				pixl_pos;
 	t_point				map_pos;
 	double				angle;
-	double move_speed;
-	double turn_speed;
+	double				move_speed;
+	double				turn_speed;
 
 }						t_player;
 
@@ -61,12 +60,12 @@ typedef struct s_pressed_keys
 	bool				mouse;
 }						t_keys;
 
-
-typedef struct s_door {
-	int row;
-	int col;
-	double dist;
- } t_door;
+typedef struct s_door
+{
+	int					row;
+	int					col;
+	double				dist;
+}						t_door;
 
 extern t_list			*g_map;
 extern void				*g_mlx;
@@ -79,13 +78,13 @@ extern t_player			g_player;
 extern t_keys			g_keys;
 extern struct timeval	g_start_time;
 extern t_data			g_map_img;
-extern t_door g_door_info;
-extern struct timeval time;
-extern struct timeval old_time;
+extern t_door			g_door_info;
+extern struct timeval	time;
+extern struct timeval	old_time;
 
-extern struct timeval g_cur_time;
-extern size_t g_time;
-extern size_t g_old_time;
-extern bool g_gate_video;
+extern struct timeval	g_cur_time;
+extern size_t			g_time;
+extern size_t			g_old_time;
+extern bool				g_gate_video;
 
 #endif

@@ -21,6 +21,8 @@
         "random": "c",
         "functional": "c",
         "raycasting.h": "c",
-        "player.h": "c"
+        "player.h": "c",
+        "imgs.h": "c",
+        "game_parse.h": "c"
     }
 }

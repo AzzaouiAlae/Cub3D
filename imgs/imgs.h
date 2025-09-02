@@ -1,15 +1,14 @@
 #ifndef IMGS_H
-#define IMGS_H
-#include "../cub3d.h"
+# define IMGS_H
+# include "../cub3d.h"
 
-#define FPS 30
-#define E_FPS 10
-#define N_FPS 10
-#define S_FPS 10
-#define W_FPS 10
-#define O_FPS 25
-#define C_FPS 25
-
+# define FPS 30
+# define E_FPS 10
+# define N_FPS 10
+# define S_FPS 10
+# define W_FPS 10
+# define O_FPS 25
+# define C_FPS 25
 
 t_data *get_east_img();
 t_data *get_north_img();
