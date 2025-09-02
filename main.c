@@ -3,9 +3,9 @@
 #include "map_game/map_game.h"
 #include "raycasting/raycasting.h"
 
-bool g_gate_video;
-void			*g_mlx;
-void			*g_win;
+bool			g_gate_video;
+const void			*g_mlx;
+const void			*g_win;
 t_list			*g_map;
 t_info			g_info;
 t_data			g_win_img;
@@ -80,9 +80,9 @@ void init_gate_video(t_line *vdo_brd, t_point *step)
 
 void gate_effect_video()
 {
-	static int first_time = 1;
-	static t_line vdo_brd;
-	static t_point step;
+	static int		first_time = 1;
+	static t_line	vdo_brd;
+	static t_point	step;
 
 	if (first_time)
 		init_gate_video(&vdo_brd, &step);
@@ -185,10 +185,6 @@ int	keyup_hook(int keycode, void *var)
 	if (ch == 'u')
 	{
 		g_keys.mouse = !g_keys.mouse;
-		if (g_keys.mouse)
-			mlx_mouse_hide(g_mlx, g_win);
-		else
-			mlx_mouse_show(g_mlx, g_win);
 	}
 	if (ch == 83)
 		g_keys.right = 0;
@@ -196,6 +192,11 @@ int	keyup_hook(int keycode, void *var)
 		g_keys.left = 0;
 	return (0);
 }
+
+// if (g_keys.mouse)
+// 	mlx_mouse_hide(g_mlx, g_win);
+// else
+// 	mlx_mouse_show(g_mlx, g_win);
 
 void	hanle_parsing_error(t_game_map_status status)
 {
@@ -249,10 +250,10 @@ int mouse_hook(void *param)
 		mlx_mouse_move(g_mlx, g_win, g_width / 2, g_height / 2);
 		mlx_mouse_get_pos(g_mlx, g_win, &x, &y);
 	}
-	return 0;
+	return (0);
 }
 
-int	main(int arg_c, char *arg_v[])
+int	main(int arg_c, char **arg_v)
 {
 	if (arg_c != 2)
 	{
@@ -268,4 +269,6 @@ int	main(int arg_c, char *arg_v[])
 	// play_video("media/blasphemous_intro.mp4");
 	mlx_loop(g_mlx);
 	ft_free_all();
+
+	return (0);
 }
