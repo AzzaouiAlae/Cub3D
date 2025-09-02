@@ -5,7 +5,7 @@ SRC = main.c \
 		string/str_add.c	string/str_delete.c	string/str_insert.c	string/str_new.c	string/str_resize.c \
 		garbage_collector/ft_calloc.c	garbage_collector/ft_save_mem.c	garbage_collector/mem_list.c	garbage_collector/ft_exit.c	garbage_collector/ft_free.c \
 		list/list_add.c	list/list_contains.c	list/list_delete.c	list/list_insert.c	list/list_new.c	list/list_resize.c \
-		map_game/map_game.c player/player.c raycasting/raycasting.c imgs/imgs.c hooks.c utils.c
+		map_game/map_game.c player/player.c raycasting/raycasting.c raycasting/utils.c raycasting/walls.c imgs/imgs.c hooks.c utils.c
 
 OBJ =  main.o \
   		ft_func/ft_count_char.o ft_func/ft_strchr.o ft_func/ft_atoi.o	ft_func/ft_close.o	ft_func/ft_itoa.o	ft_func/ft_memcpy.o	ft_func/ft_open.o	ft_func/ft_putstr_fd.o	ft_func/ft_split.o	ft_func/ft_strdup.o	ft_func/ft_strjoin.o	ft_func/ft_strlcat.o	ft_func/ft_strlen.o	ft_func/ft_strncmp.o	ft_func/ft_strnstr.o	ft_func/ft_substr.o \
@@ -14,7 +14,7 @@ OBJ =  main.o \
 		string/str_add.o	string/str_delete.o	string/str_insert.o	string/str_new.o	string/str_resize.o \
 		garbage_collector/ft_calloc.o	garbage_collector/ft_save_mem.o	garbage_collector/mem_list.o	garbage_collector/ft_exit.o	garbage_collector/ft_free.o \
 		list/list_add.o	list/list_contains.o	list/list_delete.o	list/list_insert.o	list/list_new.o	list/list_resize.o \
-		map_game/map_game.o player/player.o raycasting/raycasting.o imgs/imgs.o hooks.o utils.o
+		map_game/map_game.o player/player.o raycasting/raycasting.o raycasting/utils.o raycasting/walls.o imgs/imgs.o hooks.o utils.o
 
 CC = cc -Wall -Wextra -Werror
 NAME=cub3D.out

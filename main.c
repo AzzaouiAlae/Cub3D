@@ -6,7 +6,7 @@
 /*   By: aabouriz <aabouriz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 17:12:23 by aabouriz          #+#    #+#             */
-/*   Updated: 2025/09/02 17:12:24 by aabouriz         ###   ########.fr       */
+/*   Updated: 2025/09/02 18:48:51 by aabouriz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	main(int arg_c, char **arg_v)
 	mlx_hook(g_win, on_keydown, 1L << 0, keydown_hook, NULL);
 	mlx_hook(g_win, on_keyup, 1L << 1, keyup_hook, NULL);
 	mlx_loop_hook(g_mlx, render_game, NULL);
-	sound_track((char *[]){"media/void2.mp3", 0});
-	play_video("media/blasphemous_intro.mp4");
+	sound_track((char *[]){"media/void2.mp", 0});
+	// play_video("media/blasphemous_intro.mp4");
 	mlx_loop(g_mlx);
 	ft_free_all();
 	return (0);
