@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 18:03:02 by aabouriz          #+#    #+#             */
-/*   Updated: 2025/09/02 22:47:23 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:30:29 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,68 +16,68 @@
 
 int	darkness_effect(int color, double dist)
 {
-	t_color	c;
+	t_color	*c;
 	int		res;
 
-	c = *((t_color *)(&color));
+	c = (t_color *)(&color);
 	res = (255.0 / (double)DARKNESS) * dist;
-	if (res > c.b)
-		c.b = 0;
+	if (res > c->b)
+		c->b = 0;
 	else
-		c.b -= res;
-	if (res > c.r)
-		c.r = 0;
+		c->b -= res;
+	if (res > c->r)
+		c->r = 0;
 	else
-		c.r -= res;
-	if (res > c.g)
-		c.g = 0;
+		c->r -= res;
+	if (res > c->g)
+		c->g = 0;
 	else
-		c.g -= res;
-	return (*(int *)&c);
+		c->g -= res;
+	return (c->r << 16 | c->g << 8 | c->b);
 }
 
 int	darkness_effect_ceil(int color, double dist)
 {
-	t_color	c;
+	t_color	*c;
 	int		res;
 
-	c = *((t_color *)(&color));
+	c = (t_color *)(&color);
 	res = (255.0 / (540 + C_F_DARKNES)) * dist;
-	if (res > c.b)
-		c.b = 0;
+	if (res > c->b)
+		c->b = 0;
 	else
-		c.b -= res;
-	if (res > c.r)
-		c.r = 0;
+		c->b -= res;
+	if (res > c->r)
+		c->r = 0;
 	else
-		c.r -= res;
-	if (res > c.g)
-		c.g = 0;
+		c->r -= res;
+	if (res > c->g)
+		c->g = 0;
 	else
-		c.g -= res;
-	return (*(int *)&c);
+		c->g -= res;
+	return (c->r << 16 | c->g << 8 | c->b);
 }
 
 int	darkness_effect_floor(int color, double dist)
 {
-	t_color	c;
+	t_color	*c;
 	int		res;
 
-	c = *((t_color *)(&color));
+	c = (t_color *)(&color);
 	res = (255.0 / (540 + C_F_DARKNES)) * (g_vars()->height - dist);
-	if (res > c.b)
-		c.b = 0;
+	if (res > c->b)
+		c->b = 0;
 	else
-		c.b -= res;
-	if (res > c.r)
-		c.r = 0;
+		c->b -= res;
+	if (res > c->r)
+		c->r = 0;
 	else
-		c.r -= res;
-	if (res > c.g)
-		c.g = 0;
+		c->r -= res;
+	if (res > c->g)
+		c->g = 0;
 	else
-		c.g -= res;
-	return (*(int *)&c);
+		c->g -= res;
+	return (c->r << 16 | c->g << 8 | c->b);
 }
 
 void	draw_line(t_draw_line data)

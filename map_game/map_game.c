@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 22:50:41 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/09/02 22:53:53 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:25:36 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	get_pos_color(t_pos_type pos_type)
 {
 	t_color	color;
 
+	color = (t_color){0, 0, 0, 0};
 	if (pos_type == e_wall)
 		color = (t_color){0, 0, 255, 0};
 	else if (pos_type == e_empty)
@@ -62,7 +63,7 @@ int	get_pos_color(t_pos_type pos_type)
 		color = (t_color){120, 120, 120, 0};
 	else if (pos_type == e_opened_gate)
 		color = (t_color){255, 0, 0, 0};
-	return (*((int *)&(color)));
+	return (color.r << 16 | color.g << 8 | color.b);
 }
 
 int	get_color(int x, int y, t_line map_pos, t_pos_type pos_type)
