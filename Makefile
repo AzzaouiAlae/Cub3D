@@ -19,10 +19,9 @@ OBJ =  main.o \
 		ft_func/ft_memcpy.o	ft_func/ft_open.o	ft_func/ft_putstr_fd.o	ft_func/ft_strdup.o	ft_func/ft_strlen.o	ft_func/ft_strncmp.o \
 
 CC = cc
-NAME=cub3D.out
+NAME=cub3D
 f = -fsanitize=address
-#-Werror
-CFLAGS= -Wall -Wextra -O3
+CFLAGS= -Wall -Wextra -Werror -O3
 mlx = -lmlx_Linux -lXext -lX11 -lm
 
 all : mlx_vlc $(NAME)
@@ -41,6 +40,6 @@ fclean : clean
 	@$(MAKE) fclean -C vlc_mlx
 	rm -fr $(NAME)
 
-re : fclean $(all)
+re : fclean all
 
 .PHONY: all clean fclean re bonus
