@@ -40,23 +40,18 @@ int	ft_atoi(const char *str, int *error)
 {
 	int		i;
 	long	total;
-	int		sign;
+	int		first_time;
 	int		num;
 
 	i = 0;
 	total = 0;
-	sign = 1;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	first_time = 1;
+	*error = 1;
+	while (is_digit(str[i]) && (first_time || !(*error)) && total <= 255)
 	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (is_digit(str[i]))
-	{
-		num = (str[i] - '0') * sign;
+		first_time = 0;
+		*error = 0;
+		num = (str[i] - '0');
 		if (!is_valid_num(num, total))
 			*error = 1;
 		total = total * 10 + num;

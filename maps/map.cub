@@ -11,7 +11,7 @@ DO textures/open_gate.gif/
 DC textures/space.gif/
 
 
-C 30,30,101
+C 255,30,0
 
 F 200,150,150
 
