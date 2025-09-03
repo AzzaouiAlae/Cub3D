@@ -21,7 +21,7 @@ OBJ =  main.o \
 CC = cc
 NAME=cub3D
 f = -fsanitize=address
-CFLAGS= -Wall -Wextra -Werror -O3
+CFLAGS= -Wall -Wextra -Werror -g3 #-O3
 mlx = -lmlx_Linux -lXext -lX11 -lm
 
 all : mlx_vlc $(NAME)

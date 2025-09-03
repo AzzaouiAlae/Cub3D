@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 18:46:30 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/09/02 14:31:27 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:24:38 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,6 @@ char						**sound_name(int set, char **files);
 void						sound_track(char **files);
 pid_t						sound_track_pid(int set, pid_t value);
 t_globle_vars				*vars(void);
+void						clear_video_buffer(void);
 
 #endif

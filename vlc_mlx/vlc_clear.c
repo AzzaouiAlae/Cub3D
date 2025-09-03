@@ -6,7 +6,7 @@
 /*   By: aazzaoui <aazzaoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:26:14 by aazzaoui          #+#    #+#             */
-/*   Updated: 2025/09/02 14:31:20 by aazzaoui         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:24:33 by aazzaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,21 @@ void	clear_sound_track(void)
 	waitpid(pid, 0, 0);
 }
 
-void	clear_vlc(void)
+void	clear_video_buffer(void)
 {
-	if (should_play_video())
+	if (vars()->buffer_name)
 	{
 		munmap(vars()->shared_buffer, buff_size());
 		shm_unlink(vars()->buffer_name);
 		free(vars()->buffer_name);
 		vars()->buffer_name = NULL;
+		vars()->shared_buffer = NULL;
 	}
+	vars()->buffer_name = generate_random_shm_name();
+}
+
+void	clear_vlc(void)
+{
 	shared_int_access(&(vars()->shared_flags)->should_clean, 1, 0);
 	shared_int_access(&(vars()->shared_flags)->should_play, 1, 0);
 	shared_int_access(&(vars()->shared_flags)->video_height, 1, 0);

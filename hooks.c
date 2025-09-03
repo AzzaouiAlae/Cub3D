@@ -22,12 +22,11 @@ t_global_vars	*g_vars(void)
 	return (&vars);
 }
 
-int	mouse_hook(void *param)
+int	mouse_hook(void)
 {
 	int	x;
 	int	y;
 
-	(void)param;
 	x = 10;
 	y = 10;
 	if (g_vars()->keys.mouse)

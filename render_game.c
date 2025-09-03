@@ -35,7 +35,7 @@ int	render_game(void *pram)
 	}
 	else if (!should_play_video())
 	{
-		mouse_hook(NULL);
+		mouse_hook();
 		move_player();
 		map_game();
 		if (!g_vars()->gate_video)

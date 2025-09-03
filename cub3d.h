@@ -96,7 +96,7 @@ int					close_window(void *param);
 int					render_game(void *pram);
 size_t				get_curr_time(void);
 void				normalize_angle(double *angle);
-int					mouse_hook(void *param);
+int					mouse_hook(void);
 void				gate_effect_video(void);
 t_global_vars		*g_vars(void);
 void				render_video(void);

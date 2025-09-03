@@ -7,7 +7,7 @@ vlc_lib_OBJ = $(vlc_lib_SRC:.c=.o)
 VLC_NAME=vlc_mlx
 VLC_LIB=libvlcmlx
 CC = cc -I$(HOME)/libvlc/include
-CFLAGS= -Wall -Wextra -Werror -O3
+CFLAGS= -Wall -Wextra -Werror -g3 #-O3
 
 all : deps compile
 
