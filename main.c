@@ -77,7 +77,7 @@ void	ft_init(void)
 	vars->mlx = mlx_init();
 	mlx_get_screen_size(vars->mlx, &w, &h);
 	vars->width = w;
-	vars->height = h;
+	vars->height = h - 69;
 	vars->win = mlx_new_window(vars->mlx, vars->width, vars->height, "Game");
 	vars->win_img.img = mlx_new_image(vars->mlx, vars->width, vars->height);
 	vars->win_img.addr = mlx_get_data_addr(vars->win_img.img,

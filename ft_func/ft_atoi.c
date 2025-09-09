@@ -57,5 +57,7 @@ int	ft_atoi(const char *str, int *error)
 		total = total * 10 + num;
 		i++;
 	}
+	if (str[i])
+		*error = 1;
 	return ((int)total);
 }

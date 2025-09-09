@@ -19,7 +19,7 @@
 # include "list/list.h"
 # include "player/player.h"
 # include "string/string.h"
-# include "vlc_mlx/vlc_mlx.h"
+# include "vlc_mlx.h"
 # include <math.h>
 # include <mlx.h>
 # include <stdbool.h>

@@ -1,3 +1,6 @@
+VLC_MLX_DIR := $(HOME)/vlc_mlx
+VLC_MLX_URL := git@github.com:AzzaouiAlae/vlc_mlx.git
+
 SRC = main.c \
 		game_parse/game_parse.c game_parse/parse_info.c game_parse/parse_list_info.c game_parse/parse_map.c game_parse/read_info.c\
 		string/str_add.c	string/str_delete.c	string/str_insert.c	string/str_new.c	string/str_resize.c \
@@ -21,23 +24,26 @@ OBJ =  main.o \
 CC = cc
 NAME=cub3D
 f = -fsanitize=address
-CFLAGS= -Wall -Wextra -Werror -g3 #-O3
+CFLAGS= -Wall -Wextra -Werror -I$(VLC_MLX_DIR) -O3
 mlx = -lmlx_Linux -lXext -lX11 -lm
 
 all : mlx_vlc $(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) $(mlx) vlc_mlx/libvlcmlx -o $(NAME)
+	$(CC) $(OBJ) $(mlx) $(VLC_MLX_DIR)/libvlcmlx -o $(NAME)
 
 mlx_vlc:
-	@$(MAKE) -C vlc_mlx
+	@if [ ! -d $(VLC_MLX_DIR) ]; then \
+		git clone $(VLC_MLX_URL) $(VLC_MLX_DIR); \
+	fi; \
+	$(MAKE) -C $(VLC_MLX_DIR); \
 
 clean :
-	@$(MAKE) clean -C vlc_mlx
+	@$(MAKE) clean -C $(VLC_MLX_DIR)
 	rm -fr $(OBJ) $(vlc_OBJ)
 
 fclean : clean
-	@$(MAKE) fclean -C vlc_mlx
+	@$(MAKE) fclean -C $(VLC_MLX_DIR)
 	rm -fr $(NAME)
 
 re : fclean all

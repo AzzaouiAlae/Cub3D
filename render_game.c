@@ -20,8 +20,7 @@ void	render_video(void)
 	if (g_vars()->gate_video)
 		gate_effect_video();
 	else
-		copy_resized_frame(&g_vars()->win_img, g_vars()->width, g_vars()->height
-			- 70);
+		copy_resized_frame(&g_vars()->win_img, g_vars()->width, g_vars()->height);
 	mlx_put_image_to_window(g_vars()->mlx, g_vars()->win, g_vars()->win_img.img,
 		0, 0);
 }
